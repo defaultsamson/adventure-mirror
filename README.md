@@ -1,4 +1,4 @@
 noot my froot
-*notices froot* OwO
+*notices foot* OwO
 moot
 ey yijie make yer commit already
