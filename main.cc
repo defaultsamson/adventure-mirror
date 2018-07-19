@@ -39,6 +39,8 @@ int main(int argc, char *argv[]) {
             if (argc > 1) {
                 map = DungeonMap(argv[1]);
             }
+            cout << map << endl;
+
             // init map, enemies, items, etc here
             while (cin >> input) {
                 // main game loop

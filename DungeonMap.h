@@ -2,17 +2,23 @@
 #define DUNGEONMAP_H_
 
 #include "Observer.h"
-#include "Entity.h"
+#include "Floor.h"
 #include <string>
 #include <vector>
 
 using namespace std;
 
 class DungeonMap: public Observer {
-	vector<vector<Entity>> grid;
-	public:
-		DungeonMap(const char* filename);
-		void notify(Observer &other) override;
+	size_t floor = 0;
+	vector<Floor*> floors;
+public:
+	DungeonMap(const char* filename);
+
+	void notify(Observer &other) override;
+	size_t getFloor();
+	void progressFloor();
+
+	friend ostream &operator<<(ostream &out, const DungeonMap &m);
 };
 
 #endif
