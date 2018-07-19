@@ -13,6 +13,6 @@ class DungeonMap: public Observer {
 public:
 	DungeonMap(char[] filename);
 	void notify(Observer &other) override;
-}
+};
 
 #endif

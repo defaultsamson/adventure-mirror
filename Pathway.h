@@ -7,5 +7,5 @@ class Pathway : public Entity{
         public :
         Pathway(size_t x,y);
         void notify();
-}
+};
 #endif
