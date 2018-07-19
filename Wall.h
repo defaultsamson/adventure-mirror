@@ -5,7 +5,7 @@
 
 class Wall : public Entity{
         public :
-        Wall();
+        Wall(size_t x,size_t y, char icon);
         void notify();
 }
 #endif

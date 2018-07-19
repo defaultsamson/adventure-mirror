@@ -5,7 +5,7 @@
 
 class Stair : public Entity{
 	public :
-	Stair();
+	Stair(size_t x,y);
 	void notify();
 }
 #endif

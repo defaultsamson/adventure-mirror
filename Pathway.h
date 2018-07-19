@@ -5,7 +5,7 @@
 
 class Pathway : public Entity{
         public :
-        Pathway();
+        Pathway(size_t x,y);
         void notify();
 }
 #endif
