@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
             // CharacterDecorator &race = get race deco from input
 
             // Character &player = BaseCharacter(set up character from race);
-            DungeonMap map;
+            DungeonMap map{"cc3kfloor.txt"};
             if (argc > 1) {
                 map = DungeonMap(argv[1]);
             }

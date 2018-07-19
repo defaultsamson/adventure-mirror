@@ -13,9 +13,7 @@ DungeonMap::DungeonMap(char *filename) {
 		cerr << "Error reading file: " << filename << endl;
 		return;
 	}
-
-	this->grid = new vector<vector<Entity&>>
-
+	
 	char input;
 	while (file >> input) {
 		cout << input << endl;
@@ -27,7 +25,7 @@ DungeonMap::DungeonMap(char *filename) {
 			break;
 		case '\\':
 			break;
-		case '.'
+		case '.':
 			break;
 		case '0': // restore health
 			break;
@@ -53,7 +51,7 @@ DungeonMap::DungeonMap(char *filename) {
 	}
 }
 
-void DungeonMap::notify(DungeonMap &other) {
+void DungeonMap::notify(Observer &other) {
 
 }
 
