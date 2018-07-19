@@ -11,11 +11,11 @@ class Observer {
 	StateType state;
 public:
 	//getter and setter functions for state
-        stateType getState(){
+	StateType getState(){
 		return state;
 	}
 
-	void setState(stateType type){
+	void setState(StateType type){
 		state = type;
 	}
 
@@ -26,5 +26,4 @@ public:
 	virtual void notify(Observer &ob) = 0;
 }
 
-#endif
-~           
+#endif           

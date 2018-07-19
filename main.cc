@@ -1,8 +1,11 @@
-// #include all shite
+#include <string>
+#include <iostream>
+
+#include "DungeonMap.h"
 
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
     /* Initially, the game will demand the player enter one of the specifed races or quit. Entering `q' or EOF (e.g.
     Ctrl-D) at the race prompt will cause the program to terminate. Supplying a valid race selection (below)
     will start that game using that race. Other values will be ignored.
@@ -15,11 +18,12 @@ int main() {
     * u <direction>: uses the potion indicated by the direction (e.g. no, so, ea).
     * a <direction>: attacks the enemy in the specified direction, if the monster is in the immediately
     specified block (e.g. must be one block north of the @).
-    * s, d, v, g, t: specifes the race the player wishes to be when starting a game.
+    * s, d, v, g, t: specifies the race the player wishes to be when starting a game.
     * f: stops enemies from moving until this key is pressed again.
     * r: restarts the game. All stats, inventory, and gold are reset. A new race should be selected.
     * q: allows the player to admit defeat and exit the game.
     Note that the board should be redrawn as appropriate every time a command is entered.*/
+
     string input;
     bool quit = false;
 
@@ -28,7 +32,11 @@ int main() {
         // if (input is one of above)
             // CharacterDecorator &race = get race deco from input
 
-            // BaseCharacter &player = set up character from race
+            // Character &player = BaseCharacter(set up character from race);
+            DungeonMap map;
+            if (argc > 1) {
+                map = DungeonMap(argv[1]);
+            }
             // init map, enemies, items, etc here
             while (cin >> input) {
                 // main game loop

@@ -11,7 +11,7 @@ using namespace std;
 class DungeonMap: public Observer {
 	vector<vector<Entity&>> grid;
 public:
-	DungeonMap(string filename);
+	DungeonMap(char[] filename);
 	void notify(Observer &other) override;
 }
 

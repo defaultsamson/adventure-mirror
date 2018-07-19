@@ -1,12 +1,14 @@
 #include "DungeonMap.h"
 #include "Entity.h"
 #include <string>
+#include <iostream>
+#include <fstream>
 #include <vector>
 
 using namespace std;
 
-DungeonMap::DungeonMap(string filename) {
-	ifstream file(filename.c_str());
+DungeonMap::DungeonMap(char *filename) {
+	ifstream file{filename};
 	if (!file) {
 		cerr << "Error reading file: " << filename << endl;
 		return;
