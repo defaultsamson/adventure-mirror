@@ -7,7 +7,7 @@
 
 using namespace std;
 
-DungeonMap::DungeonMap(char *filename) {
+DungeonMap::DungeonMap(const char *filename) {
 	ifstream file{filename};
 	if (!file) {
 		cerr << "Error reading file: " << filename << endl;
@@ -15,8 +15,8 @@ DungeonMap::DungeonMap(char *filename) {
 	}
 	
 	char input;
-	while (file >> input) {
-		cout << input << endl;
+	while (file.get(input)) {
+		cout << input;
 
 		switch (input) {
 		case '|':
@@ -52,6 +52,6 @@ DungeonMap::DungeonMap(char *filename) {
 }
 
 void DungeonMap::notify(Observer &other) {
-
+	(void) other; // prevent unused parameter error, remove this later
 }
 

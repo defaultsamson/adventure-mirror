@@ -27,13 +27,15 @@ int main(int argc, char *argv[]) {
     string input;
     bool quit = false;
 
-    while (cin >> input && !quit) {
+    while (!quit && cin >> input) {
         // race is one of (s, d, v, g, t)
         // if (input is one of above)
             // CharacterDecorator &race = get race deco from input
 
             // Character &player = BaseCharacter(set up character from race);
-            DungeonMap map{"cc3kfloor.txt"};
+
+            const char *defaultMap = {"cc3kfloor.txt"};
+            DungeonMap map{defaultMap};
             if (argc > 1) {
                 map = DungeonMap(argv[1]);
             }
@@ -90,5 +92,4 @@ int main(int argc, char *argv[]) {
                 // etc., fuck this
             }
     }
-    cout << "Hello World!" << endl;
 }

@@ -9,23 +9,19 @@ using namespace std;
 enum class StateType {Moving, Attack, Pickup};
 
 class Observer {
-        vector<Observer*> observers;
+	vector<Observer*> observers;
 	StateType state;
-public:
-	//getter and setter functions for state
-	StateType getState(){
-		return state;
-	}
+	public:
+		//getter and setter functions for state
+		StateType getState();
 
-	void setState(StateType type){
-		state = type;
-	}
+		void setState(StateType type);
 
-	void notifyObservers();
+		void notifyObservers();
 
-	void attach(Observer *ob);
+		void attach(Observer *ob);
 
-	virtual void notify(Observer &ob) = 0;
+		virtual void notify(Observer &ob) = 0;
 };
 
 #endif           
