@@ -11,6 +11,6 @@ public:
 
 	char print() { return icon; }
 	virtual ~Entity() = 0;
-}
+};
 
 #endif

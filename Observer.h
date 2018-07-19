@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 enum class StateType {Moving, Attack, Pickup};
 
 class Observer {
@@ -24,6 +26,6 @@ public:
 	void attach(Observer *ob);
 
 	virtual void notify(Observer &ob) = 0;
-}
+};
 
 #endif           
