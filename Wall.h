@@ -2,11 +2,12 @@
 #define WALL_H
 
 #include "Entity.h"
+#include "Observer.h"
 
-class Wall : public Entity{
-        public :
-        Wall(size_t x,size_t y, char icon);
-        void notify();
+class Wall: public Entity {
+public:
+	Wall(size_t x, size_t y, char icon);
+	void notify(Observer &o) override;
 };
 
 #endif

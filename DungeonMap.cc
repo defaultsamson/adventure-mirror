@@ -2,6 +2,8 @@
 #include "Floor.h"
 #include "Entity.h"
 #include "TestEntity.h"
+#include "Pathway.h"
+#include "Wall.h"
 
 #include <string>
 #include <iostream>
@@ -30,23 +32,24 @@ DungeonMap::DungeonMap(const char *filename) {
 
 	char input;
 	while (file.get(input)) {
-		// cout << input;
+		// cout << input; // Prints the file as it is read
 
+		// At the end of the floor there should be a newline character. This will skip it
 		if (!endFloor) {
-			++x;
+			++x; // x starts at -1, so therefore this makes it start at 0, and increments it
 
 			switch (input) {
 			case '\n':
 				if (startFloor) {
+					// Ended the first line of the floor, we now know the width of it
 					startFloor = false;
 					width = x;
-					cout << "Starting Floor: " << width << endl;
 				}
 				x = -1;
 				++y;
 			break;
 			case '|':
-				// TODO add the wall object
+				es.emplace_back(new Wall(x, y, input));
 	
 				// At the left wall
 				if (x == 0) {
@@ -62,43 +65,57 @@ DungeonMap::DungeonMap(const char *filename) {
 					es.clear();
 					this->floors.emplace_back(fl);
 
+					// Resets the floor variables
 					startFloor = true;
 					endFloor = true;
 					hitSomething = false;
 					width = 0;
 					x = -1;
 					y = 0;
-					cout << "Ending Floor" << endl;
 				}
 	
 				// Continuing avoids setting hitSomething below this switch statement
 				continue;
+			case '#': // Pathway
+				es.emplace_back(new Pathway(x, y));
 			case '-': // top wall
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Wall(x, y, input));
 				break;
 			case '\\': // stairs
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '.': // empty floor tile
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '0': // restore health
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '1': // boost attack
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '2': // boost defense
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '3': // poison health
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '4': // wound attack
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '5': // wound defense
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '6': // normal gold pile
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '7': // small hoard
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '8': // merchant hoard
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '9': // dragon hoard
+				es.emplace_back(new TestEntity(x, y, input));
 				break;
 			}
 			// Checks if, when scanning across, we hit a non-wall character
