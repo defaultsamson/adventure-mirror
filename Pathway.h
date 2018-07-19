@@ -6,7 +6,7 @@
 
 class Pathway: public Entity{
 public:
-	Pathway(size_t x, size_t y);
+	Pathway(size_t x, size_t y, char icon);
 	void notify(Observer &o);
 };
 #endif

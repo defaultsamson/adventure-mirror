@@ -35,7 +35,7 @@ ostream &operator<<(ostream &out, Floor &f) {
 			if (e) {
 				out << e->print();
 			} else {
-				out << " ";
+				out << '.';
 			}
 		}
 		out << endl;

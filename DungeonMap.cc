@@ -4,6 +4,7 @@
 #include "TestEntity.h"
 #include "Pathway.h"
 #include "Wall.h"
+#include "Outside.h"
 
 #include <string>
 #include <iostream>
@@ -77,15 +78,16 @@ DungeonMap::DungeonMap(const char *filename) {
 				// Continuing avoids setting hitSomething below this switch statement
 				continue;
 			case '#': // Pathway
-				es.emplace_back(new Pathway(x, y));
+			case '+':
+				es.emplace_back(new Pathway(x, y, input));
 			case '-': // top wall
 				es.emplace_back(new Wall(x, y, input));
 				break;
 			case '\\': // stairs
 				es.emplace_back(new TestEntity(x, y, input));
 				break;
-			case '.': // empty floor tile
-				es.emplace_back(new TestEntity(x, y, input));
+			case ' ': // outside floor tile
+				es.emplace_back(new Outside(x, y));
 				break;
 			case '0': // restore health
 				es.emplace_back(new TestEntity(x, y, input));
