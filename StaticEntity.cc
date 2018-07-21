@@ -1,6 +1,6 @@
 #include "StaticEntity.h"
 
-StaticEntity::StaticEntity(size_t x, size_t y, char icon);
+StaticEntity::StaticEntity(size_t x, size_t y, char icon) : x{x}, y{y}, icon{icon} {}
 
 size_t StaticEntity::getX() { return x; }
 size_t StaticEntity::getY() { return y; }

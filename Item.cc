@@ -14,3 +14,6 @@ void Item::notify(Observer &other) {
 	(void) other; // Supresses unused parameter error
 }
 
+void Item::move(Direction d) {
+	(void) d; // intentional, items do not move
+}

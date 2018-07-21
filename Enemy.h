@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include "CharacterDecorator.h"
+#include "BaseCharacter.h"
 #include "Observer.h"
 class Enemy : public BaseCharacter{
 public :

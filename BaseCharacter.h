@@ -14,6 +14,7 @@ class BaseCharacter: public Character {
 	int def;
 	int gold = 0;
 	int floor = 0;
+	CharacterType type;
 protected:
 	void deathCheck() override;
 public:
@@ -32,7 +33,7 @@ public:
 	size_t getY() override;
 	void setX(size_t x) override;
 	void setY(size_t y) override;
-        char print() override;
+	char print() override;
 	void notify(Observer &o) override;
 	CharacterType getType();
 };

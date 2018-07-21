@@ -1,6 +1,6 @@
 #include "Direction.h"
 
-Direction::Direction(int x, int y): x{x}, y{y} {}
+Direction::Direction(int x, int y, int x2, int y2): x{x - x2}, y{y - y2} {}
 
 const Direction Direction::N {0,-1};
 const Direction Direction::NE {1, -1};

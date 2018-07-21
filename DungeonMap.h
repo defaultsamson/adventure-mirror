@@ -17,6 +17,7 @@ public:
 	void notify(Observer &other) override;
 	size_t getFloor();
 	void progressFloor();
+	std::vector<Direction> getEmptyDirections(Entity* e);
 
 	friend ostream &operator<<(ostream &out, const DungeonMap &m);
 };

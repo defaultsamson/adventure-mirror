@@ -16,6 +16,7 @@ public:
 	void setY(size_t y) override;
 	char print() override;
 	void notify(Observer &o) override;
+	void move(Direction d) override;
 	virtual void pickup(CharacterDecorator *o) = 0;
 };
 

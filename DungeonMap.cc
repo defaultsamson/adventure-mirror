@@ -1,7 +1,6 @@
 #include "DungeonMap.h"
 #include "Floor.h"
 #include "Entity.h"
-#include "TestEntity.h"
 #include "Pathway.h"
 #include "Wall.h"
 #include "Ground.h"
@@ -87,7 +86,7 @@ DungeonMap::DungeonMap(const char *filename) {
 				es.emplace_back(new Wall(x, y, input));
 				break;
 			case '\\': // stairs
-				es.emplace_back(new TestEntity(x, y, input));
+				//es.emplace_back(new TestEntity(x, y, input));
 				break;
 			case '.': // ground tile
 				es.emplace_back(new Ground(x, y));
@@ -145,3 +144,18 @@ void DungeonMap::notify(Observer &other) {
 	(void) other; // prevent unused parameter error, remove this later
 }
 
+vector<Direction> DungeonMap::getEmptyDirections(Entity* e) {
+	int x = e->getX();
+	int y = e->getY();
+	int width = floors[floor]->width();
+	int height = floors[floor]->height();
+	vector<Direction> valid;
+	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
+		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+			vector<Entity*> e = floors[floor]->get(col, row);
+
+			
+		}
+	}
+	return valid;
+}
