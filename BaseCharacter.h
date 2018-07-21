@@ -15,7 +15,7 @@ class BaseCharacter: public Character {
 protected:
 	void deathCheck() override;
 public:
-	BaseCharacter(size_t x, size_t y, char icon, int hp, int atk, int def);
+	BaseCharacter(size_t x, size_t y, char icon, int hp, int maxHp, int atk, int def);
 	void hit(Character &other) override;
 	void damage(Character &other, int damage) override;
 	int score() override;
