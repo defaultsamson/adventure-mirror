@@ -3,7 +3,7 @@
 #include "Item.h"
 #include "Observer.h"
 
-BaseCharacter::BaseCharacter(size_t x, size_t y, char icon) : Character{x, y, icon} {}
+BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, int hp, int atk, int def) : Character{x, y, icon}, hp{hp}, atk{atk}, def{def}, maxHp{hp} {}
 
 void BaseCharacter::hit(Character &other) {
 	// Class specific attacks can override this. By default, deal the attack

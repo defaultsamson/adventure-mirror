@@ -6,16 +6,16 @@
 #include "Item.h"
 
 class BaseCharacter: public Character {
-	int hp = 0;
-	int maxHp = 0;
-	int atk = 0;
-	int def = 0;
+	int hp;
+	int atk;
+	int def;
+	int maxHp;
 	int gold = 0;
 	int floor = 0;
 protected:
 	void deathCheck() override;
 public:
-	BaseCharacter(size_t x, size_t y, char icon);
+	BaseCharacter(size_t x, size_t y, char icon, int hp, int atk, int def);
 	void hit(Character &other) override;
 	void damage(Character &other, int damage) override;
 	int score() override;
