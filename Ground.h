@@ -1,12 +1,12 @@
-#ifndef OUTSIDE_H
-#define OUTSIDE_H
+#ifndef GROUND_H
+#define GROUND_H
 
 #include "Entity.h"
 #include "Observer.h"
 
-class Outside: public Entity {
+class Ground: public Entity {
 public:
-	Outside(size_t x, size_t y);
+	Ground(size_t x, size_t y);
 	void notify(Observer &o) override;
 };
 

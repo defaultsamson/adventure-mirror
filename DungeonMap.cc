@@ -4,7 +4,10 @@
 #include "TestEntity.h"
 #include "Pathway.h"
 #include "Wall.h"
-#include "Outside.h"
+#include "Ground.h"
+#include "Potion.h"
+#include "Gold.h"
+#include "DragonGold.h"
 
 #include <string>
 #include <iostream>
@@ -86,38 +89,38 @@ DungeonMap::DungeonMap(const char *filename) {
 			case '\\': // stairs
 				es.emplace_back(new TestEntity(x, y, input));
 				break;
-			case ' ': // outside floor tile
-				es.emplace_back(new Outside(x, y));
+			case '.': // ground tile
+				es.emplace_back(new Ground(x, y));
 				break;
 			case '0': // restore health
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Potion(x, y, "Restore Health", nullptr));
 				break;
 			case '1': // boost attack
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Potion(x, y, "Boost Attack", nullptr));
 				break;
 			case '2': // boost defense
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Potion(x, y, "Boost Defences", nullptr));
 				break;
 			case '3': // poison health
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Potion(x, y, "Poison Health", nullptr));
 				break;
 			case '4': // wound attack
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Potion(x, y, "Wound Attack", nullptr));
 				break;
 			case '5': // wound defense
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Potion(x, y, "Wound Defense", nullptr));
 				break;
 			case '6': // normal gold pile
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Gold(x, y, 2));
 				break;
 			case '7': // small hoard
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Gold(x, y, 1));
 				break;
 			case '8': // merchant hoard
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Gold(x, y, 4));
 				break;
 			case '9': // dragon hoard
-				es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new DragonGold(x, y));
 				break;
 			}
 			// Checks if, when scanning across, we hit a non-wall character

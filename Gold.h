@@ -9,7 +9,7 @@ class Gold: public Item {
 public:
 	Gold(size_t x, size_t y, int value);
 	void pickup(CharacterDecorator *entity) override;
-}
+};
 
 #endif
 

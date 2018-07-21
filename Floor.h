@@ -9,11 +9,11 @@ using namespace std;
 
 class Floor {
 	size_t w, h;
-	vector<vector<Entity*>> grid;
+	vector<vector<vector<Entity*>>> grid;
 public:
 	Floor(size_t w, size_t h);
 	void add(Entity *e);
-	Entity *get(size_t x, size_t y);
+	vector<Entity*> get(size_t x, size_t y);
 	size_t width();
 	size_t height();
 
