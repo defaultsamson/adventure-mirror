@@ -23,6 +23,7 @@ int CharacterDecorator::getHP() { return component->getHP(); }
 int CharacterDecorator::getMaxHP() { return component->getMaxHP(); }
 int CharacterDecorator::getAtk() { return component->getAtk(); }
 int CharacterDecorator::getDef() { return component->getDef(); }
+void CharacterDecorator::addGold(int value) { addGold(value); }
 int CharacterDecorator::getGold() { return component->getGold(); }
 int CharacterDecorator::getFloor() { return component->getFloor(); }
 

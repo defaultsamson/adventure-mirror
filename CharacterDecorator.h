@@ -16,6 +16,7 @@ public:
 	int getMaxHP() override;
 	int getAtk() override;
 	int getDef() override;
+	void addGold(int value) override;
 	int getGold() override;
 	int getFloor() override;
 	void notify(Observer &o) override;

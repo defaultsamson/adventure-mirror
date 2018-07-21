@@ -31,6 +31,7 @@ public:
 	virtual int getMaxHP() = 0;
 	virtual int getAtk() = 0;
 	virtual int getDef() = 0;
+	virtual void addGold(int value) = 0;
 	virtual int getGold() = 0;
 	virtual int getFloor() = 0;
 };

@@ -28,6 +28,7 @@ int BaseCharacter::getHP() { return hp; }
 int BaseCharacter::getMaxHP() { return maxHp; }
 int BaseCharacter::getAtk() { return atk; }
 int BaseCharacter::getDef() { return def; }
+void BaseCharacter::addGold(int value) { gold += value; }
 int BaseCharacter::getGold() { return gold; }
 int BaseCharacter::getFloor() { return floor; }
 
