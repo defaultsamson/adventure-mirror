@@ -4,6 +4,6 @@
 #include "Enemy.h"
 class DwarfEnemy : public Enemy{
 public :
-	DwarfEnemy(size_t x, size_t);
+	DwarfEnemy(size_t x, size_t y);
 };
 #endif

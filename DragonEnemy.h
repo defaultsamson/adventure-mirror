@@ -1,11 +1,9 @@
-#ifndef HUMANENEMY_H
-#define HUMANENEMY_H
+#ifndef DRAGONENEMY_H
+#define DRAGONENEMY_H
 
 #include "Enemy.h"
-class HumanEnemy : public Enemy{
+class DragonEnemy : public Enemy{
 public :
-	//Drop additional gold when damaged and killed
-	void deathCheck() override;
-	HumanEnemy(size_t x, size_t);
+	DragonEnemy(size_t x, size_t y);
 };
 #endif

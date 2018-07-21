@@ -6,6 +6,6 @@ class ElfEnemy : public Enemy{
 public :
 	//Make double attacks
 	void hit(Character &c) override;
-	ElfEnemy(size_t x, size_t);
+	ElfEnemy(size_t x, size_t y);
 };
 #endif
