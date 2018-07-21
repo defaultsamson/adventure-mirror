@@ -1,3 +1,5 @@
+#ifndef DIRECTION_H_
+#define DIRECTION_H_
 #include <string>
 
 struct Direction {
@@ -14,3 +16,4 @@ struct Direction {
     const static Direction NW;
     const static Direction Invalid;
 };
+#endif
