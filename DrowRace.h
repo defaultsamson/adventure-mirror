@@ -1,9 +1,9 @@
 #ifndef DROWRACE_H
 #define DROWRACE_H
 
-#include "CharacterDecorator.h"
+#include "BaseCharacter.h"
 
-class DrowRace: public CharacterDecorator {
+class DrowRace: public BaseCharacter {
 public:
 	DrowRace(size_t x, size_t y);
 };
