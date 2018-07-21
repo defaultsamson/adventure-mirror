@@ -18,7 +18,6 @@ public:
 	BaseCharacter(size_t x, size_t y, char icon);
 	void hit(Character &other) override;
 	void damage(Character &other, int damage) override;
-	void pickup(Item &i) override;
 	int score() override;
 	int getHP() override;
 	int getMaxHP() override;

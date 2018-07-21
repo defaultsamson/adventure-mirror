@@ -13,9 +13,9 @@ void CharacterDecorator::damage(Character &other, int damage) {
 	component->damage(other, damage);
 }
 
-void CharacterDecorator::pickup(Item &i) {
-	(void) i;
-	// TODO pickup logic, wrap the component object
+void CharacterDecorator::decorate(CharacterDecorator *o) {
+	o->component = component;
+	component = o;
 }
 
 int CharacterDecorator::score() { return component->score(); }

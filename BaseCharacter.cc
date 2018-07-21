@@ -23,12 +23,6 @@ void BaseCharacter::deathCheck() {
 	}
 }
 
-void BaseCharacter::pickup(Item &i) {
-	(void) i;
-	// TODO How do we apply the decorator to this???
-	// Note: write it in CharacterDecorator 
-}
-
 int BaseCharacter::score() { return gold; }
 int BaseCharacter::getHP() { return hp; }
 int BaseCharacter::getMaxHP() { return maxHp; }

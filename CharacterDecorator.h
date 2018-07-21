@@ -2,7 +2,6 @@
 #define CHARACTERDECORATOR_H
 
 #include "Character.h"
-#include "Item.h"
 
 class CharacterDecorator: public Character {
 protected:
@@ -11,7 +10,7 @@ public:
 	CharacterDecorator(size_t x, size_t y, char icon);
 	void hit(Character &other) override;
 	void damage(Character &other, int damage) override;
-	void pickup(Item &i) override;
+	void decorate(CharacterDecorator *o);
 	int score() override;
 	int getHP() override;
 	int getMaxHP() override;
