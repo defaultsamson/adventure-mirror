@@ -3,7 +3,7 @@
 
 #include "CharacterDecorator.h"
 #include "Observer.h"
-class Enemy : public CharacterDecorator{
+class Enemy : public BaseCharacter{
 public :
 	virtual void notify(Observer &) override;
 	virtual ~Enemy() = 0;
