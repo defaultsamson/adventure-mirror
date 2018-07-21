@@ -6,10 +6,12 @@
 #include "Item.h"
 
 class BaseCharacter: public Character {
+	size_t x, y;
+	char icon;
 	int hp;
+	int maxHp;
 	int atk;
 	int def;
-	int maxHp;
 	int gold = 0;
 	int floor = 0;
 protected:
@@ -26,7 +28,13 @@ public:
 	void addGold(int value) override;
 	int getGold() override;
 	int getFloor() override;
+	size_t getX() override;
+	size_t getY() override;
+	void setX(size_t x) override;
+	void setY(size_t y) override;
+        char print() override;
 	void notify(Observer &o) override;
+	CharacterType getType();
 };
 
 #endif

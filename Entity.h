@@ -4,14 +4,14 @@
 #include "Observer.h"
 
 class Entity: public Observer {
-	size_t x, y;
-	char icon;
 public:
-	Entity(size_t x, size_t y, char icon);
+	Entity();
 
-	size_t getX();
-	size_t getY();
-	char print();
+	virtual size_t getX() = 0;
+	virtual size_t getY() = 0;
+	virtual void setX(size_t x) = 0;
+	virtual void setY(size_t y) = 0;
+	virtual char print() = 0;
 	virtual ~Entity() = 0;
 };
 

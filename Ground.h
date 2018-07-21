@@ -1,10 +1,10 @@
 #ifndef GROUND_H
 #define GROUND_H
 
-#include "Entity.h"
+#include "StaticEntity.h"
 #include "Observer.h"
 
-class Ground: public Entity {
+class Ground: public StaticEntity {
 public:
 	Ground(size_t x, size_t y);
 	void notify(Observer &o) override;

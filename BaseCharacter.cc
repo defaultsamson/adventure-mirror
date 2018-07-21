@@ -1,9 +1,8 @@
 #include "BaseCharacter.h"
 #include "Character.h"
-#include "Item.h"
 #include "Observer.h"
 
-BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, int hp, int maxHp, int atk, int def) : Character{x, y, icon}, hp{hp}, atk{atk}, def{def}, maxHp{maxHp} {}
+BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, int hp, int maxHp, int atk, int def) : x{x}, y{y}, icon{icon}, hp{hp}, maxHp{maxHp}, atk{atk}, def{def} {}
 
 void BaseCharacter::hit(Character &other) {
 	// Class specific attacks can override this. By default, deal the attack
@@ -31,6 +30,11 @@ int BaseCharacter::getDef() { return def; }
 void BaseCharacter::addGold(int value) { gold += value; }
 int BaseCharacter::getGold() { return gold; }
 int BaseCharacter::getFloor() { return floor; }
+size_t BaseCharacter::getX() { return x; }
+size_t BaseCharacter::getY() { return y; }
+void BaseCharacter::setX(size_t x) { this->x = x; }
+void BaseCharacter::setY(size_t y) { this->y = y; }
+char BaseCharacter::print() { return icon; }
 
 void BaseCharacter::notify(Observer &o) {
 	(void) o;

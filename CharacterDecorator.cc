@@ -3,7 +3,8 @@
 #include "Item.h"
 #include "Observer.h"
 
-CharacterDecorator::CharacterDecorator(size_t x, size_t y, char icon) : Character{x, y, icon} {}
+CharacterDecorator::CharacterDecorator() {}
+CharacterDecorator::CharacterDecorator(Character *component) : component{component} {}
 
 void CharacterDecorator::hit(Character &other) {
 	component->hit(other);
@@ -26,6 +27,11 @@ int CharacterDecorator::getDef() { return component->getDef(); }
 void CharacterDecorator::addGold(int value) { addGold(value); }
 int CharacterDecorator::getGold() { return component->getGold(); }
 int CharacterDecorator::getFloor() { return component->getFloor(); }
+size_t CharacterDecorator::getX() { return component->getX(); }
+size_t CharacterDecorator::getY() { return component->getY(); }
+void CharacterDecorator::setX(size_t x) { component->setX(x); }
+void CharacterDecorator::setY(size_t y) { component->setY(y); }
+char CharacterDecorator::print() { return component->print(); }
 
 void CharacterDecorator::notify(Observer &o) {
 	(void) o;

@@ -1,8 +1,13 @@
 #include "Item.h"
 #include "Observer.h"
-#include "Entity.h"
 
-Item::Item(size_t x, size_t y, char icon) : Entity{x, y, icon} {}
+Item::Item(size_t x, size_t y, char icon) : x{x}, y{y}, icon{icon} {}
+
+size_t Item::getX() { return x; }
+size_t Item::getY() { return y; }
+void Item::setX(size_t x) { this->x = x; }
+void Item::setY(size_t y) { this->y = y; }
+char Item::print() { return icon; }
 
 void Item::notify(Observer &other) {
 	// TODO if player is touching, then apply decorator
