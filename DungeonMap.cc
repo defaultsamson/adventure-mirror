@@ -28,6 +28,8 @@
 
 using namespace std;
 
+Character *DungeonMap::getPlayer() { return player; }
+
 DungeonMap::DungeonMap(const char *filename, Character *player, bool re): player{player} {
 	ifstream file{filename};
 	if (!file) {

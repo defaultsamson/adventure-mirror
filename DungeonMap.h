@@ -18,6 +18,8 @@ public:
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 
+	Character *getPlayer();
+
 	void move(Entity *e, Direction d);
 	void movePlayer(Direction d, std::string &output);
 	void tick(std::string &output);
