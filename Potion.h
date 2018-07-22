@@ -9,7 +9,6 @@ using namespace std;
 
 class Potion: public Item {
 	string type;
-	CharacterDecorator *effect;
 public:
 	Potion(size_t x, size_t y, string type);
 	bool isWalkable() override;

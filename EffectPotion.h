@@ -8,6 +8,7 @@
 using namespace std;
 
 class EffectPotion: public Potion {
+	CharacterDecorator *effect;
 public:
 	EffectPotion(size_t x, size_t y, string type, CharacterDecorator *effect);
 	void pickup(CharacterDecorator *entity) override;

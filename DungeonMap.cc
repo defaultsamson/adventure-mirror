@@ -4,7 +4,12 @@
 #include "Pathway.h"
 #include "Wall.h"
 #include "Ground.h"
-#include "Potion.h"
+#include "HealthPotion.h"
+#include "EffectPotion.h"
+#include "BoostAtkEffect.h"
+#include "BoostDefEffect.h"
+#include "WoundAtkEffect.h"
+#include "WoundDefEffect.h"
 #include "Gold.h"
 #include "DragonGold.h"
 #include "Stair.h"
@@ -99,22 +104,22 @@ DungeonMap::DungeonMap(const char *filename, Character *player): player{player} 
 				player->setY(y);
 				break;
 			case '0': // restore health
-				es.emplace_back(new Potion(x, y, "Restore Health", nullptr));
+				es.emplace_back(new HealthPotion(x, y, "Restore Health", 5));
 				break;
 			case '1': // boost attack
-				es.emplace_back(new Potion(x, y, "Boost Attack", nullptr));
+				es.emplace_back(new EffectPotion(x, y, "Boost Attack", new BoostAtkEffect()));
 				break;
 			case '2': // boost defense
-				es.emplace_back(new Potion(x, y, "Boost Defences", nullptr));
+				es.emplace_back(new EffectPotion(x, y, "Boost Defences", new BoostDefEffect()));
 				break;
 			case '3': // poison health
-				es.emplace_back(new Potion(x, y, "Poison Health", nullptr));
+				es.emplace_back(new HealthPotion(x, y, "Poison Health", -5));
 				break;
 			case '4': // wound attack
-				es.emplace_back(new Potion(x, y, "Wound Attack", nullptr));
+				es.emplace_back(new EffectPotion(x, y, "Wound Attack", new WoundAtkEffect()));
 				break;
 			case '5': // wound defense
-				es.emplace_back(new Potion(x, y, "Wound Defense", nullptr));
+				es.emplace_back(new EffectPotion(x, y, "Wound Defense", new WoundDefEffect()));
 				break;
 			case '6': // normal gold pile
 				es.emplace_back(new Gold(x, y, 2));
