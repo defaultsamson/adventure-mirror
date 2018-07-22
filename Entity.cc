@@ -8,6 +8,7 @@ void Entity::move(Direction d) {
     setY(getY() + d.y);
 }
 
+void Entity::moveTick(DungeonMap &map) { (void) map; }
 void Entity::tick(DungeonMap &map) { (void) map; }
 
 Entity::~Entity() {}

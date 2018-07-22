@@ -17,6 +17,7 @@ public:
 	virtual bool isSpawnable() = 0;
 	virtual bool isWalkable() = 0;
 	virtual void move(Direction d);
+	virtual void moveTick(DungeonMap &map);
 	virtual void tick(DungeonMap &map);
 	virtual ~Entity() = 0;
 };
