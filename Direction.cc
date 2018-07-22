@@ -16,6 +16,39 @@ const Direction Direction::W{-1, 0};
 const Direction Direction::NW{-1, -1};
 const Direction Direction::Invalid{0, 0};
 
+std::string Direction::to_string() {
+    if (*this == Direction::N) {
+        return "North";
+    }
+    else if (*this == Direction::NE) {
+        return "Northeast";
+    }
+    else if (*this == Direction::E) {
+        return "East";
+    }
+    else if (*this == Direction::SE) {
+        return "Southeast";
+    }
+    else if (*this == Direction::S) {
+        return "South";
+    }
+    else if (*this == Direction::SW) {
+        return "Southwest";
+    }
+    else if (*this == Direction::W) {
+        return "West";
+    }
+    else if (*this == Direction::NW) {
+        return "Northwest";
+    }
+    else if (*this == Direction::Invalid) {
+        return "Invalid direction";
+    }
+    else {
+        return "Direction(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+    }
+}
+
 Direction Direction::getDirection(std::string d) {
     if (d == "no") {
         return Direction::N;

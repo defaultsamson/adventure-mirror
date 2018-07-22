@@ -32,8 +32,10 @@ int main(int argc, char *argv[]) {
     Note that the board should be redrawn as appropriate every time a command is entered.*/
 
     string input;
+    string output;
     bool quit = false;
 
+    cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): ";
     while (!quit && cin >> input) {
         // race is one of (s, d, v, g, t)
         CharacterDecorator *player = nullptr;
@@ -59,7 +61,7 @@ int main(int argc, char *argv[]) {
             map = DungeonMap(argv[1], player);
         }
         cout << map << endl;
-
+        cout << "Action: Player character has spawned." << endl;
         // init map, enemies, items, etc here
         while (cin >> input) {
             // main game loop
@@ -73,31 +75,46 @@ int main(int argc, char *argv[]) {
                 // Direction d;
                 // cin >> d;
                 // player.use(d);
+                output = "Action: PC uses [AB].";
             }
             else if (input == "a") {
                 // Direction d;
                 // cin >> d;
                 // player.attack(d);
+                output = "Action: PC deals x damage to Y (123 HP). Y deals z damage to PC.";
             }
             else if (input == "f") {
                 // toggles stopping enemies from moving
                 // map.toggleStopEnemies()
+                output = "Action: All enemies appear to be frozen to the arena floor and cannot move!";
             }
             else if (input == "r") {
                 cout << "Restarting Game" << endl;
                 // make sure we manage memory of previous player and stuff
+                cout << "Race selection (Shade, Drow, Vampire, Goblin, Troll): ";
                 break;
+            }
+            else if (input == "h") {
+                output = "~~~~ChamberCrawler 3000 Commands~~~~\n";
+                output += "(no)rth, (so)uth, (ea)st, (we)st, ne, nw, se, sw: movement\n";
+                output += "u <direction>: uses potion in specified cardinal direction\n";
+                output += "a <direction>: attacks enemy one block away in specified direction\n";
+                output += "f: toggles enemy movement (but not attacking)\n";
+                output += "r: restarts the game\n";
+                output += "q: quits the game\n";
+                output += "\nh: displays this message";
             }
             else {
                 Direction d = Direction::getDirection(input);
                 if (d == Direction::Invalid) {
-                    continue; // invalid input, skip map.tick and get input
+                    output = "Invalid command. Try 'h' (without quotes) for help on commands.";
                 }
-                cout << "got direction " << input << endl;
-                map.movePlayer(d);
-                
+                else {
+                    map.movePlayer(d, output);
+                }
             }
             cout << map << endl; // maybe this could go in map.tick?
+            cout << output << endl;
             // map.tick
         }
     }

@@ -22,7 +22,7 @@ public:
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 
-	void movePlayer(Direction d);
+	void movePlayer(Direction d, std::string &output);
 	friend ostream &operator<<(ostream &out, const DungeonMap &m);
 };
 

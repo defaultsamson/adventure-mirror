@@ -160,7 +160,12 @@ void DungeonMap::progressFloor() {
 }
 
 ostream &operator<<(ostream &out, const DungeonMap &m) {
-	return out << *m.floors[m.floor];
+	out << *m.floors[m.floor];
+	out << "Race: " << "m.player->getType() to string" << " Gold: " << m.player->getGold() << " Floor: " << m.floor << endl;
+	out << "HP: " << m.player->getHP() << "/" << (m.player->getMaxHP() > 0 ? to_string(m.player->getMaxHP()) : "Infinite") << endl;
+	out << "Atk: " << m.player->getAtk() << endl;
+	out << "Def: " << m.player->getDef();
+	return out;
 }
 
 void DungeonMap::notify(Observer &other) {
@@ -209,13 +214,12 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 	return valid;
 }
 
-void DungeonMap::movePlayer(Direction d) {
+void DungeonMap::movePlayer(Direction d, string &output) {
+	output = "";
 	for (Direction valid: getWalkableDirections(player)) {
 		if (d == valid) {
-			cout << "valid direction " << d.x << " " << d.y << endl;
 			int x = player->getX();
 			int y = player->getY();
-			cout << "current player: " << x << " " << y << endl;
 			vector<Entity *> &cell = floors[floor]->get(x, y);
 			if (cell.back() == player) {
 				cell.pop_back();
@@ -225,11 +229,10 @@ void DungeonMap::movePlayer(Direction d) {
 			}
 			player->move(d);
 			floors[floor]->add(player);
-			if (floors[floor]->get(player->getX(), player->getY()).back() != player) {
-				cout << "thonk" << endl;
-			}
-			cout << "after move: " << player->getX() << " " << player->getY() << endl;
-			break;
+			output = "Action: PC moves " + d.to_string() + " and sees a furry friend.";
+			// make the second part optional, e.g when seeing a potion, we would say "and sees an unknown potion"
+			return;
 		}
 	}
+	output = "Action: PC attempts to move " + d.to_string() + ", but is blocked from moving that way.";
 }

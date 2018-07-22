@@ -5,6 +5,7 @@
 struct Direction {
     int x, y;
     Direction(int x=0, int y=0, int x2=0, int y2=0); // handles direction from (x, y) and direction between two pairs
+    std::string to_string();
     bool operator==(Direction other);
     static Direction getDirection(std::string d);
     const static Direction N;
