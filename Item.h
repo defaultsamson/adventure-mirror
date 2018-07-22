@@ -2,7 +2,6 @@
 #define ITEM_H
 
 #include "Entity.h"
-#include "Observer.h"
 #include "CharacterDecorator.h"
 
 class Item: public Entity {
@@ -15,7 +14,6 @@ public:
 	void setX(size_t x) override;
 	void setY(size_t y) override;
 	char print() override;
-	void notify(Observer &o) override;
 	void move(Direction d) override;
 	virtual void pickup(CharacterDecorator *o);
 };

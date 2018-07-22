@@ -168,10 +168,6 @@ ostream &operator<<(ostream &out, const DungeonMap &m) {
 	return out;
 }
 
-void DungeonMap::notify(Observer &other) {
-	(void) other; // prevent unused parameter error, remove this later
-}
-
 vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
 	int x = e->getX();
 	int y = e->getY();

@@ -33,7 +33,6 @@ public:
 	char print() override;
 	bool deathCheck() override;
 	CharacterType getType() override;
-	void notify(Observer &o) override;
 };
 
 #endif

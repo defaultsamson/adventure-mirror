@@ -1,7 +1,6 @@
 #include "CharacterDecorator.h"
 #include "Character.h"
 #include "Item.h"
-#include "Observer.h"
 
 CharacterDecorator::CharacterDecorator() {}
 CharacterDecorator::CharacterDecorator(int floor) : activeFloor{floor} {}
@@ -38,8 +37,4 @@ void CharacterDecorator::setY(size_t y) { component->setY(y); }
 char CharacterDecorator::print() { return component->print(); }
 bool CharacterDecorator::deathCheck() { return component->deathCheck(); }
 CharacterType CharacterDecorator::getType() { return component->getType(); }
-
-void CharacterDecorator::notify(Observer &o) {
-	(void) o;
-}
 

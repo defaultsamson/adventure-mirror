@@ -1,7 +1,6 @@
 #ifndef BASECHARACTER_H
 #define BASECHARACTER_H
 
-#include "Observer.h"
 #include "Character.h"
 #include "Item.h"
 
@@ -36,7 +35,6 @@ public:
 	void setX(size_t x) override;
 	void setY(size_t y) override;
 	char print() override;
-	void notify(Observer &o) override;
 	CharacterType getType();
 };
 

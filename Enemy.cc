@@ -15,9 +15,4 @@ bool Enemy::hit(Character &other) {
 	return false;
 }
 
-void Enemy::notify(Observer& obs){
-	//TODO :: Add movement for enemies
-        (void)obs;
-}
-
 Enemy::~Enemy(){}

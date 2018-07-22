@@ -1,10 +1,9 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "Observer.h"
 #include "Direction.h"
 
-class Entity: public Observer {
+class Entity {
 public:
 	Entity();
 

@@ -1,6 +1,5 @@
 #include "Character.h"
 #include "BaseCharacter.h"
-#include "Observer.h"
 #include <math.h>
 
 using namespace std;
@@ -55,8 +54,4 @@ void BaseCharacter::setY(size_t y) { this->y = y; }
 char BaseCharacter::print() { return icon; }
 
 CharacterType BaseCharacter::getType() { return type;}
-
-void BaseCharacter::notify(Observer &o) {
-	(void) o;
-}
 
