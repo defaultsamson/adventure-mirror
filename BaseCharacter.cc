@@ -1,5 +1,5 @@
-#include "BaseCharacter.h"
 #include "Character.h"
+#include "BaseCharacter.h"
 #include "Observer.h"
 
 BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def) : x{x}, y{y}, icon{icon}, hp{hp}, maxHp{maxHp}, atk{atk}, def{def} {}
