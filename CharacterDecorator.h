@@ -6,9 +6,10 @@
 class CharacterDecorator: public Character {
 protected:
 	Character *component;
-	double multiplier = 1.0;
 	int activeFloor;
 public:
+	double multiplier = 1.0;
+
 	CharacterDecorator();
 	CharacterDecorator(int floor);
 	CharacterDecorator(Character *component);
@@ -30,7 +31,7 @@ public:
 	void setX(size_t x) override;
 	void setY(size_t y) override;
 	char print() override;
-	void deathCheck() override;
+	bool deathCheck() override;
 	CharacterType getType() override;
 	void notify(Observer &o) override;
 };

@@ -26,10 +26,12 @@ bool BaseCharacter::takeDamage(Character &from, double damage) {
 }
 
 // This should be checked every time this character takes damage
-void BaseCharacter::deathCheck() {
+bool BaseCharacter::deathCheck() {
 	if (hp <= 0) {
 		// TODO Default death behaviour (e.g. remove from the floor)
+		return true;
 	}
+	return false;
 }
 
 void BaseCharacter::addHP(double hp) {

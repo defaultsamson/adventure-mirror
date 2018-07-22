@@ -20,7 +20,7 @@ enum class CharacterType {
 
 class Character: public Entity {
 public:
-	virtual void deathCheck() = 0;
+	virtual bool deathCheck() = 0;
 	Character();
 	virtual bool hit(Character &other) = 0;
 	virtual double hitPower(Character &other) = 0;

@@ -17,7 +17,7 @@ public:
 	char print() override;
 	void notify(Observer &o) override;
 	void move(Direction d) override;
-	virtual void pickup(CharacterDecorator *o) = 0;
+	virtual void pickup(CharacterDecorator *o);
 };
 
 #endif
