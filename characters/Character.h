@@ -3,21 +3,6 @@
 
 #include "../Entity.h"
 
-enum class CharacterType {
-	Shade,
-	Drow,
-	Vampire,
-	Troll,
-	Goblin,
-	Human,
-	Dwarf,
-	Elf,
-	Orc,
-	Merchant,
-	Dragon,
-	Halfling
-};
-
 class Character: public Entity {
 public:
 	virtual bool deathCheck() = 0;
