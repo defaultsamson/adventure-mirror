@@ -12,6 +12,7 @@ Enemy::Enemy(size_t x, size_t y, char icon, double hp, double maxHp, double atk,
 	BaseCharacter(x, y, icon, hp, maxHp, atk, def){}
 
 void Enemy::moveTick(DungeonMap &map, string &output) {
+	if (moved) return;
 	(void) output;
 	vector<Direction> dirs = map.getSpawnableDirections(this);
 	// If the enemy is not stuck in a location
@@ -19,7 +20,10 @@ void Enemy::moveTick(DungeonMap &map, string &output) {
 		// Moves in one of the random available directions
 		map.move(this, dirs[rand() % dirs.size()]);
 	}
+	moved = true;
 }
+
+void Enemy::tick(DungeonMap &map, string &output) { moved = false; (void) map; (void) output; }
 
 bool Enemy::hit(Character &other) {
 	if (rand() % 2) {
