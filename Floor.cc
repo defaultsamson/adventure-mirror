@@ -21,7 +21,7 @@ void Floor::add(Entity *e) {
 }
 
 // TODO something better??
-vector<Entity*> Floor::get(size_t x, size_t y) {
+vector<Entity*> &Floor::get(size_t x, size_t y) {
 	return grid[x][y];
 }
 

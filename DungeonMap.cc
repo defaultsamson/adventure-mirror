@@ -99,38 +99,49 @@ DungeonMap::DungeonMap(const char *filename, Character *player): player{player} 
 				es.emplace_back(new Ground(x, y));
 				break;
 			case '@': // player
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(player);
 				player->setX(x);
 				player->setY(y);
 				break;
 			case '0': // restore health
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new HealthPotion(x, y, "Restore Health", 5));
 				break;
 			case '1': // boost attack
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new EffectPotion(x, y, "Boost Attack", new BoostAtkEffect()));
 				break;
 			case '2': // boost defense
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new EffectPotion(x, y, "Boost Defences", new BoostDefEffect()));
 				break;
 			case '3': // poison health
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new HealthPotion(x, y, "Poison Health", -5));
 				break;
 			case '4': // wound attack
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new EffectPotion(x, y, "Wound Attack", new WoundAtkEffect()));
 				break;
 			case '5': // wound defense
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new EffectPotion(x, y, "Wound Defense", new WoundDefEffect()));
 				break;
 			case '6': // normal gold pile
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new Gold(x, y, 2));
 				break;
 			case '7': // small hoard
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new Gold(x, y, 1));
 				break;
 			case '8': // merchant hoard
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new Gold(x, y, 4));
 				break;
 			case '9': // dragon hoard
+				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new DragonGold(x, y));
 				break;
 			}
@@ -205,11 +216,18 @@ void DungeonMap::movePlayer(Direction d) {
 			int x = player->getX();
 			int y = player->getY();
 			cout << "current player: " << x << " " << y << endl;
-			vector<Entity *> row = floors[floor]->get(x, y);
-			if (row.back() != player) { cerr << "wtf, player coordinates != map coordinates" << endl; }
-			row.pop_back();
+			vector<Entity *> &cell = floors[floor]->get(x, y);
+			if (cell.back() == player) {
+				cell.pop_back();
+			}
+			else {
+				cerr << "wtf, player coordinates != map coordinates" << endl;
+			}
 			player->move(d);
-			floors[floor]->get(player->getX(), player->getY()).emplace_back(player);
+			floors[floor]->add(player);
+			if (floors[floor]->get(player->getX(), player->getY()).back() != player) {
+				cout << "thonk" << endl;
+			}
 			cout << "after move: " << player->getX() << " " << player->getY() << endl;
 			break;
 		}
