@@ -6,7 +6,7 @@
 class OrcEnemy : public Enemy{
 public :
 	//Deal 50% more damage against goblins
-	bool hit(Character &c) override;
+	double hitPower(Character &c) override;
 	OrcEnemy(size_t x, size_t y);
 	CharacterType getType() override;
 };

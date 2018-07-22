@@ -7,10 +7,10 @@ ElfEnemy::ElfEnemy(size_t x, size_t y) : Enemy(x,y,'E', 140, 140, 30, 10){}
 bool ElfEnemy::hit(Character &c){
 	//TODO: Causes two attacks
 	if (c.getType() == CharacterType::Drow){
-		return BaseCharacter::hit(c);
+		return Enemy::hit(c);
 	} else {
-		BaseCharacter::hit(c);
-		return BaseCharacter::hit(c);
+		Enemy::hit(c);
+		return Enemy::hit(c);
 	}
 }
 
