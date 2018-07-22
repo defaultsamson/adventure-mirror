@@ -16,8 +16,8 @@ protected:
 	int gold = 0;
 	int floor = 0;
 	CharacterType type;
-	void deathCheck() override;
 public:
+	bool deathCheck() override;
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
 	bool hit(Character &other) override;
 	double hitPower(Character &other) override;

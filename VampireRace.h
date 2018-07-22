@@ -9,6 +9,7 @@ public:
 	VampireRace(size_t x, size_t y);
 	void addHP(double hp) override;
 	bool hit(Character &other) override;
+	CharacterType getType() override;
 };
 
 #endif

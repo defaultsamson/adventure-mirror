@@ -36,7 +36,7 @@ size_t CharacterDecorator::getY() { return component->getY(); }
 void CharacterDecorator::setX(size_t x) { component->setX(x); }
 void CharacterDecorator::setY(size_t y) { component->setY(y); }
 char CharacterDecorator::print() { return component->print(); }
-void CharacterDecorator::deathCheck() { component->deathCheck(); }
+bool CharacterDecorator::deathCheck() { return component->deathCheck(); }
 CharacterType CharacterDecorator::getType() { return component->getType(); }
 
 void CharacterDecorator::notify(Observer &o) {

@@ -7,5 +7,7 @@ void Entity::move(Direction d) {
     setY(getY() + d.y);
 }
 
+void Entity::tick() {}
+
 Entity::~Entity() {}
 

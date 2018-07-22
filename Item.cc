@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "Observer.h"
+#include "CharacterDecorator.h"
 
 Item::Item(size_t x, size_t y, char icon) : x{x}, y{y}, icon{icon} {}
 
@@ -17,3 +18,9 @@ void Item::notify(Observer &other) {
 void Item::move(Direction d) {
 	(void) d; // intentional, items do not move
 }
+
+void Item::pickup(CharacterDecorator *entity) {
+	// TODO remove this from the map
+	(void) entity;
+}
+

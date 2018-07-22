@@ -6,3 +6,6 @@ void DragonEnemy::notify(Observer& obs){
 	//Don't move
 	(void)obs;
 }
+
+CharacterType DragonEnemy::getType() { return CharacterType::Dragon; }
+
