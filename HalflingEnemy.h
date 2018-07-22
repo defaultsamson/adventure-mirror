@@ -5,7 +5,7 @@
 class HalflingEnemy : public Enemy{
 public :
 	//50% chance of dodging an attack
-	void damage(Character &) override;
+	void damage(Character &, int damage) override;
 	HalflingEnemy(size_t x, size_t y);
 };
 #endif
