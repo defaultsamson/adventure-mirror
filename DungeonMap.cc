@@ -16,7 +16,7 @@
 
 using namespace std;
 
-DungeonMap::DungeonMap(const char *filename) {
+DungeonMap::DungeonMap(const char *filename, Character *player): player{player} {
 	ifstream file{filename};
 	if (!file) {
 		cerr << "Error reading file: " << filename << endl;
@@ -92,6 +92,11 @@ DungeonMap::DungeonMap(const char *filename) {
 				break;
 			case '.': // ground tile
 				es.emplace_back(new Ground(x, y));
+				break;
+			case '@': // player
+				es.emplace_back(player);
+				player->setX(x);
+				player->setY(y);
 				break;
 			case '0': // restore health
 				es.emplace_back(new Potion(x, y, "Restore Health", nullptr));
@@ -186,4 +191,22 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 		valid.emplace_back(Direction::Invalid);
 	}
 	return valid;
+}
+
+void DungeonMap::movePlayer(Direction d) {
+	for (Direction valid: getWalkableDirections(player)) {
+		if (d == valid) {
+			cout << "valid direction " << d.x << " " << d.y << endl;
+			int x = player->getX();
+			int y = player->getY();
+			cout << "current player: " << x << " " << y << endl;
+			vector<Entity *> row = floors[floor]->get(x, y);
+			if (row.back() != player) { cerr << "wtf, player coordinates != map coordinates" << endl; }
+			row.pop_back();
+			player->move(d);
+			floors[floor]->get(player->getX(), player->getY()).emplace_back(player);
+			cout << "after move: " << player->getX() << " " << player->getY() << endl;
+			break;
+		}
+	}
 }

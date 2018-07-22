@@ -2,6 +2,13 @@
 #include <iostream>
 
 #include "DungeonMap.h"
+#include "BaseCharacter.h"
+#include "CharacterDecorator.h"
+#include "DrowRace.h"
+#include "GoblinRace.h"
+#include "ShadeRace.h"
+#include "TrollRace.h"
+#include "VampireRace.h"
 
 using namespace std;
 
@@ -29,69 +36,69 @@ int main(int argc, char *argv[]) {
 
     while (!quit && cin >> input) {
         // race is one of (s, d, v, g, t)
-        // if (input is one of above)
-            // CharacterDecorator &race = get race deco from input
+        CharacterDecorator *player = nullptr;
+        if (input == "d") {
+            player = new CharacterDecorator(new DrowRace(0, 0));
+        }
+        else if (input == "v") {
+            player = new CharacterDecorator(new VampireRace(0, 0));
+        }
+        else if (input == "g") {
+            player = new CharacterDecorator(new GoblinRace(0, 0));
+        }
+        else if (input == "t") {
+            player = new CharacterDecorator(new TrollRace(0, 0));
+        }
+        else { // default race
+            player = new CharacterDecorator(new ShadeRace(0, 0));
+        }
 
-            // Character &player = BaseCharacter(set up character from race);
+        const char *defaultMap = {"cc3kfloor.txt"};
+        DungeonMap map{defaultMap, player};
+        if (argc > 1) {
+            map = DungeonMap(argv[1], player);
+        }
+        cout << map << endl;
 
-            const char *defaultMap = {"cc3kfloor.txt"};
-            DungeonMap map{defaultMap};
-            if (argc > 1) {
-                map = DungeonMap(argv[1]);
+        // init map, enemies, items, etc here
+        while (cin >> input) {
+            // main game loop
+            if (input == "q") {
+                cout << "Thank you for playing CC3K!" << endl;
+                quit = true;
+                break;
             }
-            cout << map << endl;
-
-            // init map, enemies, items, etc here
-            while (cin >> input) {
-                // main game loop
-                if (input == "q") {
-                    cout << "Thank you for playing CC3K!" << endl;
-                    quit = true;
-                    break;
-                }
-                else if (input == "u") {
-                    // yeah we might want to make a helper function to get direction
-                    // Direction d;
-                    // cin >> d;
-                    // player.use(d);
-                }
-                else if (input == "a") {
-                    // Direction d;
-                    // cin >> d;
-                    // player.attack(d);
-                }
-                else if (input == "f") {
-                    // toggles stopping enemies from moving
-                    // map.toggleStopEnemies()
-                }
-                else if (input == "r") {
-                    cout << "Restarting Game" << endl;
-                    // make sure we manage memory of previous player and stuff
-                    break;
-                }
-                // instead of the following shit, maybe do
-                // else {
-                    // Direction d = getDirection(input);
-                    // if (d != Direction::invalid) {
-                        // player.move(d);
-                    // }
-                // }
-                else if (input == "no") {
-                    //player.move(north)
-                }
-                else if (input == "so") {
-                    //player.move(south);
-                }
-                else if (input == "ea") {
-                    //player.move(east);
-                }
-                else if (input == "we") {
-                    //player.move(west);
-                }
-                else if (input == "ne") {
-                    //player.move(northeast);
-                }
-                // etc., fuck this
+            else if (input == "u") {
+                // yeah we might want to make a helper function to get direction
+                // Direction d;
+                // cin >> d;
+                // player.use(d);
             }
+            else if (input == "a") {
+                // Direction d;
+                // cin >> d;
+                // player.attack(d);
+            }
+            else if (input == "f") {
+                // toggles stopping enemies from moving
+                // map.toggleStopEnemies()
+            }
+            else if (input == "r") {
+                cout << "Restarting Game" << endl;
+                // make sure we manage memory of previous player and stuff
+                break;
+            }
+            else {
+                Direction d = Direction::getDirection(input);
+                if (d == Direction::Invalid) {
+                    continue; // invalid input, skip map.tick and get input
+                }
+                cout << "got direction " << input << endl;
+                map.movePlayer(d);
+                
+            }
+            cout << map << endl; // maybe this could go in map.tick?
+            // map.tick
+        }
     }
 }

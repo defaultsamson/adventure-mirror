@@ -2,6 +2,10 @@
 
 Direction::Direction(int x, int y, int x2, int y2): x{x - x2}, y{y - y2} {}
 
+bool Direction::operator==(Direction other) {
+    return other.x == x && other.y == y;
+}
+
 const Direction Direction::N {0,-1};
 const Direction Direction::NE {1, -1};
 const Direction Direction::E{1, 0};
