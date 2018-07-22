@@ -11,13 +11,14 @@ class DungeonMap {
 	vector<Floor*> floors;
 	Character *player;
 public:
-	DungeonMap(const char* filename, Character *player = nullptr);
+	DungeonMap(const char* filename, Character *player = nullptr, bool randomEntities = false);
 
 	size_t getFloor();
 	void progressFloor();
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 
+	void move(Entity *e, Direction d);
 	void movePlayer(Direction d, std::string &output);
 	void tick(std::string &output);
 	friend std::ostream &operator<<(std::ostream &out, const DungeonMap &m);

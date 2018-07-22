@@ -56,9 +56,9 @@ int main(int argc, char *argv[]) {
         }
 
         const char *defaultMap = {"cc3kfloor.txt"};
-        DungeonMap map{defaultMap, player};
+        DungeonMap map{defaultMap, player, true};
         if (argc > 1) {
-            map = DungeonMap(argv[1], player);
+            map = DungeonMap(argv[1], player, false);
         }
         cout << map << endl;
         cout << "Action: Player character has spawned." << endl;

@@ -28,7 +28,7 @@
 
 using namespace std;
 
-DungeonMap::DungeonMap(const char *filename, Character *player): player{player} {
+DungeonMap::DungeonMap(const char *filename, Character *player, bool re): player{player} {
 	ifstream file{filename};
 	if (!file) {
 		cerr << "Error reading file: " << filename << endl;
@@ -100,84 +100,87 @@ DungeonMap::DungeonMap(const char *filename, Character *player): player{player} 
 				es.emplace_back(new Wall(x, y, input));
 				break;
 			case '\\': // stairs
-				es.emplace_back(new Stair(x, y));
+				es.emplace_back(new Ground(x, y));
+				if (!re) es.emplace_back(new Stair(x, y));
 				break;
 			case '.': // ground tile
 				es.emplace_back(new Ground(x, y));
 				break;
 			case '@': // player
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(player);
-				player->setX(x);
-				player->setY(y);
+				if (!re) {
+					es.emplace_back(player);
+					player->setX(x);
+					player->setY(y);
+				}
 				break;
 			case '0': // restore health
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new HealthPotion(x, y, "Restore Health", 5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, "Restore Health", 5));
 				break;
 			case '1': // boost attack
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new EffectPotion(x, y, "Boost Attack", new BoostAtkEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Attack", new BoostAtkEffect()));
 				break;
 			case '2': // boost defense
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new EffectPotion(x, y, "Boost Defences", new BoostDefEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Defences", new BoostDefEffect()));
 				break;
 			case '3': // poison health
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new HealthPotion(x, y, "Poison Health", -5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, "Poison Health", -5));
 				break;
 			case '4': // wound attack
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new EffectPotion(x, y, "Wound Attack", new WoundAtkEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Attack", new WoundAtkEffect()));
 				break;
 			case '5': // wound defense
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new EffectPotion(x, y, "Wound Defense", new WoundDefEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Defense", new WoundDefEffect()));
 				break;
 			case '6': // normal gold pile
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new Gold(x, y, 2));
+				if (!re) es.emplace_back(new Gold(x, y, 2));
 				break;
 			case '7': // small hoard
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new Gold(x, y, 1));
+				if (!re) es.emplace_back(new Gold(x, y, 1));
 				break;
 			case '8': // merchant hoard
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new Gold(x, y, 4));
+				if (!re) es.emplace_back(new Gold(x, y, 4));
 				break;
 			case '9': // dragon hoard
 				es.emplace_back(new Ground(x, y));
-				es.emplace_back(new DragonGold(x, y));
+				if (!re) es.emplace_back(new DragonGold(x, y));
 				break;
 			case 'H': //human enemy
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new HumanEnemy(x,y));
+				if (!re) es.emplace_back(new HumanEnemy(x,y));
 				break;
 			case 'W': //dwarf enemy
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new DwarfEnemy(x,y));
+				if (!re) es.emplace_back(new DwarfEnemy(x,y));
 				break;
 			case 'E': //elf enemy
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new ElfEnemy(x,y));
+				if (!re) es.emplace_back(new ElfEnemy(x,y));
 				break;
 			case 'O': //orc enemy
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new OrcEnemy(x,y));
+				if (!re) es.emplace_back(new OrcEnemy(x,y));
 				break;
 			case 'L': //halfling enemy
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new HalflingEnemy(x,y));
+				if (!re) es.emplace_back(new HalflingEnemy(x,y));
 				break;
 			case 'M': //merchant
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new Merchant(x,y));
+				if (!re) es.emplace_back(new Merchant(x,y));
 				break;
 			case 'D': //dragon enemy
 				es.emplace_back(new Ground(x,y));
-				es.emplace_back(new DragonEnemy(x,y));
+				if (!re) es.emplace_back(new DragonEnemy(x,y));
 				break;
 			}
 			// Checks if, when scanning across, we hit a non-wall character
@@ -197,7 +200,7 @@ void DungeonMap::progressFloor() {
 ostream &operator<<(ostream &out, const DungeonMap &m) {
 	out << *m.floors[m.floor];
 	out << "Race: " << "m.player->getType() to string" << " Gold: " << m.player->getGold() << " Floor: " << m.floor << endl;
-	out << "HP: " << m.player->getHP() << "/" << (m.player->getMaxHP() > 0 ? to_string(m.player->getMaxHP()) : "Infinite") << endl;
+	out << "HP: " << m.player->getHP() << "/" << (m.player->getMaxHP() > 0 ? to_string((int) m.player->getMaxHP()) : "Infinite") << endl;
 	out << "Atk: " << m.player->getAtk() << endl;
 	out << "Def: " << m.player->getDef();
 	return out;
@@ -245,21 +248,25 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 	return valid;
 }
 
+void DungeonMap::move(Entity *e, Direction d) {
+	int x = e->getX();
+	int y = e->getY();
+	vector<Entity *> &cell = floors[floor]->get(x, y);
+	if (cell.back() == e) {
+		cell.pop_back();
+	}
+	else {
+		cerr << "wtf, player coordinates != map coordinates" << endl;
+	}
+	e->move(d);
+	floors[floor]->add(e);
+}
+
 void DungeonMap::movePlayer(Direction d, string &output) {
 	output = "";
 	for (Direction valid: getWalkableDirections(player)) {
 		if (d == valid) {
-			int x = player->getX();
-			int y = player->getY();
-			vector<Entity *> &cell = floors[floor]->get(x, y);
-			if (cell.back() == player) {
-				cell.pop_back();
-			}
-			else {
-				cerr << "wtf, player coordinates != map coordinates" << endl;
-			}
-			player->move(d);
-			floors[floor]->add(player);
+			move(player, d);
 			output = "Action: PC moves " + d.to_string() + " and sees a furry friend.";
 			// make the second part optional, e.g when seeing a potion, we would say "and sees an unknown potion"
 			return;
