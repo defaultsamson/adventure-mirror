@@ -6,17 +6,18 @@
 class CharacterDecorator: public Character {
 protected:
 	Character *component;
+	double multiplier = 1.0;
 public:
 	CharacterDecorator();
 	CharacterDecorator(Character *component);
 	void hit(Character &other) override;
-	void damage(Character &other, int damage) override;
+	void damage(Character &other, double damage) override;
 	void decorate(CharacterDecorator *o);
-	int score() override;
-	int getHP() override;
-	int getMaxHP() override;
-	int getAtk() override;
-	int getDef() override;
+	double score() override;
+	double getHP() override;
+	double getMaxHP() override;
+	double getAtk() override;
+	double getDef() override;
 	void addGold(int value) override;
 	int getGold() override;
 	int getFloor() override;

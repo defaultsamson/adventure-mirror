@@ -8,24 +8,24 @@
 class BaseCharacter: public Character {
 	size_t x, y;
 	char icon;
-	int hp;
-	int maxHp;
-	int atk;
-	int def;
+	double hp;
+	double maxHp;
+	double atk;
+	double def;
 	int gold = 0;
 	int floor = 0;
 	CharacterType type;
 protected:
 	void deathCheck() override;
 public:
-	BaseCharacter(size_t x, size_t y, char icon, int hp, int maxHp, int atk, int def);
+	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
 	void hit(Character &other) override;
-	void damage(Character &other, int damage) override;
-	int score() override;
-	int getHP() override;
-	int getMaxHP() override;
-	int getAtk() override;
-	int getDef() override;
+	void damage(Character &other, double damage) override;
+	double score() override;
+	double getHP() override;
+	double getMaxHP() override;
+	double getAtk() override;
+	double getDef() override;
 	void addGold(int value) override;
 	int getGold() override;
 	int getFloor() override;
