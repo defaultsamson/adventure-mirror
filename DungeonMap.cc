@@ -267,3 +267,23 @@ void DungeonMap::movePlayer(Direction d, string &output) {
 	}
 	output = "Action: PC attempts to move " + d.to_string() + ", but is blocked from moving that way.";
 }
+
+void DungeonMap::tick(string &output) {
+	Floor *currentFloor = floors[floor];
+	for (size_t row = 0; row < currentFloor->height(); ++row) {
+		for (size_t col = 0; col < currentFloor->width(); ++col) {
+			vector<Entity *> cell = currentFloor->get(col, row);
+			for (Entity * e: cell) {
+				e->moveTick(*this, output);
+			}
+		}
+	}
+	for (size_t row = 0; row < currentFloor->height(); ++row) {
+		for (size_t col = 0; col < currentFloor->width(); ++col) {
+			vector<Entity *> cell = currentFloor->get(col, row);
+			for (Entity * e: cell) {
+				e->tick(*this, output);
+			}
+		}
+	}
+}

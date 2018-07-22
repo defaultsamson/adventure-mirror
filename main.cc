@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
         cout << "Action: Player character has spawned." << endl;
         // init map, enemies, items, etc here
         while (cin >> input) {
+            bool doTick = true;
             // main game loop
             if (input == "q") {
                 cout << "Thank you for playing CC3K!" << endl;
@@ -103,15 +104,20 @@ int main(int argc, char *argv[]) {
                 output += "r: restarts the game\n";
                 output += "q: quits the game\n";
                 output += "\nh: displays this message";
+                doTick = false;
             }
             else {
                 Direction d = Direction::getDirection(input);
                 if (d == Direction::Invalid) {
                     output = "Invalid command. Try 'h' (without quotes) for help on commands.";
+                    doTick = false;
                 }
                 else {
                     map.movePlayer(d, output);
                 }
+            }
+            if (doTick) {
+                map.tick(output);
             }
             cout << map << endl; // maybe this could go in map.tick?
             cout << output << endl;

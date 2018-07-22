@@ -3,6 +3,8 @@
 
 #include "Direction.h"
 //#include "DungeonMap.h"
+#include <string>
+
 class DungeonMap;
 
 class Entity {
@@ -17,8 +19,8 @@ public:
 	virtual bool isSpawnable() = 0;
 	virtual bool isWalkable() = 0;
 	virtual void move(Direction d);
-	virtual void moveTick(DungeonMap &map);
-	virtual void tick(DungeonMap &map);
+	virtual void moveTick(DungeonMap &map, std::string &output);
+	virtual void tick(DungeonMap &map, std::string &output);
 	virtual ~Entity() = 0;
 };
 

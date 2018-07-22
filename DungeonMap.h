@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 class DungeonMap {
 	size_t floor = 0;
 	vector<Floor*> floors;
@@ -21,7 +19,8 @@ public:
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 
 	void movePlayer(Direction d, std::string &output);
-	friend ostream &operator<<(ostream &out, const DungeonMap &m);
+	void tick(std::string &output);
+	friend std::ostream &operator<<(std::ostream &out, const DungeonMap &m);
 };
 
 #endif

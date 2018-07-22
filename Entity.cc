@@ -8,8 +8,8 @@ void Entity::move(Direction d) {
     setY(getY() + d.y);
 }
 
-void Entity::moveTick(DungeonMap &map) { (void) map; }
-void Entity::tick(DungeonMap &map) { (void) map; }
+void Entity::moveTick(DungeonMap &map, std::string &output) { (void) map; (void) output; }
+void Entity::tick(DungeonMap &map, std::string &output) { (void) map; (void) output; }
 
 Entity::~Entity() {}
 
