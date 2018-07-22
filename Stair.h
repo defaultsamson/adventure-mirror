@@ -1,12 +1,13 @@
 #ifndef STAIR_H
 #define STAIR_H
 
-#include "Entity.h"
+#include "Observer.h"
+#include "StaticEntity.h"
 
-class Stair : public Entity{
-	public :
-	Stair(size_t x,y);
-	void notify();
+class Stair: public StaticEntity{
+public:
+	Stair(size_t x, size_t y);
+	void notify(Observer &o) override;
 };
 
 #endif

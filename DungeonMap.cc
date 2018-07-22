@@ -7,6 +7,7 @@
 #include "Potion.h"
 #include "Gold.h"
 #include "DragonGold.h"
+#include "Stair.h"
 
 #include <string>
 #include <iostream>
@@ -82,11 +83,12 @@ DungeonMap::DungeonMap(const char *filename) {
 			case '#': // Pathway
 			case '+':
 				es.emplace_back(new Pathway(x, y, input));
+				break;
 			case '-': // top wall
 				es.emplace_back(new Wall(x, y, input));
 				break;
 			case '\\': // stairs
-				//es.emplace_back(new TestEntity(x, y, input));
+				es.emplace_back(new Stair(x, y));
 				break;
 			case '.': // ground tile
 				es.emplace_back(new Ground(x, y));
