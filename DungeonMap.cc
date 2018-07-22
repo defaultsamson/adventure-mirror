@@ -13,6 +13,13 @@
 #include "Gold.h"
 #include "DragonGold.h"
 #include "Stair.h"
+#include "HumanEnemy.h"
+#include "ElfEnemy.h"
+#include "DwarfEnemy.h"
+#include "OrcEnemy.h"
+#include "HalflingEnemy.h"
+#include "Merchant.h"
+#include "DragonEnemy.h"
 
 #include <string>
 #include <iostream>
@@ -143,6 +150,34 @@ DungeonMap::DungeonMap(const char *filename, Character *player): player{player} 
 			case '9': // dragon hoard
 				es.emplace_back(new Ground(x, y));
 				es.emplace_back(new DragonGold(x, y));
+				break;
+			case 'H': //human enemy
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new HumanEnemy(x,y));
+				break;
+			case 'W': //dwarf enemy
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new DwarfEnemy(x,y));
+				break;
+			case 'E': //elf enemy
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new ElfEnemy(x,y));
+				break;
+			case 'O': //orc enemy
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new OrcEnemy(x,y));
+				break;
+			case 'L': //halfling enemy
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new HalflingEnemy(x,y));
+				break;
+			case 'M': //merchant
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new Merchant(x,y));
+				break;
+			case 'D': //dragon enemy
+				es.emplace_back(new Ground(x,y));
+				es.emplace_back(new DragonEnemy(x,y));
 				break;
 			}
 			// Checks if, when scanning across, we hit a non-wall character
