@@ -10,7 +10,7 @@ void CharacterDecorator::hit(Character &other) {
 	component->hit(other);
 }
 
-void CharacterDecorator::damage(Character &other, int damage) {
+void CharacterDecorator::damage(Character &other, double damage) {
 	component->damage(other, damage);
 }
 
@@ -19,11 +19,11 @@ void CharacterDecorator::decorate(CharacterDecorator *o) {
 	component = o;
 }
 
-int CharacterDecorator::score() { return component->score(); }
-int CharacterDecorator::getHP() { return component->getHP(); }
-int CharacterDecorator::getMaxHP() { return component->getMaxHP(); }
-int CharacterDecorator::getAtk() { return component->getAtk(); }
-int CharacterDecorator::getDef() { return component->getDef(); }
+double CharacterDecorator::score() { return component->score(); }
+double CharacterDecorator::getHP() { return component->getHP(); }
+double CharacterDecorator::getMaxHP() { return component->getMaxHP(); }
+double CharacterDecorator::getAtk() { return component->getAtk(); }
+double CharacterDecorator::getDef() { return component->getDef(); }
 void CharacterDecorator::addGold(int value) { addGold(value); }
 int CharacterDecorator::getGold() { return component->getGold(); }
 int CharacterDecorator::getFloor() { return component->getFloor(); }
