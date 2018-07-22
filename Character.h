@@ -24,7 +24,8 @@ protected:
 public:
 	Character();
 	virtual void hit(Character &other) = 0;
-	virtual void damage(Character &other, double damage) = 0;
+	virtual double hitPower(Character &other) = 0;
+	virtual void takeDamage(Character &other, double damage) = 0;
 	virtual double score() = 0;
 	virtual double getHP() = 0;
 	virtual double getMaxHP() = 0;

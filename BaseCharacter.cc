@@ -1,18 +1,27 @@
 #include "Character.h"
 #include "BaseCharacter.h"
 #include "Observer.h"
+#include <math.h>
+
+using namespace std;
 
 BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def) : x{x}, y{y}, icon{icon}, hp{hp}, maxHp{maxHp}, atk{atk}, def{def} {}
 
+// Deal the attack. DO NOT OVERRIDE THIS, instead override hitPower()
 void BaseCharacter::hit(Character &other) {
-	// Class specific attacks can override this. By default, deal the attack
-	other.damage(*this, atk);
+	other.takeDamage(*this, hitPower(other));
 }
 
-void BaseCharacter::damage(Character &other, double damage) {
-	(void) other;
+// The default equation for hitpower, from the combat section of the assignment
+double BaseCharacter::hitPower(Character &other) {
+	return ceil((100.0 / (100.0 + other.getDef())) * getAtk());
+}
+
+void BaseCharacter::takeDamage(Character &from, double damage) {
+	(void) from;
 	// Class specific defences can override this. By default, take the damage
 	hp -= damage;
+	deathCheck();
 }
 
 // This should be checked every time this character takes damage

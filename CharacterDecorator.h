@@ -11,7 +11,8 @@ public:
 	CharacterDecorator();
 	CharacterDecorator(Character *component);
 	void hit(Character &other) override;
-	void damage(Character &other, double damage) override;
+	double hitPower(Character &other) override;
+	void takeDamage(Character &from, double damage) override;
 	void decorate(CharacterDecorator *o);
 	double score() override;
 	double getHP() override;

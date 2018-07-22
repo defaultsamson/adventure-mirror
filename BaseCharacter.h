@@ -20,7 +20,8 @@ protected:
 public:
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
 	void hit(Character &other) override;
-	void damage(Character &other, double damage) override;
+	double hitPower(Character &other) override;
+	void takeDamage(Character &from, double damage) override;
 	double score() override;
 	double getHP() override;
 	double getMaxHP() override;

@@ -10,9 +10,11 @@ void CharacterDecorator::hit(Character &other) {
 	component->hit(other);
 }
 
-void CharacterDecorator::damage(Character &other, double damage) {
-	component->damage(other, damage);
+void CharacterDecorator::takeDamage(Character &from, double damage) {
+	component->takeDamage(from, damage);
 }
+
+double CharacterDecorator::hitPower(Character &other) { return component->hitPower(other); }
 
 void CharacterDecorator::decorate(CharacterDecorator *o) {
 	o->component = component;
