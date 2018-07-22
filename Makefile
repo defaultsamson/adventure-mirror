@@ -3,11 +3,18 @@
 ASSIGNMENT=a5
 QUESTION=cc3k
 CXX=g++
-CXXFLAGS=-std=c++14 -Wextra -Wpedantic -Wall -Werror -MMD -g -Werror=vla
-OBJECTS=main.o Entity.o Item.o Potion.o Character.o BaseCharacter.o CharacterDecorator.o Wall.o Pathway.o Ground.o \
-		DungeonMap.o Floor.o Gold.o DragonGold.o Enemy.o Direction.o DrowRace.o ShadeRace.o GoblinRace.o VampireRace.o \
-		TrollRace.o StaticEntity.o HumanEnemy.o DwarfEnemy.o ElfEnemy.o OrcEnemy.o HalflingEnemy.o DragonEnemy.o Merchant.o \
-		Stair.o BoostAtkEffect.o WoundAtkEffect.o BoostDefEffect.o WoundDefEffect.o HealthPotion.o EffectPotion.o
+CXXFLAGS=-std=c++14 -Wextra -Wpedantic -Wall -Werror -MMD -g -Werror=vla -I "./characters/" -I "./map/"
+OBJECTS=main.o Entity.o DungeonMap.o \
+		\
+		characters/BaseCharacter.o characters/Character.o characters/CharacterDecorator.o characters/DragonEnemy.o \
+		characters/DrowRace.o characters/DwarfEnemy.o characters/ElfEnemy.o characters/Enemy.o characters/GoblinRace.o \
+		characters/HalflingEnemy.o characters/HumanEnemy.o characters/Merchant.o characters/OrcEnemy.o characters/ShadeRace.o \
+		characters/TrollRace.o characters/VampireRace.o \
+		\
+		map/BoostAtkEffect.o map/BoostDefEffect.o map/Direction.o map/DragonGold.o map/EffectPotion.o map/Floor.o map/Gold.o \
+		map/Ground.o map/HealthPotion.o map/Item.o map/Pathway.o map/Potion.o map/Stair.o map/StaticEntity.o map/Wall.o \
+		map/WoundAtkEffect.o map/WoundDefEffect.o
+
 DEPENDS=${OBJECTS:.o=.d}
 EXEC=cc3k
 
