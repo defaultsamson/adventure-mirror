@@ -1,8 +1,24 @@
 #include "Chamber.h"
+#include "HealthPotion.h"
+#include "EffectPotion.h"
+#include "BoostAtkEffect.h"
+#include "BoostDefEffect.h"
+#include "WoundAtkEffect.h"
+#include "WoundDefEffect.h"
+#include "Gold.h"
+#include "DragonGold.h"
+#include "Stair.h"
+#include "HumanEnemy.h"
+#include "ElfEnemy.h"
+#include "DwarfEnemy.h"
+#include "OrcEnemy.h"
+#include "HalflingEnemy.h"
+#include "Merchant.h"
+#include "DragonEnemy.h"
 Chamber::Chamber() : size{0}, hasStair{false}{}
 
-void Chamber::add(size_t x, y){
-	Coordinate c = {x,y}
+void Chamber::add(size_t x, size_t y){
+	Coordinate c = {x,y};
 	tiles.emplace_back(c);
 	++size;	
 }

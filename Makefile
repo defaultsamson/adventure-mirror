@@ -4,7 +4,7 @@ ASSIGNMENT=a5
 QUESTION=cc3k
 CXX=g++
 CXXFLAGS=-std=c++14 -Wextra -Wpedantic -Wall -Werror -MMD -g -Werror=vla -I "./characters/" -I "./map/"
-OBJECTS=main.o Entity.o DungeonMap.o \
+OBJECTS=main.o Entity.o DungeonMap.o Chamber.o\
 		\
 		characters/BaseCharacter.o characters/Character.o characters/CharacterDecorator.o characters/DragonEnemy.o \
 		characters/DrowRace.o characters/DwarfEnemy.o characters/ElfEnemy.o characters/Enemy.o characters/GoblinRace.o \

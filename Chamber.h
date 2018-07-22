@@ -8,17 +8,17 @@
 #include <chrono>
 struct Coordinate {
 	size_t x,y;
-}
+};
 
 class Chamber {
-	Vector<Coordinate> tiles;
-	bool hasStair;
+	std::vector<Coordinate> tiles;
 	int size;
+	bool hasStair;
 public :
 	Chamber();
-	void add(size_t x, y);
+	void add(size_t x, size_t y);
 	bool isEmpty();
 	Entity* spawnObject(char c);
-	void Shuffle(std::random_device rd);
+	void Shuffle();
 };
 #endif

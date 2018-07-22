@@ -189,6 +189,10 @@ DungeonMap::DungeonMap(const char *filename, Character *player, bool re): player
 			hitSomething = input == '-' ? hitSomething : true;
 		} else { endFloor = false; }
 	}
+	//Spawn random item and enemies if the boolean re is true
+	if (re){
+//		int chamberIndex = 0;
+	}
 }
 
 size_t DungeonMap::getFloor() { return floor; }
