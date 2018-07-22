@@ -1,5 +1,8 @@
 #include "Entity.h"
 #include "DungeonMap.h"
+#include <iostream>
+
+using namespace std;
 
 Entity::Entity() {}
 
