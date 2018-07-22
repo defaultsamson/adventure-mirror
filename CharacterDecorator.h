@@ -7,8 +7,10 @@ class CharacterDecorator: public Character {
 protected:
 	Character *component;
 	double multiplier = 1.0;
+	int activeFloor;
 public:
 	CharacterDecorator();
+	CharacterDecorator(int floor);
 	CharacterDecorator(Character *component);
 	void hit(Character &other) override;
 	double hitPower(Character &other) override;

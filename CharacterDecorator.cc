@@ -4,7 +4,8 @@
 #include "Observer.h"
 
 CharacterDecorator::CharacterDecorator() {}
-CharacterDecorator::CharacterDecorator(Character *component) : component{component} {}
+CharacterDecorator::CharacterDecorator(int floor) : activeFloor{floor} {}
+CharacterDecorator::CharacterDecorator(Character *component) : component{component}, activeFloor{component->getFloor()} {}
 
 void CharacterDecorator::hit(Character &other) {
 	component->hit(other);
