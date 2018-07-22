@@ -14,7 +14,6 @@ protected:
 	double def;
 	int gold = 0;
 	int floor = 0;
-	CharacterType type;
 public:
 	bool deathCheck() override;
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
@@ -35,7 +34,6 @@ public:
 	void setX(size_t x) override;
 	void setY(size_t y) override;
 	char print() override;
-	CharacterType getType();
 };
 
 #endif

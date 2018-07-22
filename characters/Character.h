@@ -2,6 +2,7 @@
 #define CHARACTER_H
 
 #include "../Entity.h"
+#include "CharacterType.h"
 
 class Character: public Entity {
 public:

@@ -199,7 +199,7 @@ void DungeonMap::progressFloor() {
 
 ostream &operator<<(ostream &out, const DungeonMap &m) {
 	out << *m.floors[m.floor];
-	out << "Race: " << "m.player->getType() to string" << " Gold: " << m.player->getGold() << " Floor: " << m.floor << endl;
+	out << "Race: " << m.player->getType().to_string() << " Gold: " << m.player->getGold() << " Floor: " << m.floor << endl;
 	out << "HP: " << m.player->getHP() << "/" << (m.player->getMaxHP() > 0 ? to_string((int) m.player->getMaxHP()) : "Infinite") << endl;
 	out << "Atk: " << m.player->getAtk() << endl;
 	out << "Def: " << m.player->getDef();

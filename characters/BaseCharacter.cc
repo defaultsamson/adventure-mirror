@@ -53,5 +53,4 @@ void BaseCharacter::setX(size_t x) { this->x = x; }
 void BaseCharacter::setY(size_t y) { this->y = y; }
 char BaseCharacter::print() { return icon; }
 
-CharacterType BaseCharacter::getType() { return type;}
 
