@@ -1,5 +1,5 @@
 #include "Enemy.h"
-Enemy::Enemy(size_t x, size_t y, char icon, int hp, int maxHp, int atk, int def) : 
+Enemy::Enemy(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def) : 
 	BaseCharacter(x, y, icon, hp, maxHp, atk, def){}
 
 void Enemy::notify(Observer& obs){

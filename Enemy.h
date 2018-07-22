@@ -6,7 +6,7 @@
 class Enemy : public BaseCharacter{
 public :
 	virtual void notify(Observer &ob) override;
-        Enemy(size_t x, size_t y, char icon, int hp, int maxHp, int atk, int def);
+        Enemy(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
 	virtual ~Enemy() = 0;
 };
 #endif

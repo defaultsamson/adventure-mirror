@@ -5,6 +5,6 @@
 class Merchant : public Enemy{
 public :
 	Merchant(size_t x, size_t y);
-	void damage(Character &c, int damage) override;
+	void damage(Character &c, double damage) override;
 };
 #endif
