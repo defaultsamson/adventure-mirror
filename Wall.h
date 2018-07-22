@@ -7,6 +7,8 @@
 class Wall: public StaticEntity {
 public:
 	Wall(size_t x, size_t y, char icon);
+	bool isSpawnable() override;
+	bool isWalkable() override;
 	void notify(Observer &o) override;
 };
 

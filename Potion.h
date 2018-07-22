@@ -11,6 +11,8 @@ class Potion: public Item {
 	CharacterDecorator *effect;
 public:
 	Potion(size_t x, size_t y, string type, CharacterDecorator *effect);
+	bool isWalkable() override;
+	bool isSpawnable() override;
 	void pickup(CharacterDecorator *entity) override;
 };
 

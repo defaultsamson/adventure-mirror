@@ -34,7 +34,8 @@ public:
 	virtual int getGold() = 0;
 	virtual int getFloor() = 0;
 	virtual CharacterType getType() = 0;
-	virtual ~Character() = 0;
+	bool isSpawnable() override;
+	bool isWalkable() override;
 };
 
 #endif
