@@ -15,7 +15,8 @@ void VampireRace::addHP(double hp) {
 bool VampireRace::hit(Character &other) {
 	// If the hit was successful
 	if (BaseCharacter::hit(other)) {
-		addHP(5);
+		addHP(other.getType() == CharacterType::Dwarf ? -5 : 5);
+		deathCheck();
 		return true;
 	}
 	return false;

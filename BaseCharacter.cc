@@ -29,6 +29,7 @@ bool BaseCharacter::takeDamage(Character &from, double damage) {
 bool BaseCharacter::deathCheck() {
 	if (hp <= 0) {
 		// TODO Default death behaviour (e.g. remove from the floor)
+		// Expect this to be run twice (E.g. from a GoblinRace)
 		return true;
 	}
 	return false;

@@ -7,6 +7,7 @@
 class ShadeRace: public BaseCharacter {
 public:
 	ShadeRace(size_t x, size_t y);
+	double score() override;
 	CharacterType getType() override;
 };
 
