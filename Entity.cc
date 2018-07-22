@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "DungeonMap.h"
 
 Entity::Entity() {}
 
@@ -7,7 +8,7 @@ void Entity::move(Direction d) {
     setY(getY() + d.y);
 }
 
-void Entity::tick() {}
+void Entity::tick(DungeonMap &map) { (void) map; }
 
 Entity::~Entity() {}
 

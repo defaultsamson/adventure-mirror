@@ -1,10 +1,12 @@
 #include "TrollRace.h"
 #include "BaseCharacter.h"
 #include "Character.h"
+#include "DungeonMap.h"
 
 TrollRace::TrollRace(size_t x, size_t y) : BaseCharacter{x, y, '@', 120, 120, 25, 15} {}
 
-void TrollRace::tick() {
+void TrollRace::tick(DungeonMap &map) {
+	(void) map;
 	addHP(5);
 }
 

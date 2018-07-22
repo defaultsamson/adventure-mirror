@@ -2,6 +2,8 @@
 #define ENTITY_H
 
 #include "Direction.h"
+//#include "DungeonMap.h"
+class DungeonMap;
 
 class Entity {
 public:
@@ -15,7 +17,7 @@ public:
 	virtual bool isSpawnable() = 0;
 	virtual bool isWalkable() = 0;
 	virtual void move(Direction d);
-	virtual void tick();
+	virtual void tick(DungeonMap &map);
 	virtual ~Entity() = 0;
 };
 
