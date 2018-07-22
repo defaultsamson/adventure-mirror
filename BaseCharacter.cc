@@ -31,6 +31,11 @@ void BaseCharacter::deathCheck() {
 	}
 }
 
+void BaseCharacter::addHP(double hp) {
+	this->hp = max(min(this->hp + hp, getMaxHP()), 0.0);
+	deathCheck();
+}
+
 double BaseCharacter::score() { return gold; }
 double BaseCharacter::getHP() { return hp; }
 double BaseCharacter::getMaxHP() { return maxHp; }

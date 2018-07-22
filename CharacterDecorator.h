@@ -16,6 +16,7 @@ public:
 	double hitPower(Character &other) override;
 	void takeDamage(Character &from, double damage) override;
 	void decorate(CharacterDecorator *o);
+	void addHP(double hp) override;
 	double score() override;
 	double getHP() override;
 	double getMaxHP() override;

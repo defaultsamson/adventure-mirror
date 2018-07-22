@@ -22,6 +22,7 @@ public:
 	void hit(Character &other) override;
 	double hitPower(Character &other) override;
 	void takeDamage(Character &from, double damage) override;
+	void addHP(double hp) override;
 	double score() override;
 	double getHP() override;
 	double getMaxHP() override;

@@ -12,6 +12,6 @@ class HealthPotion: public Potion {
 public:
 	HealthPotion(size_t x, size_t y, string name, double health);
 	void pickup(CharacterDecorator *entity) override;
-}
+};
 
 #endif

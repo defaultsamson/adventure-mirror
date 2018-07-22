@@ -22,6 +22,7 @@ void CharacterDecorator::decorate(CharacterDecorator *o) {
 	component = o;
 }
 
+void CharacterDecorator::addHP(double hp) { component->addHP(hp); }
 double CharacterDecorator::score() { return component->score(); }
 double CharacterDecorator::getHP() { return component->getHP(); }
 double CharacterDecorator::getMaxHP() { return component->getMaxHP(); }

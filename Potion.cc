@@ -1,16 +1,12 @@
 #include "Potion.h"
 #include "Item.h"
-#include "CharacterDecorator.h"
 
 #include <string>
 
-Potion::Potion(size_t x, size_t y, string type, CharacterDecorator *effect) : Item{x, y, 'P'}, type{type}, effect{effect} {}
+using namespace std;
+
+Potion::Potion(size_t x, size_t y, string type) : Item{x, y, 'P'}, type{type} {}
 
 bool Potion::isWalkable() { return false; }
 bool Potion::isSpawnable() { return false; }
-
-void Potion::pickup(CharacterDecorator *entity) {
-	entity->decorate(effect);
-	// TODO remove this from the map
-}
 

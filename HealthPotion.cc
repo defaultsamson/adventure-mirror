@@ -7,7 +7,8 @@ using namespace std;
 
 HealthPotion::HealthPotion(size_t x, size_t y, string name, double health) : Potion{x, y, name}, health{health} {}
 
-HealthPotion::pickup(CharacterDecorator *entity) {
-	
+void HealthPotion::pickup(CharacterDecorator *entity) {
+	entity->addHP(health);
+	// TODO remove from map
 }
 
