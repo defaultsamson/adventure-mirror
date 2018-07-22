@@ -24,7 +24,7 @@ double CharacterDecorator::getHP() { return component->getHP(); }
 double CharacterDecorator::getMaxHP() { return component->getMaxHP(); }
 double CharacterDecorator::getAtk() { return component->getAtk(); }
 double CharacterDecorator::getDef() { return component->getDef(); }
-void CharacterDecorator::addGold(int value) { addGold(value); }
+void CharacterDecorator::addGold(int value) { component->addGold(value); }
 int CharacterDecorator::getGold() { return component->getGold(); }
 int CharacterDecorator::getFloor() { return component->getFloor(); }
 size_t CharacterDecorator::getX() { return component->getX(); }

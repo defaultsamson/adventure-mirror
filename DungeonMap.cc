@@ -146,7 +146,7 @@ void DungeonMap::notify(Observer &other) {
 	(void) other; // prevent unused parameter error, remove this later
 }
 
-vector<Direction> DungeonMap::getEmptyDirections(Entity* e) {
+vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
 	int x = e->getX();
 	int y = e->getY();
 	int width = floors[floor]->width();
@@ -155,9 +155,35 @@ vector<Direction> DungeonMap::getEmptyDirections(Entity* e) {
 	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
 		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
 			vector<Entity*> e = floors[floor]->get(col, row);
-
-			
+			if (e.size() && e.back()->isWalkable()) {
+				valid.emplace_back(Direction(col, row, x, y));
+			}
 		}
+	}
+	if (!valid.size()) {
+		// no valid directions
+		valid.emplace_back(Direction::Invalid);
+	}
+	return valid;
+}
+
+vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
+	int x = e->getX();
+	int y = e->getY();
+	int width = floors[floor]->width();
+	int height = floors[floor]->height();
+	vector<Direction> valid;
+	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
+		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+			vector<Entity*> e = floors[floor]->get(col, row);
+			if (e.size() && e.back()->isSpawnable()) {
+				valid.emplace_back(Direction(col, row, x, y));
+			}
+		}
+	}
+	if (!valid.size()) {
+		// no valid directions
+		valid.emplace_back(Direction::Invalid);
 	}
 	return valid;
 }

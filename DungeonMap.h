@@ -17,7 +17,8 @@ public:
 	void notify(Observer &other) override;
 	size_t getFloor();
 	void progressFloor();
-	std::vector<Direction> getEmptyDirections(Entity* e);
+	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
+	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 
 	friend ostream &operator<<(ostream &out, const DungeonMap &m);
 };
