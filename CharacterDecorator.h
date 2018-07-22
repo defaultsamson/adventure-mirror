@@ -29,6 +29,8 @@ public:
 	void setX(size_t x) override;
 	void setY(size_t y) override;
 	char print() override;
+	void deathCheck() override;
+	CharacterType getType() override;
 	void notify(Observer &o) override;
 };
 

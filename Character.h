@@ -19,9 +19,8 @@ enum class CharacterType {
 };
 
 class Character: public Entity {
-protected:
-	virtual void deathCheck() = 0;
 public:
+	virtual void deathCheck() = 0;
 	Character();
 	virtual void hit(Character &other) = 0;
 	virtual double hitPower(Character &other) = 0;
