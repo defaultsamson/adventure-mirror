@@ -6,6 +6,7 @@
 #include "Item.h"
 
 class BaseCharacter: public Character {
+protected:
 	size_t x, y;
 	char icon;
 	double hp;
@@ -15,13 +16,12 @@ class BaseCharacter: public Character {
 	int gold = 0;
 	int floor = 0;
 	CharacterType type;
-protected:
 	void deathCheck() override;
 public:
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
-	void hit(Character &other) override;
+	bool hit(Character &other) override;
 	double hitPower(Character &other) override;
-	void takeDamage(Character &from, double damage) override;
+	bool takeDamage(Character &from, double damage) override;
 	void addHP(double hp) override;
 	double score() override;
 	double getHP() override;

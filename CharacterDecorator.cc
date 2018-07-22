@@ -7,12 +7,12 @@ CharacterDecorator::CharacterDecorator() {}
 CharacterDecorator::CharacterDecorator(int floor) : activeFloor{floor} {}
 CharacterDecorator::CharacterDecorator(Character *component) : component{component}, activeFloor{component->getFloor()} {}
 
-void CharacterDecorator::hit(Character &other) {
-	component->hit(other);
+bool CharacterDecorator::hit(Character &other) {
+	return component->hit(other);
 }
 
-void CharacterDecorator::takeDamage(Character &from, double damage) {
-	component->takeDamage(from, damage);
+bool CharacterDecorator::takeDamage(Character &from, double damage) {
+	return component->takeDamage(from, damage);
 }
 
 double CharacterDecorator::hitPower(Character &other) { return component->hitPower(other); }

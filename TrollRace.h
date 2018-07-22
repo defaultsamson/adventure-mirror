@@ -6,6 +6,7 @@
 class TrollRace: public BaseCharacter {
 public:
 	TrollRace(size_t x, size_t y);
+	
 };
 
 #endif
