@@ -6,3 +6,6 @@ bool Merchant::takeDamage(Character &c, double damage){
 	//TODO Make all merchants hostile
 	return BaseCharacter::takeDamage(c, damage);
 }
+
+CharacterType Merchant::getType() { return CharacterType::Merchant; }
+

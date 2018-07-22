@@ -21,3 +21,5 @@ bool VampireRace::hit(Character &other) {
 	return false;
 }
 
+CharacterType VampireRace::getType() { return CharacterType::Vampire; }
+

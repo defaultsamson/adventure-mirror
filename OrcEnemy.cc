@@ -1,4 +1,5 @@
 #include "OrcEnemy.h"
+#include "Character.h"
 
 OrcEnemy::OrcEnemy(size_t x, size_t y) : Enemy(x,y,'O', 180, 180, 30, 25){}
 
@@ -11,3 +12,5 @@ bool OrcEnemy::hit(Character &c){
 		return BaseCharacter::hit(c);
 	}
 }
+
+CharacterType OrcEnemy::getType() { return CharacterType::Orc; }

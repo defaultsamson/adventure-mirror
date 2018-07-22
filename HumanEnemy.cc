@@ -1,4 +1,5 @@
 #include "HumanEnemy.h"
+#include "Character.h"
 
 HumanEnemy::HumanEnemy(size_t x, size_t y) : Enemy(x,y,'H', 140, 140, 20, 20) {}
 
@@ -6,3 +7,6 @@ HumanEnemy::HumanEnemy(size_t x, size_t y) : Enemy(x,y,'H', 140, 140, 20, 20) {}
 void HumanEnemy::deathCheck(){
 	//TODO: Drop double gold
 }
+
+CharacterType HumanEnemy::getType() { return CharacterType::Human; }
+
