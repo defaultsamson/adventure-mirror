@@ -7,12 +7,10 @@ class CharacterDecorator: public Character {
 	bool ticked;
 protected:
 	Character *component;
-	int activeFloor;
-public:
+	size_t activeFloor;
 	double multiplier = 1.0;
-
+public:
 	CharacterDecorator();
-	CharacterDecorator(int floor);
 	CharacterDecorator(Character *component);
 	bool hit(Character &other, std::string &output) override;
 	double hitPower(Character &other) override;
@@ -26,7 +24,10 @@ public:
 	double getDef() override;
 	void addGold(int value) override;
 	int getGold() override;
-	int getFloor() override;
+	size_t getFloor() override;
+	void setFloor(size_t f) override;
+	void setActiveFloor(size_t f);
+	void setMultiplier(double mult);
 	size_t getX() override;
 	size_t getY() override;
 	void setX(size_t x) override;

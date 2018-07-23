@@ -8,12 +8,13 @@
 using namespace std;
 
 class Floor {
-	size_t w, h;
+	size_t i, w, h;
 	vector<vector<vector<Entity*>>> grid;
 public:
-	Floor(size_t w, size_t h);
+	Floor(size_t i, size_t w, size_t h);
 	void add(Entity *e);
 	vector<Entity*> &get(size_t x, size_t y);
+	size_t index();
 	size_t width();
 	size_t height();
 

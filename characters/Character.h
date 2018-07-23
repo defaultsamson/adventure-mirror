@@ -19,7 +19,6 @@ public:
 	virtual double getDef() = 0;
 	virtual void addGold(int value) = 0;
 	virtual int getGold() = 0;
-	virtual int getFloor() = 0;
 	virtual CharacterType getType() = 0;
 	bool isSpawnable() override;
 	bool isWalkable() override;

@@ -3,9 +3,9 @@
 WoundDefEffect::WoundDefEffect() {}
 
 double WoundDefEffect::getDef() {
-	return component->getDef() - (activeFloor == component->getFloor() ? 5 * multiplier : 0);
+	return CharacterDecorator::getDef() - (activeFloor == component->getFloor() ? 5 * multiplier : 0);
 }
 
 std::string WoundDefEffect::to_string() {
-	return "WoundDefEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	return "WoundDefEffect(" + CharacterDecorator::to_string() + " on floor " + std::to_string(activeFloor) + ")";
 }

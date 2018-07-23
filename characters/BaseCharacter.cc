@@ -53,7 +53,8 @@ double BaseCharacter::getAtk() { return atk; }
 double BaseCharacter::getDef() { return def; }
 void BaseCharacter::addGold(int value) { gold += value; }
 int BaseCharacter::getGold() { return gold; }
-int BaseCharacter::getFloor() { return floor; }
+size_t BaseCharacter::getFloor() { return floor; }
+void BaseCharacter::setFloor(size_t f) { floor = f; }
 size_t BaseCharacter::getX() { return x; }
 size_t BaseCharacter::getY() { return y; }
 void BaseCharacter::setX(size_t x) { this->x = x; }

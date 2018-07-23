@@ -13,7 +13,7 @@ protected:
 	double atk;
 	double def;
 	int gold = 0;
-	int floor = 0;
+	size_t floor = 0;
 public:
 	bool deathCheck() override;
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
@@ -28,7 +28,8 @@ public:
 	double getDef() override;
 	void addGold(int value) override;
 	int getGold() override;
-	int getFloor() override;
+	size_t getFloor() override;
+	void setFloor(size_t f) override;
 	size_t getX() override;
 	size_t getY() override;
 	void setX(size_t x) override;

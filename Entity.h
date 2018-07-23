@@ -21,6 +21,8 @@ public:
 	virtual void move(Direction d);
 	virtual void moveTick(DungeonMap &map, std::string &output);
 	virtual void tick(DungeonMap &map, std::string &output);
+	virtual void setFloor(size_t f) = 0;
+	virtual size_t getFloor() = 0;
 	virtual ~Entity() = 0;
 };
 

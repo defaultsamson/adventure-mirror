@@ -55,6 +55,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	// A stack of entities to add to the floor
 	vector<Entity *> es;
 
+	size_t i = 0;
 	size_t x = -1, y = 0;	// x and y coordinates of the current character
 
 	char input;
@@ -87,7 +88,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				else if (x == width - 1 && !hitSomething) {
 
 					// Creates and initializes the floor
-					Floor *fl = new Floor(width, y + 1);
+					Floor *fl = new Floor(i, width, y + 1);
 					for (Entity *e: es) fl->add(e);
 					es.clear();
 					this->floors.emplace_back(fl);
@@ -99,6 +100,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 					width = 0;
 					x = -1;
 					y = 0;
+					++i;
 				}
 	
 				// Continuing avoids setting hitSomething below this switch statement

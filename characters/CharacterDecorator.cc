@@ -1,9 +1,9 @@
 #include "CharacterDecorator.h"
 #include "Character.h"
 #include "Item.h"
+#include <iostream>
 
 CharacterDecorator::CharacterDecorator() {}
-CharacterDecorator::CharacterDecorator(int floor) : activeFloor{floor} {}
 CharacterDecorator::CharacterDecorator(Character *component) : component{component}, activeFloor{component->getFloor()} {}
 
 bool CharacterDecorator::hit(Character &other, std::string &output) {
@@ -19,6 +19,7 @@ double CharacterDecorator::hitPower(Character &other) { return component->hitPow
 void CharacterDecorator::decorate(CharacterDecorator *o) {
 	o->component = component;
 	component = o;
+	std::cout << "Decorating" << std::endl;
 }
 
 void CharacterDecorator::addHP(double hp) { component->addHP(hp); }
@@ -29,7 +30,10 @@ double CharacterDecorator::getAtk() { return component->getAtk(); }
 double CharacterDecorator::getDef() { return component->getDef(); }
 void CharacterDecorator::addGold(int value) { component->addGold(value); }
 int CharacterDecorator::getGold() { return component->getGold(); }
-int CharacterDecorator::getFloor() { return component->getFloor(); }
+size_t CharacterDecorator::getFloor() { return component->getFloor(); }
+void CharacterDecorator::setFloor(size_t f) { component->setFloor(f); }
+void CharacterDecorator::setActiveFloor(size_t f) { activeFloor = f; }
+void CharacterDecorator::setMultiplier(double mult) { multiplier = mult; }
 size_t CharacterDecorator::getX() { return component->getX(); }
 size_t CharacterDecorator::getY() { return component->getY(); }
 void CharacterDecorator::setX(size_t x) { component->setX(x); }
