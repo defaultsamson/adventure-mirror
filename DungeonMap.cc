@@ -284,11 +284,15 @@ void DungeonMap::movePlayer(Direction d, string &output) {
 
 void DungeonMap::tick(string &output) {
 	Floor *currentFloor = floors[floor];
+	// TODO: if frozen, skip this loop
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
 			vector<Entity *> cell = currentFloor->get(col, row);
 			for (Entity * e: cell) {
-				e->moveTick(*this, output);
+				// enemies decide whether to move or not
+				if (e != player) {
+					e->moveTick(*this, output);
+				}
 			}
 		}
 	}
@@ -296,7 +300,21 @@ void DungeonMap::tick(string &output) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
 			vector<Entity *> cell = currentFloor->get(col, row);
 			for (Entity * e: cell) {
-				e->tick(*this, output);
+				// if not moving, enemies will attack
+				if (e != player) {
+					e->tick(*this, output);
+				}
+			}
+		}
+	}
+	for (size_t row = 0; row < currentFloor->height(); ++row) {
+		for (size_t col = 0; col < currentFloor->width(); ++col) {
+			vector<Entity *> cell = currentFloor->get(col, row);
+			for (Entity * e: cell) {
+				CharacterDecorator *c = dynamic_cast<CharacterDecorator *>(e);
+				if (c) {
+					c->resetTick();
+				}
 			}
 		}
 	}

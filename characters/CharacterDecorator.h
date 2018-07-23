@@ -4,6 +4,7 @@
 #include "Character.h"
 
 class CharacterDecorator: public Character {
+	bool ticked;
 protected:
 	Character *component;
 	int activeFloor;
@@ -33,6 +34,9 @@ public:
 	char print() override;
 	bool deathCheck() override;
 	CharacterType getType() override;
+	void tick(DungeonMap &map, std::string &output) override;
+	void moveTick(DungeonMap &map, std::string &output) override;
+	void resetTick();
 };
 
 #endif

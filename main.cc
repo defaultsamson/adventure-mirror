@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
         cout << map << endl;
         cout << "Action: Player character has spawned." << endl;
         // init map, enemies, items, etc here
-        while (cin >> input) {
+        while (!player->deathCheck() && cin >> input) {
             bool doTick = true;
             // main game loop
             if (input == "q") {
@@ -79,8 +79,15 @@ int main(int argc, char *argv[]) {
                 output = "Action: PC uses [AB].";
             }
             else if (input == "a") {
-                // Direction d;
-                // cin >> d;
+                cin >> input;
+                Direction d = Direction::getDirection(input);
+                if (d == Direction::Invalid) {
+                    output = "Invalid direction. Please enter another command.";
+                    doTick = false;
+                }
+                else {
+
+                }
                 // player.attack(d);
                 output = "Action: PC deals x damage to Y (123 HP). Y deals z damage to PC.";
             }
@@ -91,8 +98,8 @@ int main(int argc, char *argv[]) {
             }
             else if (input == "r") {
                 cout << "Restarting Game" << endl;
-                // make sure we manage memory of previous player and stuff
-                cout << "Race selection (Shade, Drow, Vampire, Goblin, Troll): ";
+                // TODO make sure we manage memory of previous player and stuff
+                cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): ";
                 break;
             }
             else if (input == "h") {
@@ -122,6 +129,17 @@ int main(int argc, char *argv[]) {
             cout << map << endl; // maybe this could go in map.tick?
             cout << output << endl;
             // map.tick
+        }
+        if (player->deathCheck()) {
+            cout << "Play again? (y/n): ";
+            if (cin >> input && input == "y") {
+                cout << "Restarting Game" << endl;
+                // TODO: make sure we manage memory of previous player and stuff
+                cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): ";
+            }
+            else {
+                break;
+            }
         }
     }
 }

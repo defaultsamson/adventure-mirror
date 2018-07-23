@@ -19,8 +19,7 @@ double BaseCharacter::hitPower(Character &other) {
 bool BaseCharacter::takeDamage(Character &from, double damage) {
 	(void) from;
 	// Class specific defences can override this. By default, take the damage
-	hp -= damage;
-	deathCheck();
+	addHP(-damage);
 	return true;
 }
 
@@ -52,5 +51,4 @@ size_t BaseCharacter::getY() { return y; }
 void BaseCharacter::setX(size_t x) { this->x = x; }
 void BaseCharacter::setY(size_t y) { this->y = y; }
 char BaseCharacter::print() { return icon; }
-
 
