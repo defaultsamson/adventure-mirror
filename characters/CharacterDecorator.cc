@@ -19,7 +19,6 @@ double CharacterDecorator::hitPower(Character &other) { return component->hitPow
 void CharacterDecorator::decorate(CharacterDecorator *o) {
 	o->component = component;
 	component = o;
-	std::cout << "Decorating" << std::endl;
 }
 
 void CharacterDecorator::addHP(double hp) { component->addHP(hp); }
