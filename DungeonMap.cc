@@ -273,8 +273,8 @@ void DungeonMap::movePlayer(Direction d, string &output) {
 	for (Direction valid: getWalkableDirections(player)) {
 		if (d == valid) {
 			move(player, d);
+			output = "Action: PC moves " + d.to_string() + ". ";
 			player->tick(*this, output);
-			output = "Action: PC moves " + d.to_string() + " and sees a furry friend.";
 			// make the second part optional, e.g when seeing a potion, we would say "and sees an unknown potion"
 			return;
 		}

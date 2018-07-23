@@ -9,7 +9,7 @@
 class TrollRace: public BaseCharacter {
 public:
 	TrollRace(size_t x, size_t y);
-	bool hit(Character &o) override;
+	bool hit(Character &o, std::string &output) override;
 	void tick(DungeonMap &map, std::string &output) override;
 	CharacterType getType() override;
 };

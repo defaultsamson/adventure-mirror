@@ -6,8 +6,8 @@ CharacterDecorator::CharacterDecorator() {}
 CharacterDecorator::CharacterDecorator(int floor) : activeFloor{floor} {}
 CharacterDecorator::CharacterDecorator(Character *component) : component{component}, activeFloor{component->getFloor()} {}
 
-bool CharacterDecorator::hit(Character &other) {
-	return component->hit(other);
+bool CharacterDecorator::hit(Character &other, std::string &output) {
+	return component->hit(other, output);
 }
 
 bool CharacterDecorator::takeDamage(Character &from, double damage) {

@@ -36,14 +36,14 @@ void Enemy::tick(DungeonMap &map, string &output) {
 		moved = false;
 	} else if (canAttack(map)) {
 		// Enemy didn't move and can still attack
-		hit(*map.getPlayer());
+		hit(*map.getPlayer(), output);
 	}
 	(void) output;
 }
 
-bool Enemy::hit(Character &other) {
+bool Enemy::hit(Character &other, string &output) {
 	if (rand() % 2) {
-		BaseCharacter::hit(other);
+		BaseCharacter::hit(other, output);
 		return true;
 	}
 	return false;
