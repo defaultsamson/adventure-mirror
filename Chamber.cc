@@ -59,13 +59,13 @@ Entity* Chamber::spawnObject(char c){
 		case '\\' : //create stair
 			return new Stair(x,y);
 		case '0': // restore health
-			return new HealthPotion(x, y, PotionType::Health, 5);
+			return new HealthPotion(x, y, PotionType::Health, 10);
 		case '1': // boost attack
 			return new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect());
 		case '2': // boost defense
 			return new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect());
 		case '3': // poison health
-			return new HealthPotion(x, y, PotionType::Poison, -5);
+			return new HealthPotion(x, y, PotionType::Poison, -10);
 		case '4': // wound attack
 			return new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect());
 		case '5': // wound defense

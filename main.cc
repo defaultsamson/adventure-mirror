@@ -35,8 +35,7 @@ int main(int argc, char *argv[]) {
     string output;
     bool quit = false;
 
-    cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): ";
-    while (!quit && cin >> input) {
+    while (!quit && cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): " && cin >> input) {
         // race is one of (s, d, v, g, t)
         CharacterDecorator *player = nullptr;
         if (input == "d") {
@@ -109,7 +108,6 @@ int main(int argc, char *argv[]) {
             else if (input == "r") {
                 cout << "Restarting Game" << endl;
                 // TODO make sure we manage memory of previous player and stuff
-                cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): ";
                 break;
             }
             else if (input == "h") {
@@ -161,7 +159,6 @@ int main(int argc, char *argv[]) {
             if (cin >> input && input == "y") {
                 cout << "Restarting Game" << endl;
                 // TODO: make sure we manage memory of previous player and stuff
-                cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): ";
             }
             else {
                 break;

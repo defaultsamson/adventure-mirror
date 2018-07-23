@@ -134,7 +134,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				break;
 			case '0': // restore health
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Health, 5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Health, 10));
 				break;
 			case '1': // boost attack
 				es.emplace_back(new Ground(x, y));
@@ -146,7 +146,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				break;
 			case '3': // poison health
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Poison, -5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Poison, -10));
 				break;
 			case '4': // wound attack
 				es.emplace_back(new Ground(x, y));
@@ -503,8 +503,10 @@ void DungeonMap::playerPotion(Direction d, string &output) {
 			output += "PC uses ";
 			pot->pickup(*this, *player, output);
 			tile.pop_back();
+			return;
 		}
 	}
+	output += "PC attempts to drink the air, but fails";
 }
 
 void DungeonMap::playerMove(Direction d, string &output) {
@@ -513,12 +515,13 @@ void DungeonMap::playerMove(Direction d, string &output) {
 		if (d == valid) {
 			move(player, d);
 			output += "PC moves " + d.to_string();
-			string additionalOutput;
+			// string additionalOutput;
 			// and sees a furry friend. Use additionalOutput for output.
 			/*player->tick(*this, additionalOutput);
 			if (!additionalOutput.empty()) {
 				output += " " + additionalOutput;
 			}*/
+			player->tick(*this, output);
 			size_t x = player->getX(), y = player->getY();
 			vector<Entity*> &tile = floors[floor]->get(x, y);
 			double prevGold = player->getGold();
