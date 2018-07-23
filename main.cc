@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
                 cin >> input;
                 Direction d = Direction::getDirection(input);
                 if (d == Direction::Invalid) {
-                    output = "Invalid direction. Try 'h' (without quotes) for help on commands.";
+                    output = "Invalid direction. Please enter another command.";
                     doTick = false;
                 } else {
                     output = "Action: ";
