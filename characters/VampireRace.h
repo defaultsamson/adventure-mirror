@@ -8,7 +8,7 @@ class VampireRace: public BaseCharacter {
 public:
 	VampireRace(size_t x, size_t y);
 	void addHP(double hp) override;
-	bool hit(Character &other) override;
+	bool hit(Character &other, std::string &output) override;
 	CharacterType getType() override;
 };
 

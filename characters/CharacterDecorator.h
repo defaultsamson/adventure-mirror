@@ -14,7 +14,7 @@ public:
 	CharacterDecorator();
 	CharacterDecorator(int floor);
 	CharacterDecorator(Character *component);
-	bool hit(Character &other) override;
+	bool hit(Character &other, std::string &output) override;
 	double hitPower(Character &other) override;
 	bool takeDamage(Character &from, double damage) override;
 	void decorate(CharacterDecorator *o);

@@ -17,7 +17,7 @@ protected:
 public:
 	bool deathCheck() override;
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
-	bool hit(Character &other) override;
+	bool hit(Character &other, std::string &output) override;
 	double hitPower(Character &other) override;
 	bool takeDamage(Character &from, double damage) override;
 	void addHP(double hp) override;

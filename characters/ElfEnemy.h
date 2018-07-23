@@ -6,7 +6,7 @@
 class ElfEnemy : public Enemy{
 public :
 	//Make double attacks
-	bool hit(Character &c) override;
+	bool hit(Character &c, std::string &output) override;
 	ElfEnemy(size_t x, size_t y);
 	CharacterType getType() override;
 };

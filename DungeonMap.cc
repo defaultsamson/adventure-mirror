@@ -13,6 +13,7 @@
 #include "Gold.h"
 #include "DragonGold.h"
 #include "Stair.h"
+#include "CharacterDecorator.h"
 #include "HumanEnemy.h"
 #include "ElfEnemy.h"
 #include "DwarfEnemy.h"
@@ -29,9 +30,9 @@
 
 using namespace std;
 
-Character *DungeonMap::getPlayer() { return player; }
+CharacterDecorator *DungeonMap::getPlayer() { return player; }
 
-DungeonMap::DungeonMap(const char *filename, Character *player, bool re): player{player} {
+DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re): player{player} {
 	ifstream file{filename};
 	if (!file) {
 		cerr << "Error reading file: " << filename << endl;
@@ -455,13 +456,28 @@ void DungeonMap::move(Entity *e, Direction d) {
 	floors[floor]->add(e);
 }
 
+void DungeonMap::potionPlayer(Direction d, string &output) {
+	size_t x = player->getX() + d.x;
+	size_t y = player->getY() + d.y;
+	vector<Entity*> &tile = floors[floor]->get(x, y);
+	if (tile.size() > 0) {
+		Potion *pot = dynamic_cast<Potion*>(tile.back());
+		if (pot) {
+			pot->pickup(player);
+			tile.pop_back();
+			// TODO output
+			(void) output;
+		}
+	}
+}
+
 void DungeonMap::movePlayer(Direction d, string &output) {
 	output = "";
 	for (Direction valid: getWalkableDirections(player)) {
 		if (d == valid) {
 			move(player, d);
+			output = "Action: PC moves " + d.to_string() + ". ";
 			player->tick(*this, output);
-			output = "Action: PC moves " + d.to_string() + " and sees a furry friend.";
 			// make the second part optional, e.g when seeing a potion, we would say "and sees an unknown potion"
 			return;
 		}
