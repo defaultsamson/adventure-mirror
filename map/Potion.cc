@@ -17,3 +17,6 @@ void Potion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
 	(void) c;
 }
 
+string Potion::getName() {
+	return name;
+}

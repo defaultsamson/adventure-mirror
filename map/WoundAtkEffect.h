@@ -7,6 +7,7 @@ class WoundAtkEffect: public CharacterDecorator {
 public:
 	WoundAtkEffect();
 	double getAtk() override;
+	std::string to_string() override;
 };
 
 #endif

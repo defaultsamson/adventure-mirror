@@ -46,6 +46,7 @@ bool Enemy::hit(Character &other, string &output) {
 		BaseCharacter::hit(other, output);
 		return true;
 	}
+	output += getType().to_string() + " missed! ";
 	return false;
 }
 

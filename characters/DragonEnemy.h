@@ -7,5 +7,6 @@ class DragonEnemy : public Enemy{
 public :
 	DragonEnemy(size_t x, size_t y);
 	CharacterType getType() override;
+	void moveTick(DungeonMap &map, std::string &output) override;
 };
 #endif

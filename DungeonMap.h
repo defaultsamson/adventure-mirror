@@ -29,9 +29,14 @@ public:
 	bool seenPotion(PotionType t);
 
 	void move(Entity *e, Direction d);
-	void movePlayer(Direction d, std::string &output);
+	void playerMove(Direction d, std::string &output);
+	void playerAttack(Direction d, std::string &output);
 	void potionPlayer(Direction d, std::string &output);
 	void tick(std::string &output);
 	friend std::ostream &operator<<(std::ostream &out, const DungeonMap &m);
+	// DEBUG
+	std::string validate();
+	std::string characterStats();
+	std::string itemStats();
 };
 #endif

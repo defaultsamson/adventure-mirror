@@ -37,6 +37,7 @@ public:
 	void tick(DungeonMap &map, std::string &output) override;
 	void moveTick(DungeonMap &map, std::string &output) override;
 	void resetTick();
+	std::string to_string() override;
 };
 
 #endif

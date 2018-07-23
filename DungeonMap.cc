@@ -400,7 +400,7 @@ void DungeonMap::progressFloor() {
 
 ostream &operator<<(ostream &out, const DungeonMap &m) {
 	out << *m.floors[m.floor];
-	out << "Race: " << m.player->getType().to_string() << " Gold: " << m.player->getGold() << " Floor: " << m.floor << endl;
+	out << "Race: " << m.player->getType().to_string() << " Gold: " << m.player->getGold() << " Floor: " << m.floor + 1 << endl;
 	out << "HP: " << m.player->getHP() << "/" << (m.player->getMaxHP() > 0 ? to_string((int) m.player->getMaxHP()) : "Infinite") << endl;
 	out << "Atk: " << m.player->getAtk() << endl;
 	out << "Def: " << m.player->getDef();
@@ -476,18 +476,42 @@ void DungeonMap::potionPlayer(Direction d, string &output) {
 	}
 }
 
-void DungeonMap::movePlayer(Direction d, string &output) {
-	output = "";
+void DungeonMap::playerMove(Direction d, string &output) {
+	output = "Action: ";
 	for (Direction valid: getWalkableDirections(player)) {
 		if (d == valid) {
 			move(player, d);
-			output = "Action: PC moves " + d.to_string() + ". ";
-			player->tick(*this, output);
-			// make the second part optional, e.g when seeing a potion, we would say "and sees an unknown potion"
+			output += "PC moves " + d.to_string();
+			string additionalOutput;
+			// and sees a furry friend. Use additionalOutput for output.
+			player->tick(*this, additionalOutput);
+			if (!additionalOutput.empty()) {
+				output += " " + additionalOutput;
+			}
+			else {
+				output += ". ";
+			}
 			return;
 		}
 	}
-	output = "Action: PC attempts to move " + d.to_string() + ", but is blocked from moving that way.";
+	output = "PC attempts to move " + d.to_string() + ", but is blocked from moving that way.";
+}
+
+void DungeonMap::playerAttack(Direction d, string &output) {
+	output = "Action: ";
+	size_t x = player->getX() + d.x;
+	size_t y = player->getY() + d.y;
+	vector<Entity*> &tile = floors[floor]->get(x, y);
+	if (tile.size() > 0) {
+		Enemy *e = dynamic_cast<Enemy *>(tile.back());
+		if (e) {
+			player->hit(*e, output);
+			output += "(" + to_string((int) e->getHP()) + " HP). ";
+		}
+		else {
+			output += "PC attacks the ground unsuccessfully. ";
+		}
+	}
 }
 
 void DungeonMap::tick(string &output) {
@@ -526,4 +550,61 @@ void DungeonMap::tick(string &output) {
 			}
 		}
 	}
+}
+
+string DungeonMap::validate() {
+	Floor *currentFloor = floors[floor];
+	string output = "~~~~Map Validation~~~~";
+	for (size_t row = 0; row < currentFloor->height(); ++row) {
+		for (size_t col = 0; col < currentFloor->width(); ++col) {
+			vector<Entity *> cell = currentFloor->get(col, row);
+			for (Entity * e: cell) {
+				if (e->getX() != col || e->getY() != row) {
+					output += "\nEntity " + to_string(e->print()) + " has internal (" + to_string(e->getX()) + ", " + to_string(e->getY()) + ")";
+					output += " but map (" + to_string(col) + ", " + to_string(row) + ")";
+				}
+			}
+		}
+	}
+	return output;
+}
+
+string DungeonMap::characterStats() {
+	Floor *currentFloor = floors[floor];
+	string output = "~~~~Character Stats~~~~";
+	for (size_t row = 0; row < currentFloor->height(); ++row) {
+		for (size_t col = 0; col < currentFloor->width(); ++col) {
+			vector<Entity *> cell = currentFloor->get(col, row);
+			for (Entity * e: cell) {
+				Character *c = dynamic_cast<Character *>(e);
+				if (c) {
+					output += "\n" + c->to_string();
+				}
+			}
+		}
+	}
+	return output;
+}
+
+string DungeonMap::itemStats() {
+	Floor *currentFloor = floors[floor];
+	string output = "~~~~Item Stats~~~~";
+	for (size_t row = 0; row < currentFloor->height(); ++row) {
+		for (size_t col = 0; col < currentFloor->width(); ++col) {
+			vector<Entity *> cell = currentFloor->get(col, row);
+			for (Entity * e: cell) {
+				Gold *gold = dynamic_cast<Gold *>(e);
+				if (gold) {
+					output += "\nGold $" + to_string(gold->getValue()) + "(" + to_string(col) + ", " + to_string(row) + ")";
+				}
+				else {
+					Potion *potion = dynamic_cast<Potion *>(e);
+					if (potion) {
+						output += "\nPotion " + potion->getName() + "(" + to_string(col) + ", " + to_string(row) + ")";
+					}
+				}
+			}
+		}
+	}
+	return output;
 }

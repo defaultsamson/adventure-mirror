@@ -17,6 +17,7 @@ public:
 	bool isWalkable() override;
 	bool isSpawnable() override;
 	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
+	std::string getName();
 };
 
 #endif

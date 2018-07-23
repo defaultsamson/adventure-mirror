@@ -23,6 +23,8 @@ public:
 	virtual CharacterType getType() = 0;
 	bool isSpawnable() override;
 	bool isWalkable() override;
+
+	virtual std::string to_string();
 };
 
 #endif

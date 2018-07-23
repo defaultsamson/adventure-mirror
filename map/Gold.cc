@@ -18,3 +18,6 @@ void Gold::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
 	// TODO remove this from the map
 }
 
+int Gold::getValue() {
+	return value;
+}

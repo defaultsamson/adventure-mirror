@@ -38,14 +38,18 @@ char CharacterDecorator::print() { return component->print(); }
 bool CharacterDecorator::deathCheck() { return component->deathCheck(); }
 CharacterType CharacterDecorator::getType() { return component->getType(); }
 void CharacterDecorator::tick(DungeonMap &map, std::string &output) {
-	if (!ticked) {
+	// if (!ticked) {
         component->tick(map, output);
-		ticked = true;
-	}
+		// ticked = true;
+	// }
 }
 
 void CharacterDecorator::moveTick(DungeonMap &map, std::string &output) { component->moveTick(map, output); }
 
 void CharacterDecorator::resetTick() {
 	ticked = false;
+}
+
+std::string CharacterDecorator::to_string() {
+	return "CharacterDecorator(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
 }

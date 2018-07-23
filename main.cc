@@ -67,7 +67,6 @@ int main(int argc, char *argv[]) {
             bool doTick = true;
             // main game loop
             if (input == "q") {
-                cout << "Thank you for playing CC3K!" << endl;
                 quit = true;
                 break;
             }
@@ -91,10 +90,9 @@ int main(int argc, char *argv[]) {
                     doTick = false;
                 }
                 else {
-
+                    map.playerAttack(d, output);
                 }
                 // player.attack(d);
-                output = "Action: PC deals x damage to Y (123 HP). Y deals z damage to PC.";
             }
             else if (input == "f") {
                 // toggles stopping enemies from moving
@@ -115,7 +113,23 @@ int main(int argc, char *argv[]) {
                 output += "f: toggles enemy movement (but not attacking)\n";
                 output += "r: restarts the game\n";
                 output += "q: quits the game\n";
-                output += "\nh: displays this message";
+                output += "\nh: displays this message\n";
+                output += "~~~~Debugging Commands~~~~\n";
+                output += "v: validates the map\n";
+                output += "cs: outputs character stats\n";
+                output += "is: outputs item stats";
+                doTick = false;
+            }
+            else if (input == "v") {
+                output = map.validate();
+                doTick = false;
+            }
+            else if (input == "cs") {
+                output = map.characterStats();
+                doTick = false;
+            }
+            else if (input == "is") {
+                output = map.itemStats();
                 doTick = false;
             }
             else {
@@ -125,7 +139,7 @@ int main(int argc, char *argv[]) {
                     doTick = false;
                 }
                 else {
-                    map.movePlayer(d, output);
+                    map.playerMove(d, output);
                 }
             }
             if (doTick) {
@@ -147,4 +161,5 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    cout << "Thank you for playing CC3K!" << endl;
 }
