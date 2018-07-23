@@ -155,6 +155,7 @@ int main(int argc, char *argv[]) {
             // map.tick
         }
         if (player->deathCheck()) {
+            cout << "Oof, you died. Score: " << player->score() << endl;
             cout << "Play again? (y/n): ";
             if (cin >> input && input == "y") {
                 cout << "Restarting Game" << endl;
