@@ -20,3 +20,7 @@ void Potion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
 string Potion::getName() {
 	return name;
 }
+
+string Potion::to_string() {
+	return "Potion " + getName() + "(" + std::to_string(getX()) + ", " + std::to_string(getY()) + ")";
+}

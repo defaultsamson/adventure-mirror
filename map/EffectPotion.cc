@@ -3,6 +3,7 @@
 #include "../characters/CharacterDecorator.h"
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -14,3 +15,9 @@ void EffectPotion::pickup(DungeonMap &map, CharacterDecorator &c, string &output
 	Potion::pickup(map, c, output);
 }
 
+string EffectPotion::to_string() {
+	if (effect) {
+		return Potion::to_string() + " with effect " + effect->to_string();
+	}
+	return Potion::to_string();
+}

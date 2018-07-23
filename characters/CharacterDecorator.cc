@@ -1,6 +1,7 @@
 #include "CharacterDecorator.h"
 #include "Character.h"
 #include "Item.h"
+#include <iostream>
 
 CharacterDecorator::CharacterDecorator() {}
 CharacterDecorator::CharacterDecorator(int floor) : activeFloor{floor} {}
@@ -51,5 +52,9 @@ void CharacterDecorator::resetTick() {
 }
 
 std::string CharacterDecorator::to_string() {
-	return "CharacterDecorator(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	std::cout << "abc" << std::endl;
+	if (component) {
+		return "CharacterDecorator(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	}
+	return "CharacterDecorator(None on floor " + std::to_string(activeFloor) + ")";
 }

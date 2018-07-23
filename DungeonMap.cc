@@ -429,6 +429,7 @@ vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
 	vector<Direction> valid;
 	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
 		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+			if (col == x && row == y) continue;
 			vector<Entity*> e = floors[floor]->get(col, row);
 			if (e.size() && e.back()->isWalkable()) {
 				valid.emplace_back(Direction(col, row, x, y));
@@ -450,6 +451,7 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 	vector<Direction> valid;
 	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
 		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+			if (col == x && row == y) continue;
 			vector<Entity*> e = floors[floor]->get(col, row);
 			if (e.size() && e.back()->isSpawnable()) {
 				valid.emplace_back(Direction(col, row, x, y));
@@ -615,6 +617,7 @@ string DungeonMap::itemStats() {
 					Potion *potion = dynamic_cast<Potion *>(e);
 					if (potion) {
 						output += "\nPotion " + potion->getName() + "(" + to_string(col) + ", " + to_string(row) + ")";
+						// output += "\n" + potion->to_string(); // why isn't this working
 					}
 				}
 			}
