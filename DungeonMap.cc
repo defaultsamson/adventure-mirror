@@ -199,28 +199,28 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 		} else { endFloor = false; }
 	}
 	//Spawn random item and enemies if the boolean re is true
-/*	if (re){
+	if (re){
 		//We spawn random enemies and random potions for each of the floors
 		for (size_t f = 0; f < floor + 1; f++){
 			Floor *currentFloor = floors[f];
 			//create a 2d vector to keep track of nodes we visited
 			//Everything in the array is initialised to false, by default
 			vector<vector<bool>> visited;
-			for (size_t x = 0; x < currentFloor->height(); ++x){
-				vector<bool> visitedRow;
-				for (size_t y = 0; y < currentFloor->width(); ++y){
-					visitedRow.emplace_back(false);
+			for (size_t x = 0; x < currentFloor->width(); ++x){
+				vector<bool> visitedCol;
+				for (size_t y = 0; y < currentFloor->height(); ++y){
+					visitedCol.emplace_back(false);
 				}
-				visited.emplace_back(visitedRow);
+				visited.emplace_back(visitedCol);
 			}
-			int chambersCount = 0;
 			vector<Chamber> chambers;
-			for (size_t x = 0; x < currentFloor->height(); ++x){
-				for (size_t y = 0; y < currentFloor->width(); ++y){
+			int chambersCount = 0;
+			for (size_t x = 0; x < currentFloor->width(); ++x){
+				for (size_t y = 0; y < currentFloor->height(); ++y){
 					//We add tiles into chambers
 					if (!visited[x][y]){
 						visited[x][y] = true;
-						vector<Entity*> e = currentFloor->get(y, x);
+						vector<Entity*> e = currentFloor->get(x, y);
 						if(e.size() && e.back()->isSpawnable()){
 							//create a new chamber
 							Chamber newChamber = Chamber();
@@ -241,7 +241,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 									for (auto dit : directions){
 										int connectedX = entity->getX() + dit.x;
 										int connectedY = entity->getY() + dit.y;
-										vector<Entity*> connectedTile = currentFloor->get(connectedY, connectedX);
+										vector<Entity*> connectedTile = currentFloor->get(connectedX, connectedY);
 										if (!visited[connectedX][connectedY]){
 											visited[connectedX][connectedY] = true;
 											floorTiles.emplace_back(connectedTile.back());
@@ -261,15 +261,15 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 			chambers.clear();
 			chambersCount = 0;
 		}
-	}*/
+	}
 }
 
 void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character* player){
-	for (auto it : chambers){
+	for (Chamber& it : chambers){
 		it.shuffle();
 	}
 	//Spawn the treasures
-	for (int i = 0; i < 10; ++i){
+	for (int i = 0; i < 1; ++i){
 		//remove any full (empty for the vector) chambers
         	for (int j = cc - 1; j < 0; ++i){
                 	if (chambers[j].isEmpty()){
@@ -279,7 +279,8 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
         	}
 		//roll a d8 to spawn treasures
 		//0-4 is normal, 5-6 is small hoard, 7 is dragon hoard
-		int roll = rand() % 8;
+		//int roll = rand() & 8;
+		int roll = 7;
 		//generate a random number to decide which chamber to spawn the item
 		int chamberRoll = rand() % cc;
 		if (roll < 5){
@@ -289,21 +290,27 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 		} else {
 			//Only spawn dragon hoard at a location if we can fit a dragon
 			//next to it
-			Entity* g = chambers[chamberRoll].spawnObject('8');
+			//Entity* g = chambers[chamberRoll].spawnObject('8'); DEBUG!!!!!, RESTORE THIS
+			Entity* g = new DragonGold(38,12);
 			vector<Direction> directions = getSpawnableDirections(g);
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
 					chambers.erase(chambers.begin() + chamberRoll);
 					--cc;
 					chamberRoll = rand() % cc;
+					delete g;
+					g = chambers[chamberRoll].spawnObject('9');
+					directions = getSpawnableDirections(g);
 				} else {
 					delete g;
-					g = chambers[chamberRoll].spawnObject('8');
+					g = chambers[chamberRoll].spawnObject('9');
 					directions = getSpawnableDirections(g);
 				}
                         }
 			//spawn a dragon
-			int directionCount = directions.size();
+			std::cout << g->getX() << " " << g->getY() << std::endl;
+			fl->add(g);
+			int directionCount = (int) directions.size();
 			int directionRoll = rand() % directionCount;
 			Direction dir = directions[directionRoll];
 			size_t dragonX = g->getX() + dir.x;
@@ -311,7 +318,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 			fl->add(new DragonEnemy(dragonX, dragonY));
 			chambers[chamberRoll].remove(dragonX, dragonY);
 		}
-	}
+	}/*
 	//Spawn the enemies
 	for (int i = 0; i < 20; ++i){
                 //remove any full (empty for the vector) chambers
@@ -388,6 +395,13 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 	player->setX(spawn->getX());
 	player->setY(spawn->getY());
 	fl->add(player);
+	*/
+
+	//DEBUG
+	(void) fl;
+	(void) chambers;
+	(void) cc;
+	(void) player;
 }
 
 size_t DungeonMap::getFloor() { return floor; }
