@@ -7,7 +7,8 @@ using namespace std;
 BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def) : x{x}, y{y}, icon{icon}, hp{hp}, maxHp{maxHp}, atk{atk}, def{def} {}
 
 // Deal the attack. DO NOT OVERRIDE THIS, instead override hitPower()
-bool BaseCharacter::hit(Character &other) {
+bool BaseCharacter::hit(Character &other, string &output) {
+	output += getType().to_string() + " deals " + to_string((int) hitPower(other)) + " damage to " + other.getType().to_string() + ". ";
 	return other.takeDamage(*this, hitPower(other));
 }
 

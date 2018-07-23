@@ -13,7 +13,7 @@ public:
 	void moveTick(DungeonMap &map, std::string &output) override;
 	void tick(DungeonMap &map, std::string &output) override;
 	bool canAttack(DungeonMap &map);
-	bool hit(Character &other) override;
+	bool hit(Character &other, std::string &output) override;
 	virtual ~Enemy() = 0;
 };
 

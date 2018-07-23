@@ -9,8 +9,8 @@ using namespace std;
 
 TrollRace::TrollRace(size_t x, size_t y) : BaseCharacter{x, y, '@', 120, 120, 25, 15} {}
 
-bool TrollRace::hit(Character &o) {
-	if (BaseCharacter::hit(o)) {
+bool TrollRace::hit(Character &o, std::string &output) {
+	if (BaseCharacter::hit(o, output)) {
 		addHP(5);
 		return true;
 	}

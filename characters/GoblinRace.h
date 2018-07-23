@@ -8,7 +8,7 @@ class GoblinRace: public BaseCharacter {
 public:
 	GoblinRace(size_t x, size_t y);
 	CharacterType getType() override;
-	bool hit(Character &other) override;
+	bool hit(Character &other, std::string &output) override;
 };
 
 #endif

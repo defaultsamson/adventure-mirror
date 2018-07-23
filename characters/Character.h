@@ -8,7 +8,7 @@ class Character: public Entity {
 public:
 	virtual bool deathCheck() = 0;
 	Character();
-	virtual bool hit(Character &other) = 0;
+	virtual bool hit(Character &other, std::string &output) = 0;
 	virtual double hitPower(Character &other) = 0;
 	virtual bool takeDamage(Character &other, double damage) = 0;
 	virtual void addHP(double hp) = 0;

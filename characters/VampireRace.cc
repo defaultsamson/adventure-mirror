@@ -12,9 +12,9 @@ void VampireRace::addHP(double hp) {
 	this->hp = max(0.0, this->hp + hp);
 }
 
-bool VampireRace::hit(Character &other) {
+bool VampireRace::hit(Character &other, std::string &output) {
 	// If the hit was successful
-	if (BaseCharacter::hit(other)) {
+	if (BaseCharacter::hit(other, output)) {
 		addHP(other.getType() == CharacterType::Dwarf ? -5 : 5);
 		deathCheck();
 		return true;
