@@ -97,7 +97,14 @@ int main(int argc, char *argv[]) {
             else if (input == "f") {
                 // toggles stopping enemies from moving
                 // map.toggleStopEnemies()
-                output = "Action: All enemies appear to be frozen to the arena floor and cannot move!";
+                map.toggleFlag(map.MapFlags::EnemiesFrozen);
+                if (map.getFlag(map.MapFlags::EnemiesFrozen)) {
+                    output = "Action: All enemies appear to be frozen to the arena floor and cannot move!";
+                }
+                else {
+                    output = "Action: All enemies have become unstuck from the arena floor and are itching to move!";
+                }
+                doTick = false;
             }
             else if (input == "r") {
                 cout << "Restarting Game" << endl;

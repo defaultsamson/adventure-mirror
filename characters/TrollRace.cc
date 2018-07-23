@@ -21,7 +21,7 @@ bool TrollRace::hit(Character &o, std::string &output) {
 void TrollRace::tick(DungeonMap &map, string &output) {
 	(void) map; (void) output;
 	addHP(5);
-	output += getType().to_string() + " and heals 5 HP! ";
+	output += "and " + getType().to_string() + " heals 5 HP! ";
 }
 
 CharacterType TrollRace::getType() { return CharacterType::Troll; }

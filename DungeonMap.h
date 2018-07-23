@@ -13,9 +13,15 @@ class DungeonMap {
 	size_t floor = 0;
 	vector<Floor*> floors;
 	vector<PotionType> potions;
+	vector<bool> flags;
 	CharacterDecorator *player;
 	void populate(Floor* fl, vector<Chamber> c, int cc, Character *player);
 public:
+	enum MapFlags {
+		EnemiesFrozen,
+		MerchantsHostile,
+		LAST
+	};
 	DungeonMap(const char* filename, CharacterDecorator *player = nullptr, bool randomEntities = false);
 
 	size_t getFloor();
@@ -34,6 +40,9 @@ public:
 	void potionPlayer(Direction d, std::string &output);
 	void tick(std::string &output);
 	friend std::ostream &operator<<(std::ostream &out, const DungeonMap &m);
+	bool getFlag(MapFlags f);
+	void setFlag(MapFlags f, bool value);
+	void toggleFlag(MapFlags f);
 	// DEBUG
 	std::string validate();
 	std::string characterStats();

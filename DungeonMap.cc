@@ -40,6 +40,10 @@ bool DungeonMap::seenPotion(PotionType type) {
 }
 
 DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re): player{player} {
+	// re = generate random entities
+	for (int i = 0; i < (int) MapFlags::LAST; ++i) {
+		flags.emplace_back(false);
+	}
 	ifstream file{filename};
 	if (!file) {
 		cerr << "Error reading file: " << filename << endl;
@@ -418,6 +422,18 @@ ostream &operator<<(ostream &out, const DungeonMap &m) {
 	return out;
 }
 
+bool DungeonMap::getFlag(MapFlags f) {
+	return flags[(int) f];
+}
+
+void DungeonMap::setFlag(MapFlags f, bool value) {
+	flags[(int) f] = value;
+}
+
+void DungeonMap::toggleFlag(MapFlags f) {
+	flags[(int) f] = !flags[(int) f];
+}
+
 vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
 	int x = e->getX();
 	int y = e->getY();
@@ -507,7 +523,7 @@ void DungeonMap::playerMove(Direction d, string &output) {
 			return;
 		}
 	}
-	output = "PC attempts to move " + d.to_string() + ", but is blocked from moving that way.";
+	output = "PC attempts to move " + d.to_string() + ", but is blocked from moving that way. ";
 }
 
 void DungeonMap::playerAttack(Direction d, string &output) {
@@ -529,14 +545,15 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 
 void DungeonMap::tick(string &output) {
 	Floor *currentFloor = floors[floor];
-	// TODO: if frozen, skip this loop
-	for (size_t row = 0; row < currentFloor->height(); ++row) {
-		for (size_t col = 0; col < currentFloor->width(); ++col) {
-			vector<Entity *> cell = currentFloor->get(col, row);
-			for (Entity * e: cell) {
-				// enemies decide whether to move or not
-				if (e != player) {
-					e->moveTick(*this, output);
+	if (!flags[(int)MapFlags::EnemiesFrozen]) {
+		for (size_t row = 0; row < currentFloor->height(); ++row) {
+			for (size_t col = 0; col < currentFloor->width(); ++col) {
+				vector<Entity *> cell = currentFloor->get(col, row);
+				for (Entity * e: cell) {
+					// enemies decide whether to move or not
+					if (e != player) {
+						e->moveTick(*this, output);
+					}
 				}
 			}
 		}
