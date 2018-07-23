@@ -1,4 +1,5 @@
 #include "Chamber.h"
+#include "Stair.h"
 #include "Potion.h"
 #include "HealthPotion.h"
 #include "EffectPotion.h"
@@ -32,6 +33,7 @@ void Chamber::remove(size_t x, size_t y){
 			tiles.erase(tiles.begin() + i);
 		}
 	}
+	--size;
 }
 
 bool Chamber::isEmpty(){
@@ -52,7 +54,10 @@ Entity* Chamber::spawnObject(char c){
 	size_t x = pos.x;
 	size_t y = pos.y;
 	tiles.pop_back();
+	--size;
 	switch(c) {
+		case '\\' : //create stair
+			return new Stair(x,y);
 		case '0': // restore health
 			return new HealthPotion(x, y, "Restore Health", PotionType::Health, 5);
 			break;

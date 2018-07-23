@@ -7,5 +7,8 @@ double BoostDefEffect::getDef() {
 }
 
 std::string BoostDefEffect::to_string() {
-	return "BoostDefEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	if (component) {
+		return "BoostDefEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	}
+	return "BoostDefEffect(None on floor " + std::to_string(activeFloor) + ")";
 }

@@ -7,5 +7,8 @@ double BoostAtkEffect::getAtk() {
 }
 
 std::string BoostAtkEffect::to_string() {
-	return "BoostAtkEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	if (component) {
+		return "BoostAtkEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	}
+	return "BoostAtkEffect(None on floor " + std::to_string(activeFloor) + ")";
 }

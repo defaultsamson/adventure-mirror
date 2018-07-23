@@ -7,5 +7,8 @@ double WoundAtkEffect::getAtk() {
 }
 
 std::string WoundAtkEffect::to_string() {
-	return "WoundAtkEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	if (component) {
+		return "WoundAtkEffect(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
+	}
+	return "WoundAtkEffect(None on floor " + std::to_string(activeFloor) + ")";
 }

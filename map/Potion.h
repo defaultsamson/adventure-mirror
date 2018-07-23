@@ -18,6 +18,7 @@ public:
 	bool isSpawnable() override;
 	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
 	std::string getName();
+	virtual std::string to_string();
 };
 
 #endif
