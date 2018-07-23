@@ -5,6 +5,7 @@
 #include "Wall.h"
 #include "Ground.h"
 #include "Potion.h"
+#include "PotionType.h"
 #include "HealthPotion.h"
 #include "EffectPotion.h"
 #include "BoostAtkEffect.h"
@@ -133,27 +134,27 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				break;
 			case '0': // restore health
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, "Restore Health", PotionType::Health, 5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Health, 5));
 				break;
 			case '1': // boost attack
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Attack", PotionType::BoostAttack, new BoostAtkEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect()));
 				break;
 			case '2': // boost defense
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Defences", PotionType::BoostDefense, new BoostDefEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect()));
 				break;
 			case '3': // poison health
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, "Poison Health", PotionType::Poison, -5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Poison, -5));
 				break;
 			case '4': // wound attack
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Attack", PotionType::WoundAttack, new WoundAtkEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect()));
 				break;
 			case '5': // wound defense
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Defense", PotionType::WoundDefense, new WoundDefEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect()));
 				break;
 			case '6': // normal gold pile
 				es.emplace_back(new Ground(x, y));
@@ -492,13 +493,14 @@ void DungeonMap::move(Entity *e, Direction d) {
 	floors[floor]->add(e);
 }
 
-void DungeonMap::potionPlayer(Direction d, string &output) {
+void DungeonMap::playerPotion(Direction d, string &output) {
 	size_t x = player->getX() + d.x;
 	size_t y = player->getY() + d.y;
 	vector<Entity*> &tile = floors[floor]->get(x, y);
 	if (tile.size() > 0) {
 		Potion *pot = dynamic_cast<Potion*>(tile.back());
 		if (pot) {
+			output += "PC uses ";
 			pot->pickup(*this, *player, output);
 			tile.pop_back();
 		}
@@ -513,13 +515,52 @@ void DungeonMap::playerMove(Direction d, string &output) {
 			output += "PC moves " + d.to_string();
 			string additionalOutput;
 			// and sees a furry friend. Use additionalOutput for output.
-			player->tick(*this, additionalOutput);
+			/*player->tick(*this, additionalOutput);
 			if (!additionalOutput.empty()) {
 				output += " " + additionalOutput;
+			}*/
+			size_t x = player->getX(), y = player->getY();
+			vector<Entity*> &tile = floors[floor]->get(x, y);
+			double prevGold = player->getGold();
+			for (size_t i = 0; i < tile.size(); ++i) {
+				Item *item = dynamic_cast<Item*>(tile[i]);
+				if (item) {
+					item->pickup(*this, *player, output);
+					tile.erase(tile.begin() + i);
+					--i;
+				}
 			}
-			else {
-				output += ". ";
+
+			if (player->getGold() != prevGold) {
+				output += " and picks up " + to_string((int)(player->getGold() - prevGold)) + " treasure";
 			}
+			output += ". ";
+
+			bool didSees = false;
+			for (size_t i = x - 1; i < x + 2; ++i) {
+				for (size_t j = y - 1; j < y + 2; ++j) {
+					if (i == x && j == y) continue; // Skip the player tile
+					Entity *e = floors[floor]->getTop(i, j);
+					Character *c = dynamic_cast<Character*>(e);
+					if (c) {
+						output += (didSees ? " and a " : "PC sees a ") + c->getType().to_string();
+						didSees = true;
+						continue;
+					}
+					Potion *p = dynamic_cast<Potion*>(e);
+					if (p) {
+						output += (didSees ? " and " : "PC sees ");
+						if (seenPotion(p->getType())) {
+							output += "a " + p->getType().to_string();
+						} else {
+							output += "an Unknown Potion";
+						}
+						didSees = true;
+						continue;
+					}
+				}
+			}
+			if (didSees) output += ". ";
 			return;
 		}
 	}
@@ -630,7 +671,7 @@ string DungeonMap::itemStats() {
 				else {
 					Potion *potion = dynamic_cast<Potion *>(e);
 					if (potion) {
-						output += "\nPotion " + potion->getName() + "(" + to_string(col) + ", " + to_string(row) + ")";
+						output += "\n" + potion->getType().to_string() + "(" + to_string(col) + ", " + to_string(row) + ")";
 						// output += "\n" + potion->to_string(); // why isn't this working
 					}
 				}

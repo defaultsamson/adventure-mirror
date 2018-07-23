@@ -4,9 +4,7 @@
 #include "Item.h"
 #include "../characters/CharacterDecorator.h"
 #include <string>
-//#include "../DungeonMap.h"
-
-class DungeonMap;
+#include "../DungeonMap.h"
 
 class Gold: public Item {
 	int value;

@@ -4,11 +4,10 @@
 #include "../DungeonMap.h"
 
 #include <string>
-#include <iostream>
 
 using namespace std;
 
-EffectPotion::EffectPotion(size_t x, size_t y, string name, PotionType type, CharacterDecorator *effect) : Potion{x, y, name, type}, effect{effect} {}
+EffectPotion::EffectPotion(size_t x, size_t y, PotionType type, CharacterDecorator *effect) : Potion{x, y, type}, effect{effect} {}
 
 void EffectPotion::setFloor(size_t f) {
 	Potion::setFloor(f);
@@ -27,3 +26,4 @@ string EffectPotion::to_string() {
 	}
 	return Potion::to_string();
 }
+

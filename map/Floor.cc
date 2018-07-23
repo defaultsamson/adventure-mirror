@@ -25,6 +25,11 @@ vector<Entity*> &Floor::get(size_t x, size_t y) {
 	return grid[x][y];
 }
 
+Entity *Floor::getTop(size_t x, size_t y) {
+	if (get(x, y).size() > 0) return get(x, y).back();
+	return nullptr;
+}
+
 size_t Floor::index() { return i; }
 size_t Floor::width() { return w; }
 size_t Floor::height() { return h; }

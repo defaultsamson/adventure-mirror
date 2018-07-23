@@ -14,6 +14,7 @@ public:
 	Floor(size_t i, size_t w, size_t h);
 	void add(Entity *e);
 	vector<Entity*> &get(size_t x, size_t y);
+	Entity *getTop(size_t x, size_t y);
 	size_t index();
 	size_t width();
 	size_t height();

@@ -59,56 +59,39 @@ Entity* Chamber::spawnObject(char c){
 		case '\\' : //create stair
 			return new Stair(x,y);
 		case '0': // restore health
-			return new HealthPotion(x, y, "Restore Health", PotionType::Health, 5);
-			break;
+			return new HealthPotion(x, y, PotionType::Health, 5);
 		case '1': // boost attack
-			return new EffectPotion(x, y, "Boost Attack", PotionType::BoostAttack, new BoostAtkEffect());
-			break;
+			return new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect());
 		case '2': // boost defense
-			return new EffectPotion(x, y, "Boost Defences", PotionType::BoostDefense, new BoostDefEffect());
-			break;
+			return new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect());
 		case '3': // poison health
-			return new HealthPotion(x, y, "Poison Health", PotionType::Poison, -5);
-			break;
+			return new HealthPotion(x, y, PotionType::Poison, -5);
 		case '4': // wound attack
-			return new EffectPotion(x, y, "Wound Attack", PotionType::WoundAttack, new WoundAtkEffect());
-			break;
+			return new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect());
 		case '5': // wound defense
-			return new EffectPotion(x, y, "Wound Defense", PotionType::WoundDefense, new WoundDefEffect());
-			break;
+			return new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect());
 		case '6': // normal gold pile
 			return new Gold(x, y, 2);
-			break;
 		case '7': // small hoard
 			return new Gold(x, y, 1);
-			break;
 		case '8': // merchant hoard
 			return new Gold(x, y, 4);
-			break;
 		case '9': // dragon hoard
 			return new DragonGold(x, y);
-			break;
 		case 'H': //human enemy
 			return new HumanEnemy(x,y);
-			break;
 		case 'W': //dwarf enemy
 			return new DwarfEnemy(x,y);
-			break;
 		case 'E': //elf enemy
 			return new ElfEnemy(x,y);
-			break;
 		case 'O': //orc enemy
 			return new OrcEnemy(x,y);
-			break;
 		case 'L': //halfling enemy
 			return new HalflingEnemy(x,y);
-			break;
 		case 'M': //merchant
 			return new Merchant(x,y);
-			break;
 		case 'D': //dragon enemy
 			return new DragonEnemy(x,y);
-			break;
 	}
 	return nullptr;
 }

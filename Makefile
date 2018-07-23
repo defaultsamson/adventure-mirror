@@ -13,7 +13,7 @@ OBJECTS=main.o Entity.o DungeonMap.o Chamber.o\
 		\
 		map/BoostAtkEffect.o map/BoostDefEffect.o map/Direction.o map/DragonGold.o map/EffectPotion.o map/Floor.o map/Gold.o \
 		map/Ground.o map/HealthPotion.o map/Item.o map/Pathway.o map/Potion.o map/Stair.o map/StaticEntity.o map/Wall.o \
-		map/WoundAtkEffect.o map/WoundDefEffect.o
+		map/WoundAtkEffect.o map/WoundDefEffect.o map/PotionType.o
 
 DEPENDS=${OBJECTS:.o=.d}
 EXEC=cc3k

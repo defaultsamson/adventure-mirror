@@ -5,7 +5,7 @@
 #include "Character.h"
 #include "Chamber.h"
 #include "CharacterDecorator.h"
-#include "Potion.h"
+#include "PotionType.h"
 #include <string>
 #include <vector>
 
@@ -37,7 +37,7 @@ public:
 	void move(Entity *e, Direction d);
 	void playerMove(Direction d, std::string &output);
 	void playerAttack(Direction d, std::string &output);
-	void potionPlayer(Direction d, std::string &output);
+	void playerPotion(Direction d, std::string &output);
 	void tick(std::string &output);
 	friend std::ostream &operator<<(std::ostream &out, const DungeonMap &m);
 	bool getFlag(MapFlags f);

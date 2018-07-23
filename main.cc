@@ -77,8 +77,8 @@ int main(int argc, char *argv[]) {
                     output = "Invalid direction. Try 'h' (without quotes) for help on commands.";
                     doTick = false;
                 } else {
-                    output = "Action: PC uses ";
-                    map.potionPlayer(d, output);
+                    output = "Action: ";
+                    map.playerPotion(d, output);
                     output += ". ";
                 }
             }
