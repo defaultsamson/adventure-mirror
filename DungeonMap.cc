@@ -20,6 +20,7 @@
 #include "HalflingEnemy.h"
 #include "Merchant.h"
 #include "DragonEnemy.h"
+#include "Chamber.h"
 
 #include <string>
 #include <iostream>
@@ -191,8 +192,194 @@ DungeonMap::DungeonMap(const char *filename, Character *player, bool re): player
 	}
 	//Spawn random item and enemies if the boolean re is true
 	if (re){
-//		int chamberIndex = 0;
+		//We spawn random enemies and random potions for each of the floors
+		for (size_t f = 0; f < floor + 1; f++){
+			Floor *currentFloor = floors[f];
+			//create a 2d vector to keep track of nodes we visited
+			//Everything in the array is initialised to false, by default
+			vector<vector<bool>> visited;
+			for (size_t x = 0; x < currentFloor->height(); ++x){
+				vector<bool> visitedRow;
+				for (size_t y = 0; y < currentFloor->width(); ++y){
+					visitedRow.emplace_back(false);
+				}
+				visited.emplace_back(visitedRow);
+			}
+			int chambersCount = 0;
+			vector<Chamber> chambers;
+			for (size_t x = 0; x < currentFloor->height(); ++x){
+				for (size_t y = 0; y < currentFloor->width(); ++y){
+					//We add tiles into chambers
+					if (!visited[x][y]){
+						visited[x][y] = true;
+						vector<Entity*> e = currentFloor->get(y, x);
+						if(e.size() && e.back()->isSpawnable()){
+							//create a new chamber
+							Chamber newChamber = Chamber();
+							//The while loop performs a depth first search
+							//for all connected floor tiles
+							vector<Entity*> floorTiles;
+							floorTiles.emplace_back(e.back());
+							while(!floorTiles.empty()){
+								//spawnableTiles is the current piles we are processing
+								//floorTiles are tiles we will search at the next loop
+								//move everything in floorTiles into spawnableTiles
+								vector<Entity*> spawnableTiles = floorTiles;
+								floorTiles.clear();
+								for (auto it : spawnableTiles){
+									//Add all nearby, unchecked floors to the spawnableTiles vector
+									Entity* entity = it;
+									vector<Direction> directions = getSpawnableDirections(entity);
+									for (auto dit : directions){
+										int connectedX = entity->getX() + dit.x;
+										int connectedY = entity->getY() + dit.y;
+										vector<Entity*> connectedTile = currentFloor->get(connectedY, connectedX);
+										if (!visited[connectedX][connectedY]){
+											visited[connectedX][connectedY] = true;
+											floorTiles.emplace_back(connectedTile.back());
+										}
+									}
+									newChamber.add(entity->getX(), entity->getY());
+								}
+							}
+							chambers.emplace_back(newChamber);
+							++chambersCount;
+						}
+					}
+				}
+			}
+			//Now we add everything into chambers
+			populate(currentFloor, chambers, chambersCount, player);
+			chambers.clear();
+			chambersCount = 0;
+		}
 	}
+}
+
+void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character* player){
+	for (auto it : chambers){
+		it.shuffle();
+	}
+	//Spawn the treasures
+	for (int i = 0; i < 10; ++i){
+		//remove any full (empty for the vector) chambers
+        	for (int j = cc - 1; j < 0; ++i){
+                	if (chambers[j].isEmpty()){
+				chambers.erase(chambers.begin() + j);
+				--cc;
+			}
+        	}
+		//roll a d8 to spawn treasures
+		//0-4 is normal, 5-6 is small hoard, 7 is dragon hoard
+		int roll = rand() % 8;
+		//generate a random number to decide which chamber to spawn the item
+		int chamberRoll = rand() % cc;
+		if (roll < 5){
+			fl->add(chambers[chamberRoll].spawnObject('6'));
+		} else if (roll < 7){
+			fl->add(chambers[chamberRoll].spawnObject('7'));
+		} else {
+			//Only spawn dragon hoard at a location if we can fit a dragon
+			//next to it
+			Entity* g = chambers[chamberRoll].spawnObject('8');
+			vector<Direction> directions = getSpawnableDirections(g);
+			while (directions.empty()){
+				if (chambers[chamberRoll].isEmpty()){
+					chambers.erase(chambers.begin() + chamberRoll);
+					--cc;
+					chamberRoll = rand() % cc;
+				} else {
+					delete g;
+					g = chambers[chamberRoll].spawnObject('8');
+					directions = getSpawnableDirections(g);
+				}
+                        }
+			//spawn a dragon
+			int directionCount = directions.size();
+			int directionRoll = rand() % directionCount;
+			Direction dir = directions[directionRoll];
+			size_t dragonX = g->getX() + dir.x;
+			size_t dragonY = g->getY() + dir.y;
+			fl->add(new DragonEnemy(dragonX, dragonY));
+			chambers[chamberRoll].remove(dragonX, dragonY);
+		}
+	}
+	//Spawn the enemies
+	for (int i = 0; i < 20; ++i){
+                //remove any full (empty for the vector) chambers
+                for (int j = cc - 1; j < 0; ++i){
+                        if (chambers[j].isEmpty()){
+                                chambers.erase(chambers.begin() + j);
+                                --cc;
+                        }
+                }
+                //roll a d18 to spawn enemies
+                //0-4 is halfling, 5-8 is human, 9-11 is dwarf, 12-13 is elf, 14-15 is orc, 16-17 is merchant
+                int roll = rand() % 18;
+                //generate a random number to decide which chamber to spawn the entity
+                int chamberRoll = rand() % cc;
+                if (roll < 5){
+                        fl->add(chambers[chamberRoll].spawnObject('L'));
+                } else if (roll < 9){
+                        fl->add(chambers[chamberRoll].spawnObject('H'));
+                } else if (roll < 12){
+			fl->add(chambers[chamberRoll].spawnObject('W'));
+		} else if (roll < 14){
+			fl->add(chambers[chamberRoll].spawnObject('E'));
+		} else if (roll < 16){
+			fl->add(chambers[chamberRoll].spawnObject('O'));
+		} else {
+			fl->add(chambers[chamberRoll].spawnObject('M'));
+		}
+	}
+	//Spawn the potions
+	for (int i = 0; i < 10; ++i){
+                //remove any full (empty for the vector) chambers
+                for (int j = cc - 1; j < 0; ++i){
+                        if (chambers[j].isEmpty()){
+                                chambers.erase(chambers.begin() + j);
+                                --cc;
+                        }
+                }
+                //roll a d6 to spawn enemies
+                int roll = rand() % 6;
+                //generate a random number to decide which chamber to spawn the entity
+                int chamberRoll = rand() % cc;
+        	switch(roll){
+			case 0 : fl->add(chambers[chamberRoll].spawnObject('0'));
+				break;
+			case 1 : fl->add(chambers[chamberRoll].spawnObject('1'));
+				break;
+			case 2 : fl->add(chambers[chamberRoll].spawnObject('2'));
+				break;
+			case 3 : fl->add(chambers[chamberRoll].spawnObject('3'));
+				break;
+			case 4 : fl->add(chambers[chamberRoll].spawnObject('4'));
+				break;
+			case 5 : fl->add(chambers[chamberRoll].spawnObject('5'));
+				break;
+		}
+	}
+	for (int j = cc - 1; j < 0; ++j){
+		if (chambers[j].isEmpty()){
+			chambers.erase(chambers.begin() + j);
+			--cc;
+		}
+	}
+	//Spawn the exit
+	int exitChamberRoll = rand() % cc;
+	fl->add(chambers[exitChamberRoll].spawnObject('\\'));
+	//Spawn the player
+	chambers.erase(chambers.begin() + exitChamberRoll);
+	--cc;
+	int playerChamberRoll = rand() % cc;
+	//We use a second stair to represent the player's spawn, but this stair
+	//will not be added to the map.
+	//It make sense to use a stair, since you walked up a stair after all
+	Entity* spawn = chambers[playerChamberRoll].spawnObject('\\');
+	player->setX(spawn->getX());
+	player->setY(spawn->getY());
+	fl->add(player);
 }
 
 size_t DungeonMap::getFloor() { return floor; }

@@ -3,6 +3,7 @@
 
 #include "Floor.h"
 #include "Character.h"
+#include "Chamber.h"
 #include <string>
 #include <vector>
 
@@ -10,6 +11,8 @@ class DungeonMap {
 	size_t floor = 0;
 	vector<Floor*> floors;
 	Character *player;
+	
+	void populate(Floor* fl, vector<Chamber> c, int cc, Character *player);
 public:
 	DungeonMap(const char* filename, Character *player = nullptr, bool randomEntities = false);
 

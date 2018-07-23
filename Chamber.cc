@@ -23,6 +23,15 @@ void Chamber::add(size_t x, size_t y){
 	++size;	
 }
 
+void Chamber::remove(size_t x, size_t y){
+	for (int i = 0; i < size; ++i){
+		Coordinate c = tiles[i];
+		if (c.x == x && c.y == y){
+			tiles.erase(tiles.begin() + i);
+		}
+	}
+}
+
 bool Chamber::isEmpty(){
 	if (size > 0){
 		return false;
@@ -31,7 +40,7 @@ bool Chamber::isEmpty(){
 	}
 }
 
-void Chamber::Shuffle(){
+void Chamber::shuffle(){
 	std::random_shuffle(tiles.begin(), tiles.end());
 }
 
