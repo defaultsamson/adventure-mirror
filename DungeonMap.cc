@@ -580,6 +580,13 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 		if (e) {
 			player->hit(*e, output);
 			output += "(" + to_string((int) e->getHP()) + " HP). ";
+			Merchant *m = dynamic_cast<Merchant *>(e);
+			if (m) {
+				if (!getFlag(MapFlags::MerchantsHostile)) {
+					output += "PC has enraged the merchants and will attack PC from now on. ";
+				}
+				setFlag(MapFlags::MerchantsHostile, true);
+			}
 		}
 		else {
 			output += "PC attacks the ground unsuccessfully. ";
