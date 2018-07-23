@@ -7,6 +7,7 @@
 #include <string>
 
 class Enemy : public BaseCharacter{
+protected:
 	bool moved = false;
 public:
 	Enemy(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);

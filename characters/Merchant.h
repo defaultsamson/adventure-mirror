@@ -4,9 +4,12 @@
 #include "Character.h"
 #include "Enemy.h"
 class Merchant : public Enemy{
-public :
+	bool hostile = false;
+public:
 	Merchant(size_t x, size_t y);
 	bool takeDamage(Character &c, double damage) override;
 	CharacterType getType() override;
+	void tick(DungeonMap &map, std::string &output) override;
+	void setHostile(bool value);
 };
 #endif

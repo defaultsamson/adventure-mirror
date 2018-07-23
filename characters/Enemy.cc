@@ -38,7 +38,6 @@ void Enemy::tick(DungeonMap &map, string &output) {
 		// Enemy didn't move and can still attack
 		hit(*map.getPlayer(), output);
 	}
-	(void) output;
 }
 
 bool Enemy::hit(Character &other, string &output) {
