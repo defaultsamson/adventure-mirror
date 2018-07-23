@@ -13,8 +13,3 @@ void Item::move(Direction d) {
 	(void) d; // intentional, items do not move
 }
 
-void Item::pickup(CharacterDecorator *entity) {
-	// TODO remove this from the map
-	(void) entity;
-}
-

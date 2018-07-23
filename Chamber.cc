@@ -1,4 +1,5 @@
 #include "Chamber.h"
+#include "Potion.h"
 #include "HealthPotion.h"
 #include "EffectPotion.h"
 #include "BoostAtkEffect.h"
@@ -15,6 +16,7 @@
 #include "HalflingEnemy.h"
 #include "Merchant.h"
 #include "DragonEnemy.h"
+
 Chamber::Chamber() : size{0}, hasStair{false}{}
 
 void Chamber::add(size_t x, size_t y){
@@ -52,22 +54,22 @@ Entity* Chamber::spawnObject(char c){
 	tiles.pop_back();
 	switch(c) {
 		case '0': // restore health
-			return new HealthPotion(x, y, "Restore Health", 5);
+			return new HealthPotion(x, y, "Restore Health", PotionType::Health, 5);
 			break;
 		case '1': // boost attack
-			return new EffectPotion(x, y, "Boost Attack", new BoostAtkEffect());
+			return new EffectPotion(x, y, "Boost Attack", PotionType::BoostAttack, new BoostAtkEffect());
 			break;
 		case '2': // boost defense
-			return new EffectPotion(x, y, "Boost Defences", new BoostDefEffect());
+			return new EffectPotion(x, y, "Boost Defences", PotionType::BoostDefense, new BoostDefEffect());
 			break;
 		case '3': // poison health
-			return new HealthPotion(x, y, "Poison Health", -5);
+			return new HealthPotion(x, y, "Poison Health", PotionType::Poison, -5);
 			break;
 		case '4': // wound attack
-			return new EffectPotion(x, y, "Wound Attack", new WoundAtkEffect());
+			return new EffectPotion(x, y, "Wound Attack", PotionType::WoundAttack, new WoundAtkEffect());
 			break;
 		case '5': // wound defense
-			return new EffectPotion(x, y, "Wound Defense", new WoundDefEffect());
+			return new EffectPotion(x, y, "Wound Defense", PotionType::WoundDefense, new WoundDefEffect());
 			break;
 		case '6': // normal gold pile
 			return new Gold(x, y, 2);

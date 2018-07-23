@@ -2,16 +2,17 @@
 #define HEALTHPOTION_H
 
 #include "Potion.h"
-#include "CharacterDecorator.h"
+#include "../characters/CharacterDecorator.h"
+//#include "../DungeonMap.h"
 #include <string>
 
-using namespace std;
+class DungeonMap;
 
 class HealthPotion: public Potion {
 	double health;
 public:
-	HealthPotion(size_t x, size_t y, string name, double health);
-	void pickup(CharacterDecorator *entity) override;
+	HealthPotion(size_t x, size_t y, std::string name, PotionType type, double health);
+	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
 };
 
 #endif

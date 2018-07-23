@@ -2,17 +2,21 @@
 #define POTION_H
 
 #include "Item.h"
-#include "CharacterDecorator.h"
+#include "../characters/CharacterDecorator.h"
 #include <string>
 
-using namespace std;
+class DungeonMap;
+
+enum class PotionType { BoostAttack, WoundAttack, BoostDefense, WoundDefense, Health, Poison };
 
 class Potion: public Item {
-	string type;
+	std::string name;
+	PotionType type;
 public:
-	Potion(size_t x, size_t y, string type);
+	Potion(size_t x, size_t y, std::string name, PotionType type);
 	bool isWalkable() override;
 	bool isSpawnable() override;
+	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
 };
 
 #endif

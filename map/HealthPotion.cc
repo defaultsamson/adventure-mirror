@@ -1,15 +1,15 @@
 #include "HealthPotion.h"
 #include "Potion.h"
 #include <string>
-#include "CharacterDecorator.h"
-#include "Character.h"
+#include "../characters/CharacterDecorator.h"
+//#include "../DungeonMap.h"
 
 using namespace std;
 
-HealthPotion::HealthPotion(size_t x, size_t y, string name, double health) : Potion{x, y, name}, health{health} {}
+HealthPotion::HealthPotion(size_t x, size_t y, string name, PotionType type, double health) : Potion{x, y, name, type}, health{health} {}
 
-void HealthPotion::pickup(CharacterDecorator *entity) {
-	entity->addHP(entity->getType() == CharacterType::Drow ? health * 1.5 : health);
-	Potion::pickup(entity);
+void HealthPotion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
+	c.addHP(c.getType() == CharacterType::Drow ? health * 1.5 : health);
+	Potion::pickup(map, c, output);
 }
 

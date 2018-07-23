@@ -5,16 +5,16 @@
 #include "Character.h"
 #include "Chamber.h"
 #include "CharacterDecorator.h"
+#include "Potion.h"
 #include <string>
 #include <vector>
 
 class DungeonMap {
 	size_t floor = 0;
 	vector<Floor*> floors;
-	Character *player;
-	
-	void populate(Floor* fl, vector<Chamber> c, int cc, Character *player);
+	vector<PotionType> potions;
 	CharacterDecorator *player;
+	void populate(Floor* fl, vector<Chamber> c, int cc, Character *player);
 public:
 	DungeonMap(const char* filename, CharacterDecorator *player = nullptr, bool randomEntities = false);
 
@@ -24,6 +24,9 @@ public:
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 
 	CharacterDecorator *getPlayer();
+
+	void witnessPotion(PotionType t);
+	bool seenPotion(PotionType t);
 
 	void move(Entity *e, Direction d);
 	void movePlayer(Direction d, std::string &output);

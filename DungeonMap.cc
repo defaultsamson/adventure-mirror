@@ -4,6 +4,7 @@
 #include "Pathway.h"
 #include "Wall.h"
 #include "Ground.h"
+#include "Potion.h"
 #include "HealthPotion.h"
 #include "EffectPotion.h"
 #include "BoostAtkEffect.h"
@@ -31,6 +32,12 @@
 using namespace std;
 
 CharacterDecorator *DungeonMap::getPlayer() { return player; }
+
+void DungeonMap::witnessPotion(PotionType type) { potions.emplace_back(type); }
+bool DungeonMap::seenPotion(PotionType type) {
+	for (PotionType pt: potions) if (type == pt) return true;
+	return false;
+}
 
 DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re): player{player} {
 	ifstream file{filename};
@@ -120,27 +127,27 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				break;
 			case '0': // restore health
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, "Restore Health", 5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, "Restore Health", PotionType::Health, 5));
 				break;
 			case '1': // boost attack
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Attack", new BoostAtkEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Attack", PotionType::BoostAttack, new BoostAtkEffect()));
 				break;
 			case '2': // boost defense
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Defences", new BoostDefEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Boost Defences", PotionType::BoostDefense, new BoostDefEffect()));
 				break;
 			case '3': // poison health
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, "Poison Health", -5));
+				if (!re) es.emplace_back(new HealthPotion(x, y, "Poison Health", PotionType::Poison, -5));
 				break;
 			case '4': // wound attack
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Attack", new WoundAtkEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Attack", PotionType::WoundAttack, new WoundAtkEffect()));
 				break;
 			case '5': // wound defense
 				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Defense", new WoundDefEffect()));
+				if (!re) es.emplace_back(new EffectPotion(x, y, "Wound Defense", PotionType::WoundDefense, new WoundDefEffect()));
 				break;
 			case '6': // normal gold pile
 				es.emplace_back(new Ground(x, y));
@@ -192,7 +199,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 		} else { endFloor = false; }
 	}
 	//Spawn random item and enemies if the boolean re is true
-	if (re){
+/*	if (re){
 		//We spawn random enemies and random potions for each of the floors
 		for (size_t f = 0; f < floor + 1; f++){
 			Floor *currentFloor = floors[f];
@@ -254,7 +261,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 			chambers.clear();
 			chambersCount = 0;
 		}
-	}
+	}*/
 }
 
 void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character* player){
@@ -463,10 +470,8 @@ void DungeonMap::potionPlayer(Direction d, string &output) {
 	if (tile.size() > 0) {
 		Potion *pot = dynamic_cast<Potion*>(tile.back());
 		if (pot) {
-			pot->pickup(player);
+			pot->pickup(*this, *player, output);
 			tile.pop_back();
-			// TODO output
-			(void) output;
 		}
 	}
 }

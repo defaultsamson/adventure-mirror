@@ -2,7 +2,11 @@
 #define ITEM_H
 
 #include "../Entity.h"
-#include "CharacterDecorator.h"
+#include "../characters/CharacterDecorator.h"
+#include <string>
+//#include "../DungeonMap.h"
+
+class DungeonMap;
 
 class Item: public Entity {
 	size_t x, y;
@@ -15,7 +19,7 @@ public:
 	void setY(size_t y) override;
 	char print() override;
 	void move(Direction d) override;
-	virtual void pickup(CharacterDecorator *o);
+	virtual void pickup(DungeonMap &map, CharacterDecorator &o, std::string &output) = 0;
 };
 
 #endif
