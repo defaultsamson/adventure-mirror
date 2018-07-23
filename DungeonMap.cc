@@ -269,7 +269,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 		it.shuffle();
 	}
 	//Spawn the treasures
-	for (int i = 0; i < 1; ++i){
+	for (int i = 0; i < 10; ++i){
 		//remove any full (empty for the vector) chambers
         	for (int j = cc - 1; j < 0; ++i){
                 	if (chambers[j].isEmpty()){
@@ -279,8 +279,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
         	}
 		//roll a d8 to spawn treasures
 		//0-4 is normal, 5-6 is small hoard, 7 is dragon hoard
-		//int roll = rand() & 8;
-		int roll = 7;
+		int roll = rand() & 8;
 		//generate a random number to decide which chamber to spawn the item
 		int chamberRoll = rand() % cc;
 		if (roll < 5){
@@ -290,8 +289,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 		} else {
 			//Only spawn dragon hoard at a location if we can fit a dragon
 			//next to it
-			//Entity* g = chambers[chamberRoll].spawnObject('8'); DEBUG!!!!!, RESTORE THIS
-			Entity* g = new DragonGold(38,12);
+			Entity* g = chambers[chamberRoll].spawnObject('8');
 			vector<Direction> directions = getSpawnableDirections(g);
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
@@ -308,7 +306,6 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 				}
                         }
 			//spawn a dragon
-			std::cout << g->getX() << " " << g->getY() << std::endl;
 			fl->add(g);
 			int directionCount = (int) directions.size();
 			int directionRoll = rand() % directionCount;
@@ -318,7 +315,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 			fl->add(new DragonEnemy(dragonX, dragonY));
 			chambers[chamberRoll].remove(dragonX, dragonY);
 		}
-	}/*
+	}
 	//Spawn the enemies
 	for (int i = 0; i < 20; ++i){
                 //remove any full (empty for the vector) chambers
@@ -395,8 +392,6 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 	player->setX(spawn->getX());
 	player->setY(spawn->getY());
 	fl->add(player);
-	*/
-
 	//DEBUG
 	(void) fl;
 	(void) chambers;
