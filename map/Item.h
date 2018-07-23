@@ -4,7 +4,6 @@
 #include "../Entity.h"
 #include "../characters/CharacterDecorator.h"
 #include <string>
-//#include "../DungeonMap.h"
 
 class DungeonMap;
 
@@ -21,7 +20,7 @@ public:
 	size_t getFloor() override;
 	char print() override;
 	void move(Direction d) override;
-	virtual void pickup(DungeonMap &map, CharacterDecorator &o, std::string &output) = 0;
+	virtual bool pickup(DungeonMap &map, CharacterDecorator &o, std::string &output) = 0;
 };
 
 #endif

@@ -14,10 +14,10 @@ void EffectPotion::setFloor(size_t f) {
 	effect->setActiveFloor(f);
 }
 
-void EffectPotion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
+bool EffectPotion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
 	if (c.getType() == CharacterType::Drow) effect->setMultiplier(1.5);
 	c.decorate(effect);
-	Potion::pickup(map, c, output);
+	return Potion::pickup(map, c, output);
 }
 
 string EffectPotion::to_string() {

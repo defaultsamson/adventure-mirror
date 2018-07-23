@@ -11,7 +11,7 @@ class HealthPotion: public Potion {
 	double health;
 public:
 	HealthPotion(size_t x, size_t y, PotionType type, double health);
-	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
+	bool pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
 };
 
 #endif

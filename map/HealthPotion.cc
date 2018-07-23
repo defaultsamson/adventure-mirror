@@ -9,8 +9,8 @@ using namespace std;
 
 HealthPotion::HealthPotion(size_t x, size_t y, PotionType type, double health) : Potion{x, y, type}, health{health} {}
 
-void HealthPotion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
+bool HealthPotion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
 	c.addHP(c.getType() == CharacterType::Drow ? health * 1.5 : health);
-	Potion::pickup(map, c, output);
+	return Potion::pickup(map, c, output);
 }
 

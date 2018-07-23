@@ -12,7 +12,7 @@ public:
 	Gold(size_t x, size_t y, int value);
 	bool isSpawnable() override;
 	bool isWalkable() override;
-	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
+	bool pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
 	int getValue();
 };
 

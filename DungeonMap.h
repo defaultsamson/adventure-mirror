@@ -24,16 +24,13 @@ public:
 	};
 	DungeonMap(const char* filename, CharacterDecorator *player = nullptr, bool randomEntities = false);
 
-	size_t getFloor();
+	Floor *getFloor();
 	void progressFloor();
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
-
 	CharacterDecorator *getPlayer();
-
 	void witnessPotion(PotionType t);
 	bool seenPotion(PotionType t);
-
 	void move(Entity *e, Direction d);
 	void playerMove(Direction d, std::string &output);
 	void playerAttack(Direction d, std::string &output);

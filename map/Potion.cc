@@ -12,10 +12,11 @@ Potion::Potion(size_t x, size_t y, PotionType type) : Item{x, y, 'P'}, type{type
 bool Potion::isWalkable() { return false; }
 bool Potion::isSpawnable() { return false; }
 
-void Potion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
+bool Potion::pickup(DungeonMap &map, CharacterDecorator &c, string &output) {
 	map.witnessPotion(type);
 	output += type.to_string();
 	(void) c;
+	return true;
 }
 
 PotionType Potion::getType() {

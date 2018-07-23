@@ -406,7 +406,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 	(void) player;
 }
 
-size_t DungeonMap::getFloor() { return floor; }
+Floor *DungeonMap::getFloor() { return floors[floor]; }
 
 void DungeonMap::progressFloor() {
 	// TODO Clean up current floor
@@ -501,8 +501,7 @@ void DungeonMap::playerPotion(Direction d, string &output) {
 		Potion *pot = dynamic_cast<Potion*>(tile.back());
 		if (pot) {
 			output += "PC uses ";
-			pot->pickup(*this, *player, output);
-			tile.pop_back();
+			if (pot->pickup(*this, *player, output)) tile.pop_back();
 			return;
 		}
 	}
@@ -528,9 +527,10 @@ void DungeonMap::playerMove(Direction d, string &output) {
 			for (size_t i = 0; i < tile.size(); ++i) {
 				Item *item = dynamic_cast<Item*>(tile[i]);
 				if (item) {
-					item->pickup(*this, *player, output);
-					tile.erase(tile.begin() + i);
-					--i;
+					if (item->pickup(*this, *player, output)) {
+						tile.erase(tile.begin() + i);
+						--i;
+					}
 				}
 			}
 

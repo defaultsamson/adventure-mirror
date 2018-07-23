@@ -15,7 +15,7 @@ public:
 	Potion(size_t x, size_t y, PotionType type);
 	bool isWalkable() override;
 	bool isSpawnable() override;
-	void pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
+	bool pickup(DungeonMap &map, CharacterDecorator &c, std::string &output) override;
 	PotionType getType();
 	virtual std::string to_string();
 };
