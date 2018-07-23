@@ -2,6 +2,9 @@
 #include "Character.h"
 #include "Item.h"
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 CharacterDecorator::CharacterDecorator() {}
 CharacterDecorator::CharacterDecorator(Character *component) : component{component}, activeFloor{component->getFloor()} {}
@@ -10,8 +13,8 @@ bool CharacterDecorator::hit(Character &other, std::string &output) {
 	return component->hit(other, output);
 }
 
-bool CharacterDecorator::takeDamage(Character &from, double damage) {
-	return component->takeDamage(from, damage);
+bool CharacterDecorator::takeDamage(Character &from, double damage, string &output) {
+	return component->takeDamage(from, damage, output);
 }
 
 double CharacterDecorator::hitPower(Character &other) { return component->hitPower(other); }

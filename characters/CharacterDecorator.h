@@ -14,7 +14,7 @@ public:
 	CharacterDecorator(Character *component);
 	bool hit(Character &other, std::string &output) override;
 	double hitPower(Character &other) override;
-	bool takeDamage(Character &from, double damage) override;
+	bool takeDamage(Character &from, double damage, std::string &output) override;
 	void decorate(CharacterDecorator *o);
 	void addHP(double hp) override;
 	double score() override;

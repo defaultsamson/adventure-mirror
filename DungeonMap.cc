@@ -409,7 +409,6 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 Floor *DungeonMap::getFloor() { return floors[floor]; }
 
 void DungeonMap::progressFloor() {
-	// TODO Clean up current floor
 	++floor;
 	// TODO load new floor
 }
