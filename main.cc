@@ -72,10 +72,15 @@ int main(int argc, char *argv[]) {
                 break;
             }
             else if (input == "u") {
-                // yeah we might want to make a helper function to get direction
-                // Direction d;
-                // cin >> d;
-                // player.use(d);
+                cin >> input;
+                Direction d = Direction::getDirection(input);
+                if (d == Direction::Invalid) {
+                    output = "Invalid direction. Try 'h' (without quotes) for help on commands.";
+                    doTick = false;
+                } else {
+                    map.potionPlayer(d, output);
+                }
+
                 output = "Action: PC uses [AB].";
             }
             else if (input == "a") {
