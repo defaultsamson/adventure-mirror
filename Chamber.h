@@ -19,6 +19,6 @@ public :
 	void remove(size_t x, size_t y);
 	bool isEmpty();
 	Entity* spawnObject(char c);
-	void shuffle();
+	void shuffle(std::default_random_engine &e);
 };
 #endif

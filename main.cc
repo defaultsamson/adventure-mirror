@@ -53,7 +53,8 @@ int main(int argc, char *argv[]) {
         else { // default race
             player = new CharacterDecorator(new ShadeRace(0, 0));
         }
-
+	//set the random seed for random generation
+	srand(time(NULL));
         const char *defaultMap = {"cc3kfloor.txt"};
         DungeonMap map{defaultMap, player, true};
         if (argc > 1) {

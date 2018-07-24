@@ -44,8 +44,8 @@ bool Chamber::isEmpty(){
 	}
 }
 
-void Chamber::shuffle(){
-	std::random_shuffle(tiles.begin(), tiles.end());
+void Chamber::shuffle(std::default_random_engine &eng){
+	std::shuffle(tiles.begin(), tiles.end(), eng);
 }
 
 Entity* Chamber::spawnObject(char c){

@@ -272,8 +272,11 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 }
 
 void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character* player){
+	unsigned seed = (unsigned) (rand() % 100);
+	std::cout << seed;
+	std::default_random_engine eng = std::default_random_engine(seed);
 	for (Chamber& it : chambers){
-		it.shuffle();
+		it.shuffle(eng);
 	}
 	//Spawn the treasures
 	for (int i = 0; i < 10; ++i){
@@ -286,7 +289,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
         	}
 		//roll a d8 to spawn treasures
 		//0-4 is normal, 5-6 is small hoard, 7 is dragon hoard
-		int roll = rand() & 8;
+		int roll = rand() % 8;
 		//generate a random number to decide which chamber to spawn the item
 		int chamberRoll = rand() % cc;
 		if (roll < 5){
