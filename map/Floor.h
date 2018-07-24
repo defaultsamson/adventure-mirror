@@ -8,13 +8,16 @@
 using namespace std;
 
 class Floor {
-	size_t i, w, h;
+	size_t i, w, h, sX, sY;
 	vector<vector<vector<Entity*>>> grid;
 public:
 	Floor(size_t i, size_t w, size_t h);
 	void add(Entity *e);
 	vector<Entity*> &get(size_t x, size_t y);
 	Entity *getTop(size_t x, size_t y);
+	void setSpawn(size_t x, size_t y);
+	size_t spawnX();
+	size_t spawnY();
 	size_t index();
 	size_t width();
 	size_t height();

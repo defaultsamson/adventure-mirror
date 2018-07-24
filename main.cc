@@ -1,5 +1,7 @@
 #include <string>
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
 
 #include "DungeonMap.h"
 #include "BaseCharacter.h"
@@ -30,6 +32,9 @@ int main(int argc, char *argv[]) {
     * r: restarts the game. All stats, inventory, and gold are reset. A new race should be selected.
     * q: allows the player to admit defeat and exit the game.
     Note that the board should be redrawn as appropriate every time a command is entered.*/
+
+    // Initializes the random number generator
+    srand(time(NULL));
 
     string input;
     string output;
@@ -63,7 +68,7 @@ int main(int argc, char *argv[]) {
         cout << map << endl;
         cout << "Action: Player character has spawned." << endl;
         // init map, enemies, items, etc here
-        while (!player->deathCheck() && cin >> input) {
+        while (!player->deathCheck() && !map.wonGame() && cin >> input) {
             bool doTick = true;
             // main game loop
             if (input == "q") {
@@ -145,7 +150,7 @@ int main(int argc, char *argv[]) {
                     doTick = false;
                 }
                 else {
-                    map.playerMove(d, output);
+                    doTick = map.playerMove(d, output);
                 }
             }
             if (doTick) {
@@ -155,7 +160,19 @@ int main(int argc, char *argv[]) {
             cout << output << endl;
             // map.tick
         }
-        if (player->deathCheck()) {
+        if (map.wonGame()) {
+            cout << "Executing Command: sudo rm -rf /enemies --no-preserve-root" << endl;
+            cout << "You beat the game! Score: " << player->score() << endl;
+            cout << "Play again? (y/n): ";
+            if (cin >> input && input == "y") {
+                cout << "Restarting Game" << endl;
+                // TODO: make sure we manage memory of previous player and stuff
+            }
+            else {
+                break;
+            }
+
+	} else if (player->deathCheck()) {
             cout << "Oof, you died. Score: " << player->score() << endl;
             cout << "Play again? (y/n): ";
             if (cin >> input && input == "y") {

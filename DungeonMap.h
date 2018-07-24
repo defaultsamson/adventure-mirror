@@ -16,6 +16,8 @@ class DungeonMap {
 	vector<bool> flags;
 	CharacterDecorator *player;
 	void populate(Floor* fl, vector<Chamber> c, int cc, Character *player);
+	bool passTick = false;
+	bool won = false;
 public:
 	enum MapFlags {
 		EnemiesFrozen,
@@ -25,14 +27,15 @@ public:
 	DungeonMap(const char* filename, CharacterDecorator *player = nullptr, bool randomEntities = false);
 
 	Floor *getFloor();
-	void progressFloor();
+	void progressFloor(bool start = false);
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
 	CharacterDecorator *getPlayer();
 	void witnessPotion(PotionType t);
+	bool wonGame();
 	bool seenPotion(PotionType t);
 	void move(Entity *e, Direction d);
-	void playerMove(Direction d, std::string &output);
+	bool playerMove(Direction d, std::string &output);
 	void playerAttack(Direction d, std::string &output);
 	void playerPotion(Direction d, std::string &output);
 	void tick(std::string &output);

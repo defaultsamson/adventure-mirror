@@ -25,6 +25,13 @@ vector<Entity*> &Floor::get(size_t x, size_t y) {
 	return grid[x][y];
 }
 
+size_t Floor::spawnX() { return sX; }
+size_t Floor::spawnY() { return sY; }
+void Floor::setSpawn(size_t x, size_t y) {
+	sX = x;
+	sY = y;
+}
+
 Entity *Floor::getTop(size_t x, size_t y) {
 	if (get(x, y).size() > 0) return get(x, y).back();
 	return nullptr;

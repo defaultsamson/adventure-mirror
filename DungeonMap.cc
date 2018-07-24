@@ -61,7 +61,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	vector<Entity *> es;
 
 	size_t i = 0;
-	size_t x = -1, y = 0;	// x and y coordinates of the current character
+	size_t x = -1, y = 0, spawnX = 0, spawnY = 0;	// x and y coordinates of the current character
 
 	char input;
 	while (file.get(input)) {
@@ -96,6 +96,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 					Floor *fl = new Floor(i, width, y + 1);
 					for (Entity *e: es) fl->add(e);
 					es.clear();
+					fl->setSpawn(spawnX, spawnY);
 					this->floors.emplace_back(fl);
 
 					// Resets the floor variables
@@ -126,11 +127,8 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				break;
 			case '@': // player
 				es.emplace_back(new Ground(x, y));
-				if (!re) {
-					es.emplace_back(player);
-					player->setX(x);
-					player->setY(y);
-				}
+				spawnX = x;
+				spawnY = y;
 				break;
 			case '0': // restore health
 				es.emplace_back(new Ground(x, y));
@@ -269,11 +267,14 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 			chambersCount = 0;
 		}
 	}
+
+	// Loads the first floor after everything
+	progressFloor(true);
 }
 
 void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character* player){
 	unsigned seed = (unsigned) (rand() % 100);
-	std::cout << seed;
+	cout << "Seed: " << seed << endl;
 	std::default_random_engine eng = std::default_random_engine(seed);
 	for (Chamber& it : chambers){
 		it.shuffle(eng);
@@ -399,9 +400,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 	//will not be added to the map.
 	//It make sense to use a stair, since you walked up a stair after all
 	Entity* spawn = chambers[playerChamberRoll].spawnObject('\\');
-	player->setX(spawn->getX());
-	player->setY(spawn->getY());
-	fl->add(player);
+	fl->setSpawn(spawn->getX(), spawn->getY());
 	//DEBUG
 	(void) fl;
 	(void) chambers;
@@ -411,9 +410,22 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 
 Floor *DungeonMap::getFloor() { return floors[floor]; }
 
-void DungeonMap::progressFloor() {
-	++floor;
-	// TODO load new floor
+bool DungeonMap::wonGame() { return won; }
+
+void DungeonMap::progressFloor(bool start) {
+	if (!start) {
+		++floor;
+	}
+
+	if (floor >= floors.size()) {
+		// END GAME
+		won = true;
+		floor = floors.size() - 1;
+	} else {
+		player->setX(getFloor()->spawnX());
+		player->setY(getFloor()->spawnY());
+		getFloor()->add(player);
+	}
 }
 
 ostream &operator<<(ostream &out, const DungeonMap &m) {
@@ -513,7 +525,7 @@ void DungeonMap::playerPotion(Direction d, string &output) {
 	output += "PC attempts to drink the air, but fails";
 }
 
-void DungeonMap::playerMove(Direction d, string &output) {
+bool DungeonMap::playerMove(Direction d, string &output) {
 	output = "Action: ";
 	for (Direction valid: getWalkableDirections(player)) {
 		if (d == valid) {
@@ -536,6 +548,14 @@ void DungeonMap::playerMove(Direction d, string &output) {
 						tile.erase(tile.begin() + i);
 						--i;
 					}
+					continue;
+				}
+				Stair *stair = dynamic_cast<Stair*>(tile[i]);
+				if (stair) {
+					// If there's a stair in this tile, progress the floor
+					progressFloor();
+					output += " and exits from floor " + to_string(floor) + ". ";
+					return false;
 				}
 			}
 
@@ -569,10 +589,11 @@ void DungeonMap::playerMove(Direction d, string &output) {
 				}
 			}
 			if (didSees) output += ". ";
-			return;
+			return true;
 		}
 	}
 	output = "PC attempts to move " + d.to_string() + ", but is blocked from moving that way. ";
+	return true;
 }
 
 void DungeonMap::playerAttack(Direction d, string &output) {
@@ -616,7 +637,7 @@ void DungeonMap::tick(string &output) {
 				vector<Entity *> cell = currentFloor->get(col, row);
 				for (Entity * e: cell) {
 					// enemies decide whether to move or not
-					if (e != player) {
+					if (e != player && !passTick) {
 						e->moveTick(*this, output);
 					}
 				}
@@ -628,7 +649,7 @@ void DungeonMap::tick(string &output) {
 			vector<Entity *> cell = currentFloor->get(col, row);
 			for (Entity * e: cell) {
 				// if not moving, enemies will attack
-				if (e != player) {
+				if (e != player && !passTick) {
 					e->tick(*this, output);
 				}
 			}
@@ -639,12 +660,13 @@ void DungeonMap::tick(string &output) {
 			vector<Entity *> cell = currentFloor->get(col, row);
 			for (Entity * e: cell) {
 				CharacterDecorator *c = dynamic_cast<CharacterDecorator *>(e);
-				if (c) {
+				if (c && !passTick) {
 					c->resetTick();
 				}
 			}
 		}
 	}
+	passTick = false;
 }
 
 string DungeonMap::validate() {
