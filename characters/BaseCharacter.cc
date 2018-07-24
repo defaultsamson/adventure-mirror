@@ -8,7 +8,7 @@ BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, double hp, double ma
 
 // Deal the attack. DO NOT OVERRIDE THIS, instead override hitPower()
 bool BaseCharacter::hit(Character &other, string &output) {
-	bool result = other.takeDamage(*this, hitPower(other));
+	bool result = other.takeDamage(*this, hitPower(other), output);
 	output += getType().to_string();
 	if (result) {
  		output += " deals " + std::to_string((int) hitPower(other)) + " damage to " + other.getType().to_string() + ". ";
@@ -24,8 +24,9 @@ double BaseCharacter::hitPower(Character &other) {
 	return ceil((100.0 / (100.0 + other.getDef())) * getAtk());
 }
 
-bool BaseCharacter::takeDamage(Character &from, double damage) {
+bool BaseCharacter::takeDamage(Character &from, double damage, string &output) {
 	(void) from;
+	(void) output;
 	// Class specific defences can override this. By default, take the damage
 	addHP(-damage);
 	return true;

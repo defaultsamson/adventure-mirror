@@ -19,7 +19,7 @@ public:
 	BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def);
 	bool hit(Character &other, std::string &output) override;
 	double hitPower(Character &other) override;
-	bool takeDamage(Character &from, double damage) override;
+	bool takeDamage(Character &from, double damage, std::string &output) override;
 	void addHP(double hp) override;
 	double score() override;
 	double getHP() override;
