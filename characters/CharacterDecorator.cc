@@ -57,7 +57,6 @@ void CharacterDecorator::resetTick() {
 }
 
 std::string CharacterDecorator::to_string() {
-	std::cout << "abc" << std::endl;
 	if (component) {
 		return "CharacterDecorator(" + component->to_string() + " on floor " + std::to_string(activeFloor) + ")";
 	}

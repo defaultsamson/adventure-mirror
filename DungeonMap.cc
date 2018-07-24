@@ -297,7 +297,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
 		} else {
 			//Only spawn dragon hoard at a location if we can fit a dragon
 			//next to it
-			Entity* g = chambers[chamberRoll].spawnObject('8');
+			Entity* g = chambers[chamberRoll].spawnObject('9');
 			vector<Direction> directions = getSpawnableDirections(g);
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
@@ -311,7 +311,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
 					g = chambers[chamberRoll].spawnObject('9');
 					directions = getSpawnableDirections(g);
 				}
-                        }
+			}
 			//spawn a dragon
 			fl->add(g);
 			int directionCount = (int) directions.size();
