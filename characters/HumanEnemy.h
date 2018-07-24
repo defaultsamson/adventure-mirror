@@ -10,5 +10,6 @@ public :
 	bool deathCheck() override;
 	HumanEnemy(size_t x, size_t y);
 	CharacterType getType() override;
+	void onDeath(DungeonMap &map, std::string &output) override;
 };
 #endif

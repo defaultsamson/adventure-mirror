@@ -49,4 +49,17 @@ bool Enemy::hit(Character &other, string &output) {
 	return false;
 }
 
+void Enemy::onDeath(DungeonMap &map, string &output) {
+	output += " and loots ";
+	if (rand() % 2) {
+		output += "2";
+		map.getPlayer()->addGold(2);
+	}
+	else {
+		output += "1";
+		map.getPlayer()->addGold(1);
+	}
+	output += " treasure from the " + getType().to_string() + "'s corpse";
+}
+
 Enemy::~Enemy(){}

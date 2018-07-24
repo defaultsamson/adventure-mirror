@@ -15,6 +15,7 @@ public:
 	void tick(DungeonMap &map, std::string &output) override;
 	bool canAttack(DungeonMap &map);
 	bool hit(Character &other, std::string &output) override;
+	virtual void onDeath(DungeonMap &map, std::string &output);
 	virtual ~Enemy() = 0;
 };
 

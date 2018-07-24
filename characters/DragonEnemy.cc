@@ -9,3 +9,8 @@ void DragonEnemy::moveTick(DungeonMap &map, std::string &output) {
     (void) map;
     (void) output;
 }
+
+void DragonEnemy::onDeath(DungeonMap &map, std::string &output) {
+    (void) map;
+	output += " and leaves the Dragon's towering stash unguarded";
+}

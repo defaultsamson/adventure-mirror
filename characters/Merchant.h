@@ -11,5 +11,6 @@ public:
 	CharacterType getType() override;
 	void tick(DungeonMap &map, std::string &output) override;
 	void setHostile(bool value);
+	void onDeath(DungeonMap &map, std::string &output) override;
 };
 #endif

@@ -501,7 +501,10 @@ void DungeonMap::playerPotion(Direction d, string &output) {
 		Potion *pot = dynamic_cast<Potion*>(tile.back());
 		if (pot) {
 			output += "PC uses ";
-			if (pot->pickup(*this, *player, output)) tile.pop_back();
+			if (pot->pickup(*this, *player, output)) {
+				tile.pop_back();
+				player->tick(*this, output);
+			}
 			return;
 		}
 	}
@@ -579,11 +582,20 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 		Enemy *e = dynamic_cast<Enemy *>(tile.back());
 		if (e) {
 			player->hit(*e, output);
-			output += "(" + to_string((int) e->getHP()) + " HP). ";
+			if (e->deathCheck()) {
+				output += "PC slays the " + e->getType().to_string();
+				e->onDeath(*this, output);
+				// TODO: delete e; or use smart pointers
+				tile.pop_back();
+				output += "! ";
+			}
+			else {
+				output += "(" + to_string((int) e->getHP()) + " HP). ";
+			}
 			Merchant *m = dynamic_cast<Merchant *>(e);
 			if (m) {
 				if (!getFlag(MapFlags::MerchantsHostile)) {
-					output += "PC has enraged the merchants and will attack PC from now on. ";
+					output += "PC has enraged the merchants! Merchants will attack PC from now on. ";
 				}
 				setFlag(MapFlags::MerchantsHostile, true);
 			}
