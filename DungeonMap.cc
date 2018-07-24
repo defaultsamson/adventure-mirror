@@ -93,7 +93,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				else if (x == width - 1 && !hitSomething) {
 
 					// Creates and initializes the floor
-					Floor *fl = new Floor(i, width, y + 1);
+					Floor *fl = new Floor(i, width, y + 1);  //#################LEAKY#####################
 					for (Entity *e: es) fl->add(e);
 					es.clear();
 					fl->setSpawn(spawnX, spawnY);
