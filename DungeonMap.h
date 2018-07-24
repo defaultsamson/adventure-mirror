@@ -15,7 +15,7 @@ class DungeonMap {
 	vector<PotionType> potions;
 	vector<bool> flags;
 	CharacterDecorator *player;
-	void populate(Floor* fl, vector<Chamber> c, int cc, Character *player);
+	void populate(Floor* fl, vector<Chamber> c);
 	bool passTick = false;
 	bool won = false;
 public:

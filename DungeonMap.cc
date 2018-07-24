@@ -206,7 +206,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	//Spawn random item and enemies if the boolean re is true
 	if (re){
 		//We spawn random enemies and random potions for each of the floors
-		for (size_t f = 0; f < floor + 1; f++){
+		for (size_t f = 0; f < floors.size(); f++){
 			Floor *currentFloor = floors[f];
 			//create a 2d vector to keep track of nodes we visited
 			//Everything in the array is initialised to false, by default
@@ -219,7 +219,6 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				visited.emplace_back(visitedCol);
 			}
 			vector<Chamber> chambers;
-			int chambersCount = 0;
 			for (size_t x = 0; x < currentFloor->width(); ++x){
 				for (size_t y = 0; y < currentFloor->height(); ++y){
 					//We add tiles into chambers
@@ -256,15 +255,13 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 								}
 							}
 							chambers.emplace_back(newChamber);
-							++chambersCount;
 						}
 					}
 				}
 			}
 			//Now we add everything into chambers
-			populate(currentFloor, chambers, chambersCount, player);
+			populate(currentFloor, chambers);
 			chambers.clear();
-			chambersCount = 0;
 		}
 	}
 
@@ -272,7 +269,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	progressFloor(true);
 }
 
-void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character* player){
+void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
 	unsigned seed = (unsigned) (rand() % 100);
 	cout << "Seed: " << seed << endl;
 	std::default_random_engine eng = std::default_random_engine(seed);
@@ -280,19 +277,19 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 		it.shuffle(eng);
 	}
 	//Spawn the treasures
-	for (int i = 0; i < 10; ++i){
+	for (size_t i = 0; i < 10; ++i){
 		//remove any full (empty for the vector) chambers
-        	for (int j = cc - 1; j < 0; ++i){
+        	for (size_t j = 0; j < chambers.size(); ++j){
                 	if (chambers[j].isEmpty()){
 				chambers.erase(chambers.begin() + j);
-				--cc;
+				--j;
 			}
         	}
 		//roll a d8 to spawn treasures
 		//0-4 is normal, 5-6 is small hoard, 7 is dragon hoard
 		int roll = rand() % 8;
 		//generate a random number to decide which chamber to spawn the item
-		int chamberRoll = rand() % cc;
+		int chamberRoll = rand() % chambers.size();
 		if (roll < 5){
 			fl->add(chambers[chamberRoll].spawnObject('6'));
 		} else if (roll < 7){
@@ -305,8 +302,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
 					chambers.erase(chambers.begin() + chamberRoll);
-					--cc;
-					chamberRoll = rand() % cc;
+					chamberRoll = rand() % chambers.size();
 					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
 					directions = getSpawnableDirections(g);
@@ -328,19 +324,20 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 		}
 	}
 	//Spawn the enemies
-	for (int i = 0; i < 20; ++i){
+	for (size_t i = 0; i < 20; ++i){
                 //remove any full (empty for the vector) chambers
-                for (int j = cc - 1; j < 0; ++i){
+                for (size_t j = 0; j < chambers.size(); ++j){
                         if (chambers[j].isEmpty()){
                                 chambers.erase(chambers.begin() + j);
-                                --cc;
+                                --j;
                         }
                 }
                 //roll a d18 to spawn enemies
                 //0-4 is halfling, 5-8 is human, 9-11 is dwarf, 12-13 is elf, 14-15 is orc, 16-17 is merchant
                 int roll = rand() % 18;
                 //generate a random number to decide which chamber to spawn the entity
-                int chamberRoll = rand() % cc;
+                int chamberRoll = rand() % chambers.size();
+
                 if (roll < 5){
                         fl->add(chambers[chamberRoll].spawnObject('L'));
                 } else if (roll < 9){
@@ -356,18 +353,18 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 		}
 	}
 	//Spawn the potions
-	for (int i = 0; i < 10; ++i){
+	for (size_t i = 0; i < 10; ++i){
                 //remove any full (empty for the vector) chambers
-                for (int j = cc - 1; j < 0; ++i){
+                for (size_t j = 0; j < chambers.size(); ++j){
                         if (chambers[j].isEmpty()){
                                 chambers.erase(chambers.begin() + j);
-                                --cc;
+                                --j;
                         }
                 }
                 //roll a d6 to spawn enemies
                 int roll = rand() % 6;
                 //generate a random number to decide which chamber to spawn the entity
-                int chamberRoll = rand() % cc;
+                int chamberRoll = rand() % chambers.size();
         	switch(roll){
 			case 0 : fl->add(chambers[chamberRoll].spawnObject('0'));
 				break;
@@ -383,29 +380,24 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers, int cc, Character
 				break;
 		}
 	}
-	for (int j = cc - 1; j < 0; ++j){
+	for (size_t j = 0; j < chambers.size(); ++j){
 		if (chambers[j].isEmpty()){
 			chambers.erase(chambers.begin() + j);
-			--cc;
+			--j;
 		}
 	}
 	//Spawn the exit
-	int exitChamberRoll = rand() % cc;
+	int exitChamberRoll = rand() % chambers.size();
 	fl->add(chambers[exitChamberRoll].spawnObject('\\'));
 	//Spawn the player
 	chambers.erase(chambers.begin() + exitChamberRoll);
-	--cc;
-	int playerChamberRoll = rand() % cc;
+	int playerChamberRoll = rand() % chambers.size();
 	//We use a second stair to represent the player's spawn, but this stair
 	//will not be added to the map.
 	//It make sense to use a stair, since you walked up a stair after all
 	Entity* spawn = chambers[playerChamberRoll].spawnObject('\\');
 	fl->setSpawn(spawn->getX(), spawn->getY());
-	//DEBUG
-	(void) fl;
-	(void) chambers;
-	(void) cc;
-	(void) player;
+	delete spawn;
 }
 
 Floor *DungeonMap::getFloor() { return floors[floor]; }
