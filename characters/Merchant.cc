@@ -26,6 +26,6 @@ CharacterType Merchant::getType() { return CharacterType::Merchant; }
 
 void Merchant::onDeath(DungeonMap &map, std::string &output) {
 	vector <Entity *> &cell = map.getFloor()->get(getX(), getY());
-	cell.emplace(cell.end() - 2, new Gold(getX(), getY(), 4)); // create gold below merchant, which will be deleted
+	cell.emplace(cell.end() - 1, new Gold(getX(), getY(), 4)); // create gold below merchant, which will be deleted
 	output += " and sets eyes on the Merchant's sizeable hoard";
 }

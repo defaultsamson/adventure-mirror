@@ -22,7 +22,7 @@ CharacterType HumanEnemy::getType() { return CharacterType::Human; }
 void HumanEnemy::onDeath(DungeonMap &map, std::string &output) {
 	output += ", causing the Human to violently release the treasure it collected";
 	vector <Entity *> &cell = map.getFloor()->get(getX(), getY());
-	cell.emplace(cell.end() - 2, new Gold(getX(), getY(), 2)); // create gold below human, which will be deleted
+	cell.emplace(cell.end() - 1, new Gold(getX(), getY(), 2)); // create gold below human, which will be deleted
 	vector<Direction> spawnable = map.getSpawnableDirections(this);
 	if (spawnable.size()) {
 		Direction toSpawn = spawnable[rand() % spawnable.size()];
