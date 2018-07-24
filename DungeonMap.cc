@@ -241,7 +241,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 								for (auto it : spawnableTiles){
 									//Add all nearby, unchecked floors to the spawnableTiles vector
 									Entity* entity = it;
-									vector<Direction> directions = getSpawnableDirections(entity);
+									vector<Direction> directions = getSpawnableDirections(entity, currentFloor);
 									for (auto dit : directions){
 										int connectedX = entity->getX() + dit.x;
 										int connectedY = entity->getY() + dit.y;
@@ -298,18 +298,18 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
 			//Only spawn dragon hoard at a location if we can fit a dragon
 			//next to it
 			Entity* g = chambers[chamberRoll].spawnObject('9');
-			vector<Direction> directions = getSpawnableDirections(g);
+			vector<Direction> directions = getSpawnableDirections(g, fl);
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
 					chambers.erase(chambers.begin() + chamberRoll);
 					chamberRoll = rand() % chambers.size();
 					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
-					directions = getSpawnableDirections(g);
+					directions = getSpawnableDirections(g, fl);
 				} else {
 					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
-					directions = getSpawnableDirections(g);
+					directions = getSpawnableDirections(g, fl);
 				}
 			}
 			//spawn a dragon
@@ -483,6 +483,28 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 		valid.emplace_back(Direction::Invalid);
 	}
 	return valid;
+}
+
+vector<Direction> DungeonMap::getSpawnableDirections(Entity* e, Floor* fl) {
+        int x = e->getX();
+        int y = e->getY();
+        int width = fl->width();
+        int height = fl->height();
+        vector<Direction> valid;
+        for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
+                for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+                        if (col == x && row == y) continue;
+                        vector<Entity*> e = fl->get(col, row);
+                        if (e.size() && e.back()->isSpawnable()) {
+                                valid.emplace_back(Direction(col, row, x, y));
+                        }
+                }
+        }
+        if (!valid.size()) {
+                // no valid directions
+                valid.emplace_back(Direction::Invalid);
+        }
+        return valid;
 }
 
 void DungeonMap::move(Entity *e, Direction d) {

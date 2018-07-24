@@ -30,6 +30,7 @@ public:
 	void progressFloor(bool start = false);
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
+	std::vector<Direction> getSpawnableDirections(Entity* e, Floor* fl); //overloaded function with a specific floor
 	CharacterDecorator *getPlayer();
 	void witnessPotion(PotionType t);
 	bool wonGame();
