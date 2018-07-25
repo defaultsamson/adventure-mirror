@@ -12,6 +12,7 @@ class Floor {
 	vector<vector<vector<Entity*>>> grid;
 public:
 	Floor(size_t i, size_t w, size_t h);
+	~Floor();
 	void add(Entity *e);
 	vector<Entity*> &get(size_t x, size_t y);
 	Entity *getTop(size_t x, size_t y);

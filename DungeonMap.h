@@ -8,14 +8,15 @@
 #include "PotionType.h"
 #include <string>
 #include <vector>
+#include <memory>
 
 class DungeonMap {
 	size_t floor = 0;
-	vector<Floor*> floors;
+	vector<shared_ptr<Floor>> floors;
 	vector<PotionType> potions;
 	vector<bool> flags;
 	CharacterDecorator *player;
-	void populate(Floor* fl, vector<Chamber> c);
+	void populate(size_t f, vector<Chamber> c);
 	bool passTick = false;
 	bool won = false;
 public:
@@ -25,12 +26,12 @@ public:
 		LAST
 	};
 	DungeonMap(const char* filename, CharacterDecorator *player = nullptr, bool randomEntities = false);
-
-	Floor *getFloor();
+	
+	shared_ptr<Floor> &getFloor();
 	void progressFloor(bool start = false);
 	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
 	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
-	std::vector<Direction> getSpawnableDirections(Entity* e, Floor* fl); //overloaded function with a specific floor
+	std::vector<Direction> getSpawnableDirections(Entity* e, size_t f); //overloaded function with a specific floor
 	CharacterDecorator *getPlayer();
 	void witnessPotion(PotionType t);
 	bool wonGame();
