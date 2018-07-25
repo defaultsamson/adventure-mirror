@@ -600,6 +600,18 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 						didSees = true;
 						continue;
 					}
+					if (dynamic_cast<DragonGold*>(e)) {
+						output += (didSees ? " and a " : "PC sees a ");
+						output += "dragon hoard";
+						didSees = true;
+						continue;
+					}
+					if (dynamic_cast<Gold*>(e)) {
+						output += (didSees ? " and a " : "PC sees a ");
+						output += "some treasure";	
+						didSees = true;
+						continue;
+					}
 				}
 			}
 			if (didSees) output += ". ";
