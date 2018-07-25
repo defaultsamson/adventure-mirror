@@ -15,6 +15,16 @@ Floor::Floor(size_t i, size_t w, size_t h) : i{i}, w{w}, h{h} {
 	}
 }
 
+Floor::~Floor(){
+	for (size_t x = 0; x < w; ++x){
+		for (size_t y = 0; y < h; ++y){
+			for (size_t z = 0; z < get(x,y).size(); ++z){
+				delete grid[x][y][z];
+			}
+		}
+	}
+}
+
 void Floor::add(Entity *e) {
 	// if (x < w && y < h) grid[x][y] = e;
 	e->setFloor(index());

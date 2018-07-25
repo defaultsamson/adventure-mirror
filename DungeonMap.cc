@@ -93,7 +93,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				else if (x == width - 1 && !hitSomething) {
 
 					// Creates and initializes the floor
-					Floor *fl = new Floor(i, width, y + 1);  //#################LEAKY#####################
+					shared_ptr<Floor> fl (new Floor(i, width, y + 1));  //#################LEAKY#####################
 					for (Entity *e: es) fl->add(e);
 					es.clear();
 					fl->setSpawn(spawnX, spawnY);
@@ -207,24 +207,23 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	if (re){
 		//We spawn random enemies and random potions for each of the floors
 		for (size_t f = 0; f < floors.size(); f++){
-			Floor *currentFloor = floors[f];
 			//create a 2d vector to keep track of nodes we visited
 			//Everything in the array is initialised to false, by default
 			vector<vector<bool>> visited;
-			for (size_t x = 0; x < currentFloor->width(); ++x){
+			for (size_t x = 0; x < floors[f]->width(); ++x){
 				vector<bool> visitedCol;
-				for (size_t y = 0; y < currentFloor->height(); ++y){
+				for (size_t y = 0; y < floors[f]->height(); ++y){
 					visitedCol.emplace_back(false);
 				}
 				visited.emplace_back(visitedCol);
 			}
 			vector<Chamber> chambers;
-			for (size_t x = 0; x < currentFloor->width(); ++x){
-				for (size_t y = 0; y < currentFloor->height(); ++y){
+			for (size_t x = 0; x < floors[f]->width(); ++x){
+				for (size_t y = 0; y < floors[f]->height(); ++y){
 					//We add tiles into chambers
 					if (!visited[x][y]){
 						visited[x][y] = true;
-						vector<Entity*> e = currentFloor->get(x, y);
+						vector<Entity*> e = floors[f]->get(x, y);
 						if(e.size() && e.back()->isSpawnable()){
 							//create a new chamber
 							Chamber newChamber = Chamber();
@@ -241,11 +240,11 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 								for (auto it : spawnableTiles){
 									//Add all nearby, unchecked floors to the spawnableTiles vector
 									Entity* entity = it;
-									vector<Direction> directions = getSpawnableDirections(entity, currentFloor);
+									vector<Direction> directions = getSpawnableDirections(entity, f);
 									for (auto dit : directions){
 										int connectedX = entity->getX() + dit.x;
 										int connectedY = entity->getY() + dit.y;
-										vector<Entity*> connectedTile = currentFloor->get(connectedX, connectedY);
+										vector<Entity*> connectedTile = floors[f]->get(connectedX, connectedY);
 										if (!visited[connectedX][connectedY]){
 											visited[connectedX][connectedY] = true;
 											floorTiles.emplace_back(connectedTile.back());
@@ -260,7 +259,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				}
 			}
 			//Now we add everything into chambers
-			populate(currentFloor, chambers);
+			populate(f, chambers);
 			chambers.clear();
 		}
 	}
@@ -269,7 +268,8 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	progressFloor(true);
 }
 
-void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
+void DungeonMap::populate(size_t f, vector<Chamber> chambers){
+	const shared_ptr<Floor> &fl = floors[f];
 	unsigned seed = (unsigned) (rand() % 100);
 	cout << "Seed: " << seed << endl;
 	std::default_random_engine eng = std::default_random_engine(seed);
@@ -298,18 +298,18 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
 			//Only spawn dragon hoard at a location if we can fit a dragon
 			//next to it
 			Entity* g = chambers[chamberRoll].spawnObject('9');
-			vector<Direction> directions = getSpawnableDirections(g, fl);
+			vector<Direction> directions = getSpawnableDirections(g, f);
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
 					chambers.erase(chambers.begin() + chamberRoll);
 					chamberRoll = rand() % chambers.size();
 					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
-					directions = getSpawnableDirections(g, fl);
+					directions = getSpawnableDirections(g, f);
 				} else {
 					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
-					directions = getSpawnableDirections(g, fl);
+					directions = getSpawnableDirections(g, f);
 				}
 			}
 			//spawn a dragon
@@ -400,7 +400,7 @@ void DungeonMap::populate(Floor *fl, vector<Chamber> chambers){
 	delete spawn;
 }
 
-Floor *DungeonMap::getFloor() { return floors[floor]; }
+shared_ptr<Floor> &DungeonMap::getFloor() { return floors[floor]; }
 
 bool DungeonMap::wonGame() { return won; }
 
@@ -485,16 +485,16 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 	return valid;
 }
 
-vector<Direction> DungeonMap::getSpawnableDirections(Entity* e, Floor* fl) {
+vector<Direction> DungeonMap::getSpawnableDirections(Entity* e, size_t fl) {
         int x = e->getX();
         int y = e->getY();
-        int width = fl->width();
-        int height = fl->height();
+        int width = floors[fl]->width();
+        int height = floors[fl]->height();
         vector<Direction> valid;
         for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
                 for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
                         if (col == x && row == y) continue;
-                        vector<Entity*> e = fl->get(col, row);
+                        vector<Entity*> e = floors[fl]->get(col, row);
                         if (e.size() && e.back()->isSpawnable()) {
                                 valid.emplace_back(Direction(col, row, x, y));
                         }
@@ -656,7 +656,7 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 }
 
 void DungeonMap::tick(string &output) {
-	Floor *currentFloor = floors[floor];
+	const shared_ptr<Floor> &currentFloor = floors[floor];
 	if (!flags[(int)MapFlags::EnemiesFrozen]) {
 		for (size_t row = 0; row < currentFloor->height(); ++row) {
 			for (size_t col = 0; col < currentFloor->width(); ++col) {
@@ -696,7 +696,7 @@ void DungeonMap::tick(string &output) {
 }
 
 string DungeonMap::validate() {
-	Floor *currentFloor = floors[floor];
+	const shared_ptr<Floor>& currentFloor = floors[floor];
 	string output = "~~~~Map Validation~~~~";
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
@@ -713,7 +713,7 @@ string DungeonMap::validate() {
 }
 
 string DungeonMap::characterStats() {
-	Floor *currentFloor = floors[floor];
+	const shared_ptr<Floor>& currentFloor = floors[floor];
 	string output = "~~~~Character Stats~~~~";
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
@@ -730,7 +730,7 @@ string DungeonMap::characterStats() {
 }
 
 string DungeonMap::itemStats() {
-	Floor *currentFloor = floors[floor];
+	const shared_ptr<Floor>& currentFloor = floors[floor];
 	string output = "~~~~Item Stats~~~~";
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
