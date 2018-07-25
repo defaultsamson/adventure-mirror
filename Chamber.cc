@@ -48,7 +48,7 @@ void Chamber::shuffle(std::default_random_engine &eng){
 	std::shuffle(tiles.begin(), tiles.end(), eng);
 }
 
-Entity* Chamber::spawnObject(char c){
+shared_ptr<Entity> Chamber::spawnObject(char c){
 	//Return the entity spawned at the last position in the vector
 	Coordinate pos = tiles.back();
 	size_t x = pos.x;
@@ -57,41 +57,41 @@ Entity* Chamber::spawnObject(char c){
 	--size;
 	switch(c) {
 		case '\\' : //create stair
-			return new Stair(x,y);
+			return shared_ptr<Entity>(new Stair(x,y));
 		case '0': // restore health
-			return new HealthPotion(x, y, PotionType::Health, 10);
+			return shared_ptr<Entity>(new HealthPotion(x, y, PotionType::Health, 10));
 		case '1': // boost attack
-			return new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect());
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect()));
 		case '2': // boost defense
-			return new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect());
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect()));
 		case '3': // poison health
-			return new HealthPotion(x, y, PotionType::Poison, -10);
+			return shared_ptr<Entity>(new HealthPotion(x, y, PotionType::Poison, -10));
 		case '4': // wound attack
-			return new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect());
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect()));
 		case '5': // wound defense
-			return new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect());
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect()));
 		case '6': // normal gold pile
-			return new Gold(x, y, 2);
+			return shared_ptr<Entity>(new Gold(x, y, 2));
 		case '7': // small hoard
-			return new Gold(x, y, 1);
+			return shared_ptr<Entity>(new Gold(x, y, 1));
 		case '8': // merchant hoard
-			return new Gold(x, y, 4);
+			return shared_ptr<Entity>(new Gold(x, y, 4));
 		case '9': // dragon hoard
-			return new DragonGold(x, y);
+			return shared_ptr<Entity>(new DragonGold(x, y));
 		case 'H': //human enemy
-			return new HumanEnemy(x,y);
+			return shared_ptr<Entity>(new HumanEnemy(x,y));
 		case 'W': //dwarf enemy
-			return new DwarfEnemy(x,y);
+			return shared_ptr<Entity>(new DwarfEnemy(x,y));
 		case 'E': //elf enemy
-			return new ElfEnemy(x,y);
+			return shared_ptr<Entity>(new ElfEnemy(x,y));
 		case 'O': //orc enemy
-			return new OrcEnemy(x,y);
+			return shared_ptr<Entity>(new OrcEnemy(x,y));
 		case 'L': //halfling enemy
-			return new HalflingEnemy(x,y);
+			return shared_ptr<Entity>(new HalflingEnemy(x,y));
 		case 'M': //merchant
-			return new Merchant(x,y);
+			return shared_ptr<Entity>(new Merchant(x,y));
 		case 'D': //dragon enemy
-			return new DragonEnemy(x,y);
+			return shared_ptr<Entity>(new DragonEnemy(x,y));
 	}
 	return nullptr;
 }

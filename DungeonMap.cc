@@ -32,7 +32,7 @@
 
 using namespace std;
 
-CharacterDecorator *DungeonMap::getPlayer() { return player; }
+shared_ptr<CharacterDecorator> DungeonMap::getPlayer() { return player;}
 
 void DungeonMap::witnessPotion(PotionType type) { potions.emplace_back(type); }
 bool DungeonMap::seenPotion(PotionType type) {
@@ -40,7 +40,7 @@ bool DungeonMap::seenPotion(PotionType type) {
 	return false;
 }
 
-DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re): player{player} {
+DungeonMap::DungeonMap(const char *filename, shared_ptr<CharacterDecorator> player, bool re): player{player} {
 	// re = generate random entities
 	for (int i = 0; i < (int) MapFlags::LAST; ++i) {
 		flags.emplace_back(false);
@@ -58,7 +58,7 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 	size_t width = 0;	// Width of the level (including level box)
 
 	// A stack of entities to add to the floor
-	vector<Entity *> es;
+	vector<shared_ptr<Entity>> es;
 
 	size_t i = 0;
 	size_t x = -1, y = 0, spawnX = 0, spawnY = 0;	// x and y coordinates of the current character
@@ -82,8 +82,11 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				++y;
 			break;
 			case '|':
-				es.emplace_back(new Wall(x, y, input));
-	
+				{
+					shared_ptr<Entity> ent (new Wall(x, y, input));
+					es.emplace_back(ent);
+				}
+
 				// At the left wall
 				if (x == 0) {
 					hitSomething = false;
@@ -93,8 +96,8 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 				else if (x == width - 1 && !hitSomething) {
 
 					// Creates and initializes the floor
-					shared_ptr<Floor> fl (new Floor(i, width, y + 1));  //#################LEAKY#####################
-					for (Entity *e: es) fl->add(e);
+					shared_ptr<Floor> fl (new Floor(i, width, y + 1));
+					for (shared_ptr<Entity> e: es) fl->add(e);
 					es.clear();
 					fl->setSpawn(spawnX, spawnY);
 					this->floors.emplace_back(fl);
@@ -108,95 +111,213 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 					y = 0;
 					++i;
 				}
-	
 				// Continuing avoids setting hitSomething below this switch statement
 				continue;
 			case '#': // Pathway
 			case '+':
-				es.emplace_back(new Pathway(x, y, input));
+				{
+					shared_ptr<Entity> ent (new Pathway(x, y, input));
+					es.emplace_back(ent);
+				}
 				break;
 			case '-': // top wall
-				es.emplace_back(new Wall(x, y, input));
+				{
+					shared_ptr<Entity> ent (new Wall(x, y, input));
+					es.emplace_back(ent);
+				}
 				break;
 			case '\\': // stairs
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new Stair(x, y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new Stair(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '.': // ground tile
-				es.emplace_back(new Ground(x, y));
-				break;
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+                                	es.emplace_back(ground);
+				}break;
 			case '@': // player
-				es.emplace_back(new Ground(x, y));
-				spawnX = x;
-				spawnY = y;
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					spawnX = x;
+					spawnY = y;
+				}
 				break;
 			case '0': // restore health
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Health, 10));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new HealthPotion(x, y, PotionType::Health, 10));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '1': // boost attack
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect()));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect()));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '2': // boost defense
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect()));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect()));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '3': // poison health
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new HealthPotion(x, y, PotionType::Poison, -10));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new HealthPotion(x, y, PotionType::Poison, -10));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '4': // wound attack
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect()));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect()));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '5': // wound defense
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect()));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect()));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '6': // normal gold pile
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new Gold(x, y, 2));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new Gold(x, y, 2));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '7': // small hoard
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new Gold(x, y, 1));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new Gold(x, y, 1));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '8': // merchant hoard
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new Gold(x, y, 4));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new Gold(x, y, 4));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case '9': // dragon hoard
-				es.emplace_back(new Ground(x, y));
-				if (!re) es.emplace_back(new DragonGold(x, y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new DragonGold(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'H': //human enemy
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new HumanEnemy(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new HumanEnemy(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'W': //dwarf enemy
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new DwarfEnemy(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new DwarfEnemy(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'E': //elf enemy
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new ElfEnemy(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new ElfEnemy(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'O': //orc enemy
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new OrcEnemy(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x, y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new OrcEnemy(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'L': //halfling enemy
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new HalflingEnemy(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x, y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new HalflingEnemy(x, y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'M': //merchant
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new Merchant(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new Merchant(x,y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			case 'D': //dragon enemy
-				es.emplace_back(new Ground(x,y));
-				if (!re) es.emplace_back(new DragonEnemy(x,y));
+				{
+					shared_ptr<Entity> ground (new Ground(x,y));
+					es.emplace_back(ground);
+					if (!re) {
+						shared_ptr<Entity> ent (new DragonEnemy(x,y));
+						es.emplace_back(ent);
+					}
+				}
 				break;
 			}
 			// Checks if, when scanning across, we hit a non-wall character
@@ -223,28 +344,28 @@ DungeonMap::DungeonMap(const char *filename, CharacterDecorator *player, bool re
 					//We add tiles into chambers
 					if (!visited[x][y]){
 						visited[x][y] = true;
-						vector<Entity*> e = floors[f]->get(x, y);
+						vector<shared_ptr<Entity>> e = floors[f]->get(x, y);
 						if(e.size() && e.back()->isSpawnable()){
 							//create a new chamber
 							Chamber newChamber = Chamber();
 							//The while loop performs a depth first search
 							//for all connected floor tiles
-							vector<Entity*> floorTiles;
+							vector<shared_ptr<Entity>> floorTiles;
 							floorTiles.emplace_back(e.back());
 							while(!floorTiles.empty()){
 								//spawnableTiles is the current piles we are processing
 								//floorTiles are tiles we will search at the next loop
 								//move everything in floorTiles into spawnableTiles
-								vector<Entity*> spawnableTiles = floorTiles;
+								vector<shared_ptr<Entity>> spawnableTiles = floorTiles;
 								floorTiles.clear();
 								for (auto it : spawnableTiles){
 									//Add all nearby, unchecked floors to the spawnableTiles vector
-									Entity* entity = it;
+									shared_ptr<Entity> entity = it;
 									vector<Direction> directions = getSpawnableDirections(entity, f);
 									for (auto dit : directions){
 										int connectedX = entity->getX() + dit.x;
 										int connectedY = entity->getY() + dit.y;
-										vector<Entity*> connectedTile = floors[f]->get(connectedX, connectedY);
+										vector<shared_ptr<Entity>> connectedTile = floors[f]->get(connectedX, connectedY);
 										if (!visited[connectedX][connectedY]){
 											visited[connectedX][connectedY] = true;
 											floorTiles.emplace_back(connectedTile.back());
@@ -297,17 +418,15 @@ void DungeonMap::populate(size_t f, vector<Chamber> chambers){
 		} else {
 			//Only spawn dragon hoard at a location if we can fit a dragon
 			//next to it
-			Entity* g = chambers[chamberRoll].spawnObject('9');
+			shared_ptr<Entity> g = chambers[chamberRoll].spawnObject('9');
 			vector<Direction> directions = getSpawnableDirections(g, f);
 			while (directions.empty()){
 				if (chambers[chamberRoll].isEmpty()){
 					chambers.erase(chambers.begin() + chamberRoll);
 					chamberRoll = rand() % chambers.size();
-					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
 					directions = getSpawnableDirections(g, f);
 				} else {
-					delete g;
 					g = chambers[chamberRoll].spawnObject('9');
 					directions = getSpawnableDirections(g, f);
 				}
@@ -319,7 +438,7 @@ void DungeonMap::populate(size_t f, vector<Chamber> chambers){
 			Direction dir = directions[directionRoll];
 			size_t dragonX = g->getX() + dir.x;
 			size_t dragonY = g->getY() + dir.y;
-			fl->add(new DragonEnemy(dragonX, dragonY));
+			fl->add(shared_ptr (new DragonEnemy(dragonX, dragonY)));
 			chambers[chamberRoll].remove(dragonX, dragonY);
 		}
 	}
@@ -395,7 +514,7 @@ void DungeonMap::populate(size_t f, vector<Chamber> chambers){
 	//We use a second stair to represent the player's spawn, but this stair
 	//will not be added to the map.
 	//It make sense to use a stair, since you walked up a stair after all
-	Entity* spawn = chambers[playerChamberRoll].spawnObject('\\');
+	shared_ptr<Entity> spawn = chambers[playerChamberRoll].spawnObject('\\');
 	fl->setSpawn(spawn->getX(), spawn->getY());
 	delete spawn;
 }
@@ -441,7 +560,7 @@ void DungeonMap::toggleFlag(MapFlags f) {
 	flags[(int) f] = !flags[(int) f];
 }
 
-vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
+vector<Direction> DungeonMap::getWalkableDirections(shared_ptr<Entity> e) {
 	int x = e->getX();
 	int y = e->getY();
 	int width = floors[floor]->width();
@@ -450,7 +569,7 @@ vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
 	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
 		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
 			if (col == x && row == y) continue;
-			vector<Entity*> e = floors[floor]->get(col, row);
+			vector<shared_ptr<Entity>> e = floors[floor]->get(col, row);
 			if (e.size() && e.back()->isWalkable()) {
 				valid.emplace_back(Direction(col, row, x, y));
 			}
@@ -463,7 +582,7 @@ vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
 	return valid;
 }
 
-vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
+vector<Direction> DungeonMap::getSpawnableDirections(shared_ptr<Entity> e) {
 	int x = e->getX();
 	int y = e->getY();
 	int width = floors[floor]->width();
@@ -472,7 +591,7 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
 		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
 			if (col == x && row == y) continue;
-			vector<Entity*> e = floors[floor]->get(col, row);
+			vector<shared_ptr<Entity>> e = floors[floor]->get(col, row);
 			if (e.size() && e.back()->isSpawnable()) {
 				valid.emplace_back(Direction(col, row, x, y));
 			}
@@ -485,7 +604,7 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
 	return valid;
 }
 
-vector<Direction> DungeonMap::getSpawnableDirections(Entity* e, size_t fl) {
+vector<Direction> DungeonMap::getSpawnableDirections(shared_ptr<Entity> e, size_t fl) {
         int x = e->getX();
         int y = e->getY();
         int width = floors[fl]->width();
@@ -494,7 +613,7 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e, size_t fl) {
         for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
                 for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
                         if (col == x && row == y) continue;
-                        vector<Entity*> e = floors[fl]->get(col, row);
+                        vector<shared_ptr<Entity>> e = floors[fl]->get(col, row);
                         if (e.size() && e.back()->isSpawnable()) {
                                 valid.emplace_back(Direction(col, row, x, y));
                         }
@@ -507,10 +626,10 @@ vector<Direction> DungeonMap::getSpawnableDirections(Entity* e, size_t fl) {
         return valid;
 }
 
-void DungeonMap::move(Entity *e, Direction d) {
+void DungeonMap::move(shared_ptr<Entity>e, Direction d) {
 	int x = e->getX();
 	int y = e->getY();
-	vector<Entity *> &cell = floors[floor]->get(x, y);
+	vector<shared_ptr<Entity>> &cell = floors[floor]->get(x, y);
 	if (cell.back() == e) {
 		cell.pop_back();
 	}
@@ -524,7 +643,7 @@ void DungeonMap::move(Entity *e, Direction d) {
 void DungeonMap::playerPotion(Direction d, string &output) {
 	size_t x = player->getX() + d.x;
 	size_t y = player->getY() + d.y;
-	vector<Entity*> &tile = floors[floor]->get(x, y);
+	vector<shared_ptr<Entity>> &tile = floors[floor]->get(x, y);
 	if (tile.size() > 0) {
 		Potion *pot = dynamic_cast<Potion*>(tile.back());
 		if (pot) {
@@ -553,7 +672,7 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 			}*/
 			player->tick(*this, output);
 			size_t x = player->getX(), y = player->getY();
-			vector<Entity*> &tile = floors[floor]->get(x, y);
+			vector<shared_ptr<Entity>> &tile = floors[floor]->get(x, y);
 			double prevGold = player->getGold();
 			for (size_t i = 0; i < tile.size(); ++i) {
 				Item *item = dynamic_cast<Item*>(tile[i]);
@@ -582,7 +701,7 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 			for (size_t i = x - 1; i < x + 2; ++i) {
 				for (size_t j = y - 1; j < y + 2; ++j) {
 					if (i == x && j == y) continue; // Skip the player tile
-					Entity *e = floors[floor]->getTop(i, j);
+					shared_ptr<Entity>e = floors[floor]->getTop(i, j);
 					Character *c = dynamic_cast<Character*>(e);
 					if (c) {
 						output += (didSees ? " and a " : "PC sees a ") + c->getType().to_string();
@@ -626,7 +745,7 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 	output = "Action: ";
 	size_t x = player->getX() + d.x;
 	size_t y = player->getY() + d.y;
-	vector<Entity*> &tile = floors[floor]->get(x, y);
+	vector<shared_ptr<Entity>> &tile = floors[floor]->get(x, y);
 	if (tile.size() > 0) {
 		Enemy *e = dynamic_cast<Enemy *>(tile.back());
 		if (e) {
@@ -660,8 +779,8 @@ void DungeonMap::tick(string &output) {
 	if (!flags[(int)MapFlags::EnemiesFrozen]) {
 		for (size_t row = 0; row < currentFloor->height(); ++row) {
 			for (size_t col = 0; col < currentFloor->width(); ++col) {
-				vector<Entity *> cell = currentFloor->get(col, row);
-				for (Entity * e: cell) {
+				vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
+				for (shared_ptr<Entity> e: cell) {
 					// enemies decide whether to move or not
 					if (e != player && !passTick) {
 						e->moveTick(*this, output);
@@ -672,8 +791,8 @@ void DungeonMap::tick(string &output) {
 	}
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
-			vector<Entity *> cell = currentFloor->get(col, row);
-			for (Entity * e: cell) {
+			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
+			for (shared_ptr<Entity> e: cell) {
 				// if not moving, enemies will attack
 				if (e != player && !passTick) {
 					e->tick(*this, output);
@@ -683,8 +802,8 @@ void DungeonMap::tick(string &output) {
 	}
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
-			vector<Entity *> cell = currentFloor->get(col, row);
-			for (Entity * e: cell) {
+			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
+			for (shared_ptr<Entity> e: cell) {
 				CharacterDecorator *c = dynamic_cast<CharacterDecorator *>(e);
 				if (c && !passTick) {
 					c->resetTick();
@@ -700,8 +819,8 @@ string DungeonMap::validate() {
 	string output = "~~~~Map Validation~~~~";
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
-			vector<Entity *> cell = currentFloor->get(col, row);
-			for (Entity * e: cell) {
+			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
+			for (shared_ptr<Entity> e: cell) {
 				if (e->getX() != col || e->getY() != row) {
 					output += "\nEntity " + to_string(e->print()) + " has internal (" + to_string(e->getX()) + ", " + to_string(e->getY()) + ")";
 					output += " but map (" + to_string(col) + ", " + to_string(row) + ")";
@@ -717,8 +836,8 @@ string DungeonMap::characterStats() {
 	string output = "~~~~Character Stats~~~~";
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
-			vector<Entity *> cell = currentFloor->get(col, row);
-			for (Entity * e: cell) {
+			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
+			for (shared_ptr<Entity> e: cell) {
 				Character *c = dynamic_cast<Character *>(e);
 				if (c) {
 					output += "\n" + c->to_string();
@@ -734,8 +853,8 @@ string DungeonMap::itemStats() {
 	string output = "~~~~Item Stats~~~~";
 	for (size_t row = 0; row < currentFloor->height(); ++row) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
-			vector<Entity *> cell = currentFloor->get(col, row);
-			for (Entity * e: cell) {
+			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
+			for (shared_ptr<Entity> e: cell) {
 				Gold *gold = dynamic_cast<Gold *>(e);
 				if (gold) {
 					output += "\nGold $" + to_string(gold->getValue()) + "(" + to_string(col) + ", " + to_string(row) + ")";

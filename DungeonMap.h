@@ -15,7 +15,7 @@ class DungeonMap {
 	vector<shared_ptr<Floor>> floors;
 	vector<PotionType> potions;
 	vector<bool> flags;
-	CharacterDecorator *player;
+	shared_ptr<CharacterDecorator> player;
 	void populate(size_t f, vector<Chamber> c);
 	bool passTick = false;
 	bool won = false;
@@ -25,18 +25,18 @@ public:
 		MerchantsHostile,
 		LAST
 	};
-	DungeonMap(const char* filename, CharacterDecorator *player = nullptr, bool randomEntities = false);
+	DungeonMap(const char* filename, shared_ptr<CharacterDecorator> player = nullptr, bool randomEntities = false);
 	
 	shared_ptr<Floor> &getFloor();
 	void progressFloor(bool start = false);
-	std::vector<Direction> getWalkableDirections(Entity* e); // tiles player can walk on (gold, walkways, doors)
-	std::vector<Direction> getSpawnableDirections(Entity* e); // tiles enemies can spawn/walk on
-	std::vector<Direction> getSpawnableDirections(Entity* e, size_t f); //overloaded function with a specific floor
-	CharacterDecorator *getPlayer();
+	std::vector<Direction> getWalkableDirections(shared_ptr<Entity> e); // tiles player can walk on (gold, walkways, doors)
+	std::vector<Direction> getSpawnableDirections(shared_ptr<Entity> e); // tiles enemies can spawn/walk on
+	std::vector<Direction> getSpawnableDirections(shared_ptr<Entity> e, size_t f); //overloaded function with a specific floor
+	shared_ptr<CharacterDecorator> getPlayer();
 	void witnessPotion(PotionType t);
 	bool wonGame();
 	bool seenPotion(PotionType t);
-	void move(Entity *e, Direction d);
+	void move(shared_ptr<Entity>e, Direction d);
 	bool playerMove(Direction d, std::string &output);
 	void playerAttack(Direction d, std::string &output);
 	void playerPotion(Direction d, std::string &output);

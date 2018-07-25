@@ -4,18 +4,18 @@
 #include "../Entity.h"
 #include <vector>
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
 class Floor {
 	size_t i, w, h, sX, sY;
-	vector<vector<vector<Entity*>>> grid;
+	vector<vector<vector<shared_ptr<Entity>>>> grid;
 public:
 	Floor(size_t i, size_t w, size_t h);
-	~Floor();
-	void add(Entity *e);
-	vector<Entity*> &get(size_t x, size_t y);
-	Entity *getTop(size_t x, size_t y);
+	void add(shared_ptr<Entity> e);
+	vector<shared_ptr<Entity>> &get(size_t x, size_t y);
+	shared_ptr<Entity> getTop(size_t x, size_t y);
 	void setSpawn(size_t x, size_t y);
 	size_t spawnX();
 	size_t spawnY();

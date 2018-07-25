@@ -7,7 +7,7 @@
 using namespace std;
 
 CharacterDecorator::CharacterDecorator() {}
-CharacterDecorator::CharacterDecorator(Character *component) : component{component}, activeFloor{component->getFloor()} {}
+CharacterDecorator::CharacterDecorator(shared_ptr<Character> component) : component{component}, activeFloor{component->getFloor()} {}
 
 bool CharacterDecorator::hit(Character &other, std::string &output) {
 	return component->hit(other, output);
@@ -19,7 +19,7 @@ bool CharacterDecorator::takeDamage(Character &from, double damage, string &outp
 
 double CharacterDecorator::hitPower(Character &other) { return component->hitPower(other); }
 
-void CharacterDecorator::decorate(CharacterDecorator *o) {
+void CharacterDecorator::decorate(shared_ptr<CharacterDecorator> o) {
 	o->component = component;
 	component = o;
 }

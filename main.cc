@@ -2,6 +2,7 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
+#include <memory>
 
 #include "DungeonMap.h"
 #include "BaseCharacter.h"
@@ -42,21 +43,21 @@ int main(int argc, char *argv[]) {
 
     while (!quit && cout << "Race selection ((s)hade, (d)row, (v)ampire, (g)oblin, (t)roll): " && cin >> input) {
         // race is one of (s, d, v, g, t)
-        CharacterDecorator *player = nullptr;
+        shared_ptr<CharacterDecorator> player;
         if (input == "d") {
-            player = new CharacterDecorator(new DrowRace(0, 0));
+            player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new DrowRace(0, 0))));
         }
         else if (input == "v") {
-            player = new CharacterDecorator(new VampireRace(0, 0));
-        }
+            player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new VampireRace(0, 0))));
+	}
         else if (input == "g") {
-            player = new CharacterDecorator(new GoblinRace(0, 0));
+            player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new GoblinRace(0, 0))));
         }
         else if (input == "t") {
-            player = new CharacterDecorator(new TrollRace(0, 0));
+            player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new TrollRace(0, 0))));
         }
         else { // default race
-            player = new CharacterDecorator(new ShadeRace(0, 0));
+            player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new ShadeRace(0, 0))));
         }
 	//set the random seed for random generation
 	srand(time(NULL));

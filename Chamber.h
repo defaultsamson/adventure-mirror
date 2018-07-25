@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <memory>
+
 struct Coordinate {
 	size_t x,y;
 };
@@ -18,7 +20,7 @@ public :
 	void add(size_t x, size_t y);
 	void remove(size_t x, size_t y);
 	bool isEmpty();
-	Entity* spawnObject(char c);
+	shared_ptr<Entity> spawnObject(char c);
 	void shuffle(std::default_random_engine &e);
 };
 #endif
