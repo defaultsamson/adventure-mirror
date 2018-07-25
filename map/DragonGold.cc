@@ -15,7 +15,7 @@ bool DragonGold::pickup(DungeonMap &map, CharacterDecorator &c, string &output) 
 	for (size_t i = x - 1; i < x + 2; ++i) {
 		for (size_t j = y - 1; j < y + 2; ++j) {
 			if (i == x && j == y) continue; // ignore current tile
-			Character *e = dynamic_cast<Character*>(map.getFloor()->getTop(i, j));
+			shared_ptr<Character> e = dynamic_pointer_cast<Character>(map.getFloor()->getTop(i, j));
 			if (e && e->getType() == CharacterType::Dragon) return false;
 		}
 	}

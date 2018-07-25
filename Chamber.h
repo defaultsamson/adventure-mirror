@@ -20,7 +20,7 @@ public :
 	void add(size_t x, size_t y);
 	void remove(size_t x, size_t y);
 	bool isEmpty();
-	shared_ptr<Entity> spawnObject(char c);
+	std::shared_ptr<Entity> spawnObject(char c);
 	void shuffle(std::default_random_engine &e);
 };
 #endif

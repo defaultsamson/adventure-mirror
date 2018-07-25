@@ -3,6 +3,7 @@
 #include "BaseCharacter.h"
 #include "Enemy.h"
 #include "Gold.h"
+#include <memory>
 
 HumanEnemy::HumanEnemy(size_t x, size_t y) : Enemy(x,y,'H', 140, 140, 20, 20) {}
 
@@ -21,12 +22,12 @@ CharacterType HumanEnemy::getType() { return CharacterType::Human; }
 
 void HumanEnemy::onDeath(DungeonMap &map, std::string &output) {
 	output += ", causing the Human to violently release the treasure it collected";
-	vector <Entity *> &cell = map.getFloor()->get(getX(), getY());
+	vector <shared_ptr<Entity>> &cell = map.getFloor()->get(getX(), getY());
 	cell.emplace(cell.end() - 1, new Gold(getX(), getY(), 2)); // create gold below human, which will be deleted
 	vector<Direction> spawnable = map.getSpawnableDirections(this);
 	if (spawnable.size()) {
 		Direction toSpawn = spawnable[rand() % spawnable.size()];
-		map.getFloor()->add(new Gold(getX() + toSpawn.x, getY() + toSpawn.y, 2));
+		map.getFloor()->add(shared_ptr<Entity> (new Gold(getX() + toSpawn.x, getY() + toSpawn.y, 2)));
 	}
 	else {
 		map.getPlayer()->addGold(2);

@@ -7,7 +7,7 @@
 
 class DungeonMap;
 
-class Entity {
+class Entity{
 public:
 	Entity();
 

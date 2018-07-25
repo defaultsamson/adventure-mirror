@@ -25,7 +25,7 @@ void Enemy::moveTick(DungeonMap &map, string &output) {
 	// If the enemy is not stuck in a location
 	if (dirs.size() > 0) {
 		// Moves in one of the random available directions
-		map.move(this, dirs[rand() % dirs.size()]);
+		map.move(shared_ptr<Entity>(this), dirs[rand() % dirs.size()]);
 	}
 	moved = true;
 }

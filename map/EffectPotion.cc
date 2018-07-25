@@ -7,7 +7,7 @@
 
 using namespace std;
 
-EffectPotion::EffectPotion(size_t x, size_t y, PotionType type, CharacterDecorator *effect) : Potion{x, y, type}, effect{effect} {}
+EffectPotion::EffectPotion(size_t x, size_t y, PotionType type, shared_ptr<CharacterDecorator> effect) : Potion{x, y, type}, effect{effect} {}
 
 void EffectPotion::setFloor(size_t f) {
 	Potion::setFloor(f);

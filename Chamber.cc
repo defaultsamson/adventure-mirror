@@ -17,6 +17,7 @@
 #include "HalflingEnemy.h"
 #include "Merchant.h"
 #include "DragonEnemy.h"
+#include "CharacterDecorator.h"
 
 Chamber::Chamber() : size{0}, hasStair{false}{}
 
@@ -61,15 +62,15 @@ shared_ptr<Entity> Chamber::spawnObject(char c){
 		case '0': // restore health
 			return shared_ptr<Entity>(new HealthPotion(x, y, PotionType::Health, 10));
 		case '1': // boost attack
-			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect()));
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::BoostAttack, shared_ptr<CharacterDecorator>(new BoostAtkEffect())));
 		case '2': // boost defense
-			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect()));
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::BoostDefense, shared_ptr<CharacterDecorator>(new BoostDefEffect())));
 		case '3': // poison health
 			return shared_ptr<Entity>(new HealthPotion(x, y, PotionType::Poison, -10));
 		case '4': // wound attack
-			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect()));
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::WoundAttack, shared_ptr<CharacterDecorator>(new WoundAtkEffect())));
 		case '5': // wound defense
-			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect()));
+			return shared_ptr<Entity>(new EffectPotion(x, y, PotionType::WoundDefense, shared_ptr<CharacterDecorator>(new WoundDefEffect())));
 		case '6': // normal gold pile
 			return shared_ptr<Entity>(new Gold(x, y, 2));
 		case '7': // small hoard

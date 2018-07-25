@@ -7,16 +7,16 @@
 class CharacterDecorator: public Character {
 	bool ticked;
 protected:
-	shared_ptr<Character> *component;
+	std::shared_ptr<Character> component;
 	size_t activeFloor;
 	double multiplier = 1.0;
 public:
 	CharacterDecorator();
-	CharacterDecorator(shared_ptr<Character> component);
+	CharacterDecorator(std::shared_ptr<Character> component);
 	bool hit(Character &other, std::string &output) override;
 	double hitPower(Character &other) override;
 	bool takeDamage(Character &from, double damage, std::string &output) override;
-	void decorate(shared_ptr<CharacterDecorator> o);
+	void decorate(std::shared_ptr<CharacterDecorator> o);
 	void addHP(double hp) override;
 	double score() override;
 	double getHP() override;

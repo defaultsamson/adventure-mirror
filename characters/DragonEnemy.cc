@@ -4,6 +4,7 @@
 #include "../DungeonMap.h"
 #include <string>
 #include "../map/DragonGold.h"
+#include <memory>
 
 using namespace std;
 
@@ -26,7 +27,7 @@ bool DragonEnemy::canAttack(DungeonMap &map) {
 
 	for (size_t x = getX() - 1; x < getX() + 2; ++x) {
 		for (size_t y = getY() - 1; y < getY() + 2; ++y) {
-			DragonGold *g = dynamic_cast<DragonGold*>(map.getFloor()->getTop(x, y));
+			shared_ptr<DragonGold> g = dynamic_pointer_cast<DragonGold>(map.getFloor()->getTop(x, y));
 			if (g) {
 				size_t dx = px > g->getX() ? px - g->getX() : g->getX() - px;
 				size_t dy = py > g->getY() ? py - g->getY() : g->getY() - py;

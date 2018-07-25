@@ -6,7 +6,7 @@
 #include "../DungeonMap.h"
 #include <string>
 
-class Enemy : public BaseCharacter{
+class Enemy : public BaseCharacter, public enable_shared_from_this<Entity>{
 protected:
 	bool moved = false;
 public:

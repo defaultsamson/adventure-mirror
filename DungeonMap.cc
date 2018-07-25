@@ -164,7 +164,7 @@ DungeonMap::DungeonMap(const char *filename, shared_ptr<CharacterDecorator> play
 					shared_ptr<Entity> ground (new Ground(x,y));
 					es.emplace_back(ground);
 					if (!re) {
-						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::BoostAttack, new BoostAtkEffect()));
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::BoostAttack, shared_ptr<CharacterDecorator>(new BoostAtkEffect())));
 						es.emplace_back(ent);
 					}
 				}
@@ -174,7 +174,7 @@ DungeonMap::DungeonMap(const char *filename, shared_ptr<CharacterDecorator> play
 					shared_ptr<Entity> ground (new Ground(x,y));
 					es.emplace_back(ground);
 					if (!re) {
-						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::BoostDefense, new BoostDefEffect()));
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::BoostDefense, shared_ptr<CharacterDecorator>(new BoostDefEffect())));
 						es.emplace_back(ent);
 					}
 				}
@@ -194,7 +194,7 @@ DungeonMap::DungeonMap(const char *filename, shared_ptr<CharacterDecorator> play
 					shared_ptr<Entity> ground (new Ground(x,y));
 					es.emplace_back(ground);
 					if (!re) {
-						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::WoundAttack, new WoundAtkEffect()));
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::WoundAttack, shared_ptr<CharacterDecorator>(new WoundAtkEffect())));
 						es.emplace_back(ent);
 					}
 				}
@@ -204,7 +204,7 @@ DungeonMap::DungeonMap(const char *filename, shared_ptr<CharacterDecorator> play
 					shared_ptr<Entity> ground (new Ground(x,y));
 					es.emplace_back(ground);
 					if (!re) {
-						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::WoundDefense, new WoundDefEffect()));
+						shared_ptr<Entity> ent (new EffectPotion(x, y, PotionType::WoundDefense, shared_ptr<CharacterDecorator>(new WoundDefEffect())));
 						es.emplace_back(ent);
 					}
 				}
@@ -438,7 +438,7 @@ void DungeonMap::populate(size_t f, vector<Chamber> chambers){
 			Direction dir = directions[directionRoll];
 			size_t dragonX = g->getX() + dir.x;
 			size_t dragonY = g->getY() + dir.y;
-			fl->add(shared_ptr (new DragonEnemy(dragonX, dragonY)));
+			fl->add(shared_ptr<Entity> (new DragonEnemy(dragonX, dragonY)));
 			chambers[chamberRoll].remove(dragonX, dragonY);
 		}
 	}
@@ -516,7 +516,6 @@ void DungeonMap::populate(size_t f, vector<Chamber> chambers){
 	//It make sense to use a stair, since you walked up a stair after all
 	shared_ptr<Entity> spawn = chambers[playerChamberRoll].spawnObject('\\');
 	fl->setSpawn(spawn->getX(), spawn->getY());
-	delete spawn;
 }
 
 shared_ptr<Floor> &DungeonMap::getFloor() { return floors[floor]; }
@@ -560,6 +559,30 @@ void DungeonMap::toggleFlag(MapFlags f) {
 	flags[(int) f] = !flags[(int) f];
 }
 
+//Called with the ptr 'this'
+vector<Direction> DungeonMap::getWalkableDirections(Entity* e) {
+	int x = e->getX();
+	int y = e->getY();
+	int width = floors[floor]->width();
+	int height = floors[floor]->height();
+	vector<Direction> valid;
+	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
+		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+			if (col == x && row == y) continue;
+			vector<shared_ptr<Entity>> e = floors[floor]->get(col, row);
+			if (e.size() && e.back()->isWalkable()) {
+				valid.emplace_back(Direction(col, row, x, y));
+			}
+		}
+	}
+	if (!valid.size()) {
+		// no valid directions
+		valid.emplace_back(Direction::Invalid);
+	}
+	return valid;
+}
+
+//Called with smart pointer
 vector<Direction> DungeonMap::getWalkableDirections(shared_ptr<Entity> e) {
 	int x = e->getX();
 	int y = e->getY();
@@ -582,6 +605,30 @@ vector<Direction> DungeonMap::getWalkableDirections(shared_ptr<Entity> e) {
 	return valid;
 }
 
+//Called with the ptr 'this'
+vector<Direction> DungeonMap::getSpawnableDirections(Entity* e) {
+	int x = e->getX();
+	int y = e->getY();
+	int width = floors[floor]->width();
+	int height = floors[floor]->height();
+	vector<Direction> valid;
+	for (int col = x > 0 ? x - 1 : 0; col <= x + 1 && col < width; ++col) {
+		for (int row = y > 0 ? y - 1 : 0; row <= y + 1 && row < height; ++row) {
+			if (col == x && row == y) continue;
+			vector<shared_ptr<Entity>> e = floors[floor]->get(col, row);
+			if (e.size() && e.back()->isSpawnable()) {
+				valid.emplace_back(Direction(col, row, x, y));
+			}
+		}
+	}
+	if (!valid.size()) {
+		// no valid directions
+		valid.emplace_back(Direction::Invalid);
+	}
+	return valid;
+}
+
+//Called with smart pointer
 vector<Direction> DungeonMap::getSpawnableDirections(shared_ptr<Entity> e) {
 	int x = e->getX();
 	int y = e->getY();
@@ -634,7 +681,7 @@ void DungeonMap::move(shared_ptr<Entity>e, Direction d) {
 		cell.pop_back();
 	}
 	else {
-		cerr << "wtf, player coordinates != map coordinates" << endl;
+		cerr << "wtf, coordinates != map coordinates" << endl;
 	}
 	e->move(d);
 	floors[floor]->add(e);
@@ -645,7 +692,7 @@ void DungeonMap::playerPotion(Direction d, string &output) {
 	size_t y = player->getY() + d.y;
 	vector<shared_ptr<Entity>> &tile = floors[floor]->get(x, y);
 	if (tile.size() > 0) {
-		Potion *pot = dynamic_cast<Potion*>(tile.back());
+		shared_ptr<Potion> pot = dynamic_pointer_cast<Potion>(tile.back());
 		if (pot) {
 			output += "PC uses ";
 			if (pot->pickup(*this, *player, output)) {
@@ -675,7 +722,7 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 			vector<shared_ptr<Entity>> &tile = floors[floor]->get(x, y);
 			double prevGold = player->getGold();
 			for (size_t i = 0; i < tile.size(); ++i) {
-				Item *item = dynamic_cast<Item*>(tile[i]);
+				shared_ptr<Item> item = dynamic_pointer_cast<Item>(tile[i]);
 				if (item) {
 					if (item->pickup(*this, *player, output)) {
 						tile.erase(tile.begin() + i);
@@ -683,7 +730,7 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 					}
 					continue;
 				}
-				Stair *stair = dynamic_cast<Stair*>(tile[i]);
+				shared_ptr<Stair> stair = dynamic_pointer_cast<Stair>(tile[i]);
 				if (stair) {
 					// If there's a stair in this tile, progress the floor
 					progressFloor();
@@ -701,14 +748,14 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 			for (size_t i = x - 1; i < x + 2; ++i) {
 				for (size_t j = y - 1; j < y + 2; ++j) {
 					if (i == x && j == y) continue; // Skip the player tile
-					shared_ptr<Entity>e = floors[floor]->getTop(i, j);
-					Character *c = dynamic_cast<Character*>(e);
+					shared_ptr<Entity> e = floors[floor]->getTop(i, j);
+					shared_ptr<Character> c = dynamic_pointer_cast<Character>(e);
 					if (c) {
 						output += (didSees ? " and a " : "PC sees a ") + c->getType().to_string();
 						didSees = true;
 						continue;
 					}
-					Potion *p = dynamic_cast<Potion*>(e);
+					shared_ptr<Potion> p = dynamic_pointer_cast<Potion>(e);
 					if (p) {
 						output += (didSees ? " and " : "PC sees ");
 						if (seenPotion(p->getType())) {
@@ -719,13 +766,13 @@ bool DungeonMap::playerMove(Direction d, string &output) {
 						didSees = true;
 						continue;
 					}
-					if (dynamic_cast<DragonGold*>(e)) {
+					if (dynamic_pointer_cast<DragonGold>(e)) {
 						output += (didSees ? " and a " : "PC sees a ");
 						output += "dragon hoard";
 						didSees = true;
 						continue;
 					}
-					if (dynamic_cast<Gold*>(e)) {
+					if (dynamic_pointer_cast<Gold>(e)) {
 						output += (didSees ? " and a " : "PC sees a ");
 						output += "some treasure";	
 						didSees = true;
@@ -747,7 +794,7 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 	size_t y = player->getY() + d.y;
 	vector<shared_ptr<Entity>> &tile = floors[floor]->get(x, y);
 	if (tile.size() > 0) {
-		Enemy *e = dynamic_cast<Enemy *>(tile.back());
+		shared_ptr<Enemy> e = dynamic_pointer_cast<Enemy>(tile.back());
 		if (e) {
 			player->hit(*e, output);
 			if (e->deathCheck()) {
@@ -760,7 +807,7 @@ void DungeonMap::playerAttack(Direction d, string &output) {
 			else {
 				output += "(" + to_string((int) e->getHP()) + " HP). ";
 			}
-			Merchant *m = dynamic_cast<Merchant *>(e);
+			shared_ptr<Merchant> m = dynamic_pointer_cast<Merchant>(e);
 			if (m) {
 				if (!getFlag(MapFlags::MerchantsHostile)) {
 					output += "PC has enraged the merchants! Merchants will attack PC from now on. ";
@@ -804,7 +851,7 @@ void DungeonMap::tick(string &output) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
 			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
 			for (shared_ptr<Entity> e: cell) {
-				CharacterDecorator *c = dynamic_cast<CharacterDecorator *>(e);
+				shared_ptr<CharacterDecorator> c = dynamic_pointer_cast<CharacterDecorator>(e);
 				if (c && !passTick) {
 					c->resetTick();
 				}
@@ -838,7 +885,7 @@ string DungeonMap::characterStats() {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
 			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
 			for (shared_ptr<Entity> e: cell) {
-				Character *c = dynamic_cast<Character *>(e);
+				shared_ptr<Character> c = dynamic_pointer_cast<Character>(e);
 				if (c) {
 					output += "\n" + c->to_string();
 				}
@@ -855,12 +902,12 @@ string DungeonMap::itemStats() {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
 			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
 			for (shared_ptr<Entity> e: cell) {
-				Gold *gold = dynamic_cast<Gold *>(e);
+				shared_ptr<Gold> gold = dynamic_pointer_cast<Gold>(e);
 				if (gold) {
 					output += "\nGold $" + to_string(gold->getValue()) + "(" + to_string(col) + ", " + to_string(row) + ")";
 				}
 				else {
-					Potion *potion = dynamic_cast<Potion *>(e);
+					shared_ptr<Potion> potion = dynamic_pointer_cast<Potion>(e);
 					if (potion) {
 						output += "\n" + potion->getType().to_string() + "(" + to_string(col) + ", " + to_string(row) + ")";
 						// output += "\n" + potion->to_string(); // why isn't this working
