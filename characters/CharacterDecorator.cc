@@ -24,6 +24,8 @@ void CharacterDecorator::decorate(CharacterDecorator *o) {
 	component = o;
 }
 
+bool CharacterDecorator::isSpawnable() { return component->isSpawnable(); }
+bool CharacterDecorator::isWalkable() { return component->isWalkable(); }
 void CharacterDecorator::addHP(double hp) { component->addHP(hp); }
 double CharacterDecorator::score() { return component->score(); }
 double CharacterDecorator::getHP() { return component->getHP(); }

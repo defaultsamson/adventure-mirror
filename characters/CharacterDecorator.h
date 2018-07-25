@@ -32,6 +32,8 @@ public:
 	size_t getY() override;
 	void setX(size_t x) override;
 	void setY(size_t y) override;
+	bool isWalkable() override;
+	bool isSpawnable() override;
 	char print() override;
 	bool deathCheck() override;
 	CharacterType getType() override;
