@@ -13,6 +13,7 @@
 #include "ShadeRace.h"
 #include "TrollRace.h"
 #include "VampireRace.h"
+#include "BelungaRace.h"
 
 using namespace std;
 
@@ -56,6 +57,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if (input == "t") {
 			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new TrollRace(0, 0))));
+		}
+		else if (input == "b") {
+			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new BelungaRace(0, 0))));
 		}
 		else { // default race
 			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new ShadeRace(0, 0))));
@@ -130,7 +134,8 @@ int main(int argc, char *argv[]) {
 				output += "~~~~Debugging Commands~~~~\n";
 				output += "v: validates the map\n";
 				output += "cs: outputs character stats\n";
-				output += "is: outputs item stats";
+				output += "is: outputs item stats\n";
+				output += "super secret: try inputting 'b' in the race selection prompt";
 				doTick = false;
 			}
 			else if (input == "v") {

@@ -18,6 +18,9 @@ std::string CharacterType::to_string() {
         case CharacterTypeEnum::Goblin:
             return "Goblin";
             break;
+        case CharacterTypeEnum::Belunga:
+            return "Belunga";
+            break;
         case CharacterTypeEnum::Human:
             return "Human";
             break;
@@ -60,3 +63,4 @@ const CharacterType CharacterType::Merchant {CharacterTypeEnum::Merchant};
 const CharacterType CharacterType::Dragon {CharacterTypeEnum::Dragon};
 const CharacterType CharacterType::Halfling {CharacterTypeEnum::Halfling};
 const CharacterType CharacterType::Invalid {CharacterTypeEnum::Invalid};
+const CharacterType CharacterType::Belunga {CharacterTypeEnum::Belunga};

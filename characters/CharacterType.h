@@ -11,6 +11,7 @@ struct CharacterType {
 		Vampire,
 		Troll,
 		Goblin,
+		Belunga,
 		Human,
 		Dwarf,
 		Elf,
@@ -36,5 +37,6 @@ struct CharacterType {
 	const static CharacterType Dragon;
 	const static CharacterType Halfling;
 	const static CharacterType Invalid;
+	const static CharacterType Belunga;
 };
 #endif
