@@ -828,13 +828,9 @@ void DungeonMap::tick(string &output) {
 			for (size_t col = 0; col < currentFloor->width(); ++col) {
 				vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
 				for (shared_ptr<Entity> e: cell) {
-					cout << cell.size() << endl;
 					// enemies decide whether to move or not
 					if (e != player && !passTick) {
-						cout << row << " " << col << endl;
-					                                      cout << e.get() << " tock" << endl;	
 						e->moveTick(*this, output);
-						cout << e.get() << " tock" << endl;
 					}
 				}
 			}
@@ -844,13 +840,9 @@ void DungeonMap::tick(string &output) {
 		for (size_t col = 0; col < currentFloor->width(); ++col) {
 			vector<shared_ptr<Entity>> cell = currentFloor->get(col, row);
 			for (shared_ptr<Entity> e: cell) {
-				                                        cout << cell.size() << endl;
 				// if not moving, enemies will attack
 				if (e != player && !passTick) {
-					                   cout << row << " " << col << endl;
-				                                                        cout << e.get() << " tonk" << endl;
 					e->tick(*this, output);
-					                                                cout << e.get() << " tonk" << endl;
 				}
 			}
 		}
