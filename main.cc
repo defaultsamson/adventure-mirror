@@ -7,6 +7,7 @@
 #include "DungeonMap.h"
 #include "BaseCharacter.h"
 #include "CharacterDecorator.h"
+#include "NullDecorator.h"
 #include "DrowRace.h"
 #include "GoblinRace.h"
 #include "ShadeRace.h"
@@ -45,19 +46,19 @@ int main(int argc, char *argv[]) {
 		// race is one of (s, d, v, g, t)
 		shared_ptr<CharacterDecorator> player;
 		if (input == "d") {
-			player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new DrowRace(0, 0))));
+			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new DrowRace(0, 0))));
 		}
 		else if (input == "v") {
-			player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new VampireRace(0, 0))));
+			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new VampireRace(0, 0))));
 	}
 		else if (input == "g") {
-			player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new GoblinRace(0, 0))));
+			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new GoblinRace(0, 0))));
 		}
 		else if (input == "t") {
-			player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new TrollRace(0, 0))));
+			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new TrollRace(0, 0))));
 		}
 		else { // default race
-			player = shared_ptr<CharacterDecorator>(new CharacterDecorator(shared_ptr<Character> (new ShadeRace(0, 0))));
+			player = shared_ptr<CharacterDecorator>(new NullDecorator(shared_ptr<Character> (new ShadeRace(0, 0))));
 		}
         //set the random seed for random generation
         srand(time(NULL));

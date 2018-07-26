@@ -7,6 +7,8 @@ using namespace std;
 BaseCharacter::BaseCharacter(size_t x, size_t y, char icon, double hp, double maxHp, double atk, double def) : x{x}, y{y}, icon{icon}, hp{hp}, maxHp{maxHp}, atk{atk}, def{def} {}
 
 // Deal the attack. DO NOT OVERRIDE THIS, instead override hitPower()
+// Note: This will not be used for the character. character will use the NullDecorator implmentation.
+// Doesn't matter for enemies since they can't be decorated by potions
 bool BaseCharacter::hit(Character &other, string &output) {
 	bool result = other.takeDamage(*this, hitPower(other), output);
 	output += getType().to_string();
