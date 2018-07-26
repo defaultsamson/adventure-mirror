@@ -2,8 +2,6 @@
 #define CHAMBER_H
 
 #include "Entity.h"
-#include <algorithm>
-#include <random>
 #include <vector>
 #include <memory>
 
@@ -21,6 +19,6 @@ public :
 	void remove(size_t x, size_t y);
 	bool isEmpty();
 	std::shared_ptr<Entity> spawnObject(char c);
-	void shuffle(std::default_random_engine &e);
+	void shuffle();
 };
 #endif

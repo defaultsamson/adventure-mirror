@@ -391,11 +391,8 @@ DungeonMap::DungeonMap(const char *filename, shared_ptr<CharacterDecorator> play
 
 void DungeonMap::populate(size_t f, vector<Chamber> chambers){
 	const shared_ptr<Floor> &fl = floors[f];
-	unsigned seed = (unsigned) (rand() % 100);
-	cout << "Seed: " << seed << endl;
-	std::default_random_engine eng = std::default_random_engine(seed);
 	for (Chamber& it : chambers){
-		it.shuffle(eng);
+		it.shuffle();
 	}
 	//Spawn the treasures
 	for (size_t i = 0; i < 10; ++i){

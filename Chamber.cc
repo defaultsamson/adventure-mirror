@@ -45,8 +45,14 @@ bool Chamber::isEmpty(){
 	}
 }
 
-void Chamber::shuffle(std::default_random_engine &eng){
-	std::shuffle(tiles.begin(), tiles.end(), eng);
+void Chamber::shuffle(){
+	size_t shuffleIntensity = (size_t) 300;
+	for (size_t times = 0; times < shuffleIntensity * size; ++times){
+		size_t chosen = rand() % size;
+		Coordinate c = tiles[chosen];
+		tiles.erase(tiles.begin() + chosen);
+		tiles.emplace_back(c);
+	}
 }
 
 shared_ptr<Entity> Chamber::spawnObject(char c){
