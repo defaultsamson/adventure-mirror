@@ -19,14 +19,19 @@ bool Enemy::canAttack(DungeonMap &map) {
 }
 
 void Enemy::moveTick(DungeonMap &map, string &output) {
+	cout << 'a';
 	if (moved || canAttack(map)) return;
+	cout << 'b';
 	(void) output;
 	vector<Direction> dirs = map.getSpawnableDirections(this);
+	cout << 'c';
 	// If the enemy is not stuck in a location
 	if (dirs.size() > 0) {
+		cout << 'd';
 		// Moves in one of the random available directions
-		map.move(shared_ptr<Entity>(this), dirs[rand() % dirs.size()]);
+		map.move(shared_from_this(), dirs[rand() % dirs.size()]);
 	}
+	cout << 'e';
 	moved = true;
 }
 
