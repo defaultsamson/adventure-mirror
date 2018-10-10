@@ -15,6 +15,9 @@
 #include "VampireRace.h"
 #include "BelungaRace.h"
 
+#include "BoostAtkEffect.h"
+#include "BoostDefEffect.h"
+
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -135,6 +138,7 @@ int main(int argc, char *argv[]) {
 				output += "v: validates the map\n";
 				output += "cs: outputs character stats\n";
 				output += "is: outputs item stats\n";
+                output += "op: makes you overpowered\n";
 				output += "super secret: try inputting 'b' in the race selection prompt";
 				doTick = false;
 			}
@@ -150,6 +154,20 @@ int main(int argc, char *argv[]) {
 				output = map.itemStats();
 				doTick = false;
 			}
+            else if (input == "op") {
+                shared_ptr<CharacterDecorator> boostAtk;
+                boostAtk = shared_ptr<CharacterDecorator>(new BoostAtkEffect());
+                boostAtk->setActiveFloor(player->getFloor());
+                boostAtk->setMultiplier(10);
+                shared_ptr<CharacterDecorator> boostDef;
+                boostDef = shared_ptr<CharacterDecorator>(new BoostDefEffect());
+                boostDef->setActiveFloor(player->getFloor());
+                boostDef->setMultiplier(10);
+                player->decorate(boostAtk);
+                player->decorate(boostDef);
+                output = "You feel more overpowered than before!";
+                doTick = false;
+            }
 			else {
 				Direction d = Direction::getDirection(input);
 				if (d == Direction::Invalid) {
