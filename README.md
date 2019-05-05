@@ -1,7 +1,10 @@
-noot my froot
+## adventure
+A collaborative C++ text-based dungeon crawler game.
 
-*notices foot* OwO
+![Demo](https://i.imgur.com/WKbPRwR.png)
 
-moot
-
-ey yijie make yer commit already
+### Compiling
+1. Clone this repo `git clone https://github.com/qwertysam/adventure-mirror.git`
+2. Change directories `cd adventure-mirror`
+3. Compile with `make` (may need to install g++)
+4. Run with `./cc3k`
